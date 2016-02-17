@@ -4,12 +4,12 @@ using System.Collections;
 public class EnemyManager : MonoBehaviour {
 
     public GameObject enemyCube;
-    public AudioClip killEnemySE;
     public bool moveDirection;
+    public int cycleShot;
     private Animator animator;
     private Rigidbody enemyBody;
     private SphereCollider colliderEnemyCube;
-    private int modeEnemy;
+    private int modeEnemy, cntCyclShot;
     private bool isFirst;
 
     // Use this for initialization
@@ -39,12 +39,13 @@ public class EnemyManager : MonoBehaviour {
             case "EnemyRotate (UnityEngine.GameObject)":
                 modeEnemy = 3;
                 break;
-            case "EnemyStatic (UnityEngine.GameObject)":
-                Destroy(this);
+            case "EnemyShot (UnityEngine.GameObject)":
+                modeEnemy = 4;
+                cntCyclShot = 0;
+                if (cycleShot == 0) cycleShot = 300;
                 break;
             default:
                 modeEnemy = 0;
-                Destroy(enemyCube.GetComponent<Rigidbody>());
                 break;
         }
     }
@@ -58,7 +59,7 @@ public class EnemyManager : MonoBehaviour {
         {
             case 1:
             case 2:
-                if (!isOnFloor()) break;
+                if (!isOnFloor() && modeEnemy == 1) break;
 
                 //Change move direction
                 if (Mathf.Abs(enemyBody.velocity.x) < 0.003f)
@@ -73,6 +74,9 @@ public class EnemyManager : MonoBehaviour {
             case 3:
                 animator.enabled = true;
                 break;
+            case 4:
+                if (cntCyclShot++ % cycleShot == 0) Instantiate(World.EnemyChieldren, transform.position, transform.rotation);
+                break;
         }
         
 
@@ -84,7 +88,7 @@ public class EnemyManager : MonoBehaviour {
     {
         if (modeEnemy != 2 && collider.gameObject.tag == "Cube" && CubeManager.posY - enemyCube.transform.localPosition.y > 0.8f)
         {
-            World.audioSource.PlayOneShot(killEnemySE);
+            World.audioSource.PlayOneShot(World.killEnemySE);
             enemyCube.tag = "Untagged";
             World.Cube.transform.GetComponent<Rigidbody>().AddForce(0, 13.5f, 0, ForceMode.VelocityChange);
             animator.enabled = true;

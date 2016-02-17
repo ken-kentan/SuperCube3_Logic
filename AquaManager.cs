@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class AquaManager : MonoBehaviour {
-
-    public AudioClip getAquaSE;
+    
     private Renderer renderAqua;
 
 	// Use this for initialization
@@ -29,7 +28,7 @@ public class AquaManager : MonoBehaviour {
     {
         if (collider.gameObject.tag == "Cube")
         {
-            World.audioSource.PlayOneShot(getAquaSE);
+            World.audioSource.PlayOneShot(World.getAquaSE);
             CubeManager.life++;
             CubeManager.effectAqua = 1;
             gameObject.SetActive(false);

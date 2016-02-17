@@ -4,8 +4,9 @@ using System.Collections;
 
 public class World : MonoBehaviour {
 
-    public static GameObject Cube;
+    public static GameObject Cube, EnemyChieldren;
     public static AudioSource audioSource;
+    public static AudioClip killEnemySE, getAquaSE, getMagnetSE, pointSE;
     public static Color alpha = new Color(0, 0, 0, 0.01f);
     public static Material materialAqua, materialMagnet;
     public static float drawDistance;
@@ -17,7 +18,14 @@ public class World : MonoBehaviour {
         Cube = GameObject.Find("Cube");
         audioSource = Cube.GetComponent<AudioSource>();
 
-        drawDistance = 10.0f;
+        EnemyChieldren = Resources.Load("Objects/EnemyChieldren") as GameObject;
+
+        killEnemySE = Resources.Load("SEs/kill_enemy") as AudioClip;
+        getAquaSE   = Resources.Load("SEs/aqua_get")   as AudioClip;
+        getMagnetSE = Resources.Load("SEs/magnet_get") as AudioClip;
+        pointSE     = Resources.Load("SEs/1point_get") as AudioClip;
+
+        drawDistance = 20.0f;
     }
 	
 	// Update is called once per frame

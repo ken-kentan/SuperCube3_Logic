@@ -7,11 +7,12 @@ public class CubeManager : MonoBehaviour {
     public static float posX, posY, speedX, speedY;
     public static int maxJump, life;
     public static int effectAqua, effectMagnet;
+    public static bool isResetCube;
     public Rigidbody cubeBody;
     public AudioClip jumpSE, contactSE, damageSE;
     private float maxSpeed;
     private static int cntJump;
-    private bool isOnFloor, isOnBlock, isOnEnemy;
+    private bool isOnFloor, isOnBlock, isOnEnemy, isOnLift;
 
     // Use this for initialization
     void Start() {
@@ -24,13 +25,14 @@ public class CubeManager : MonoBehaviour {
         effectAqua = effectMagnet = 0;
 
         maxSpeed = 8.0f;
-        
+
         maxJump = 2;
         cntJump = 0;
 
         life = 3;
 
         isOnFloor = false;
+        isResetCube = false;
     }
 
     // Update is called once per frame
@@ -41,9 +43,11 @@ public class CubeManager : MonoBehaviour {
         speedY = cubeBody.velocity.y;
 
         if (isOnEnemy || isOverWorld()) resetCube();
+        else isResetCube = false;
 
         //jump
-        if (Input.GetMouseButtonDown(0) && (isOnFloor || isOnBlock || cntJump < maxJump))
+        //ToDo バグ　上接地無限ジャンプ
+        if (Input.GetMouseButtonDown(0) && (isOnFloor || isOnBlock || isOnLift || cntJump < maxJump))
         {
             World.audioSource.PlayOneShot(jumpSE);
             cntJump++;
@@ -97,20 +101,22 @@ public class CubeManager : MonoBehaviour {
         World.audioSource.PlayOneShot(damageSE);
         transform.position = new Vector3(0f, 2.0f, 0f);
         isOnEnemy = false;
+        isResetCube = true;
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Floor") isOnFloor = true;
-        if (collision.gameObject.tag == "Block") isOnBlock = true;
+        if (collision.gameObject.tag == "Floor" && collision.transform.position.y < posY) isOnFloor = true;
+        if (collision.gameObject.tag == "Block" && collision.transform.position.y < posY) isOnBlock = true;
+        if (collision.gameObject.tag == "Lift"  && collision.transform.position.y < posY)  isOnLift = true;
 
-        if(collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy")
         {
             --life;
             isOnEnemy = true;
         }
 
-        if (isOnBlock || isOnFloor)
+        if (isOnBlock || isOnFloor || isOnLift)
         {
             World.audioSource.PlayOneShot(contactSE);
             cntJump = 0;
@@ -121,5 +127,6 @@ public class CubeManager : MonoBehaviour {
     {
         if (isOnFloor) isOnFloor = false;
         if (isOnBlock) isOnBlock = false;
+        if (isOnLift ) isOnLift  = false;
     }
 }

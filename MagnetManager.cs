@@ -3,7 +3,6 @@ using System.Collections;
 
 public class MagnetManager : MonoBehaviour {
     
-    public AudioClip getMagnetSE;
     private Renderer renderMagnet;
 
     // Use this for initialization
@@ -29,7 +28,7 @@ public class MagnetManager : MonoBehaviour {
     {
         if (collider.gameObject.tag == "Cube")
         {
-            World.audioSource.PlayOneShot(getMagnetSE);
+            World.audioSource.PlayOneShot(World.getMagnetSE);
             CubeManager.effectMagnet = 1;
             gameObject.SetActive(false);
             Destroy(gameObject);

@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class PointManager : MonoBehaviour {
-
-    public AudioClip pointSE;
+    
     public Renderer renderPoint;
     private float distanceCube;
     private bool isMagnet;
@@ -17,13 +16,13 @@ public class PointManager : MonoBehaviour {
 	void Update () {
         distanceCube = Vector3.Distance(World.Cube.transform.position, transform.position);
 
-        if (distanceCube > 15f)
+        if (distanceCube > World.drawDistance)
         {
             renderPoint.enabled = false;
             return;
         }
 
-        if (CubeManager.effectMagnet > 0 && distanceCube < World.drawDistance) isMagnet = true;
+        if (CubeManager.effectMagnet > 0 && distanceCube < 9.0f) isMagnet = true;
 
         renderPoint.enabled = true;
         transform.Rotate(1, 1, 1);
@@ -33,8 +32,8 @@ public class PointManager : MonoBehaviour {
             float posX = transform.localPosition.x,
                   posY = transform.localPosition.y;
 
-            posX += (World.Cube.transform.localPosition.x - transform.localPosition.x) / 6.0f;
-            posY += (World.Cube.transform.localPosition.y - transform.localPosition.y) / 6.0f;
+            posX += (CubeManager.posX - transform.localPosition.x) / 6.0f;
+            posY += (CubeManager.posY - transform.localPosition.y) / 6.0f;
 
             transform.localPosition = new Vector3(posX, posY, 0);
         }
@@ -44,7 +43,7 @@ public class PointManager : MonoBehaviour {
     {
         if (collider.gameObject.tag == "Cube")
         {
-            World.audioSource.PlayOneShot(pointSE);
+            World.audioSource.PlayOneShot(World.pointSE);
             this.gameObject.SetActive(false);
             Destroy(gameObject);
         }
