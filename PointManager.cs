@@ -14,6 +14,8 @@ public class PointManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (World.pause) return;
+
         distanceCube = Vector3.Distance(World.Cube.transform.position, transform.position);
 
         if (distanceCube > World.drawDistance)
@@ -43,6 +45,7 @@ public class PointManager : MonoBehaviour {
     {
         if (collider.gameObject.tag == "Cube")
         {
+            World.sumPoint++;
             World.audioSource.PlayOneShot(World.pointSE);
             this.gameObject.SetActive(false);
             Destroy(gameObject);

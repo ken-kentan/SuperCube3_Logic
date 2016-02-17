@@ -12,6 +12,8 @@ public class World : MonoBehaviour {
     public static float drawDistance;
     public static Color colorAqua   = new Color(0, 0.5f, 1, 1),
                         colorMagnet = new Color(0.6f, 1, 0, 1);
+    public static int sumPoint;
+    public static bool pause;
 
     // Use this for initialization
     void Start () {
@@ -26,6 +28,7 @@ public class World : MonoBehaviour {
         pointSE     = Resources.Load("SEs/1point_get") as AudioClip;
 
         drawDistance = 20.0f;
+        sumPoint = 0;
     }
 	
 	// Update is called once per frame

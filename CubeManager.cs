@@ -37,6 +37,8 @@ public class CubeManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (World.pause) return;
+
         posX = transform.position.x;
         posY = transform.position.y;
         speedX = cubeBody.velocity.x;
@@ -98,6 +100,7 @@ public class CubeManager : MonoBehaviour {
         if (life < 0) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         World.audioSource.PlayOneShot(damageSE);
+        stopCube();
         transform.position = new Vector3(0f, 2.0f, 0f);
         isOnEnemy = false;
         isResetCube = true;

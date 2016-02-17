@@ -19,6 +19,7 @@ public class CubeEffects : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (World.pause) return;
 
         //Aqua
         if (CubeManager.effectAqua > 0)

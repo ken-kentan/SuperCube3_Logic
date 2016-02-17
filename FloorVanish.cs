@@ -15,11 +15,11 @@ public class FloorVanish : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!isStartVanish) return;
+        if (World.pause || !isStartVanish) return;
 
         if (CubeManager.isResetCube) reset();
 
-        if (++cnt > 200) collider.enabled = false;
+        if (cnt++ > 200) collider.enabled = false;
 
         float alpha = (200f - cnt) / 200f;
 

@@ -39,7 +39,7 @@ public class LiftManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!isWakeUp && !isOnCube) return;
+        if (World.pause || (!isWakeUp && !isOnCube)) return;
 
         switch (modeLift)
         {

@@ -14,6 +14,8 @@ public class MagnetManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (World.pause) return;
+
         if (Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance)
         {
             renderMagnet.enabled = false;

@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Debug : MonoBehaviour {
 
-    public Text FPS, StatusCube;
+    public Text FPS, Status, StatusCube;
 
     private int frameCount;
     private float prevTime;
@@ -27,6 +27,8 @@ public class Debug : MonoBehaviour {
             frameCount = 0;
             prevTime = Time.realtimeSinceStartup;
         }
+
+        Status.text = "Life " + CubeManager.life + "\nPoint " + World.sumPoint;
 
         StatusCube.text = "Pos(X,Y) = " + (int)CubeManager.posX + "," + (int)CubeManager.posY + "\nSpeed(X,Y) = " + (int)CubeManager.speedX + "," + (int)CubeManager.speedY +
             "\nLife = " + CubeManager.life + "\nmodeEffect = " + CubeManager.effectAqua + "," + CubeManager.effectMagnet;
