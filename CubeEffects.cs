@@ -4,8 +4,8 @@ using System.Collections;
 public class CubeEffects : MonoBehaviour
 {
 
-    public new Renderer renderer;
-    public new Light light;
+    public Renderer rendererCube;
+    public Light lightCube;
     public Material materialCube;
 
     public static int cntTimer, cntTimerAqua, cntTimerMagnet;
@@ -32,12 +32,12 @@ public class CubeEffects : MonoBehaviour
 
             if (cntTimerAqua % 2 == 0)
             {
-                renderer.material = World.materialAqua;
-                light.color = World.colorAqua;
+                rendererCube.material = World.materialAqua;
+                lightCube.color = World.colorAqua;
             }
             else {
-                renderer.material = materialCube;
-                light.color = Color.white;
+                rendererCube.material = materialCube;
+                lightCube.color = Color.white;
             }
 
             if (cntTimerAqua > 2) CubeManager.effectAqua = 0;
@@ -49,8 +49,8 @@ public class CubeEffects : MonoBehaviour
             if(++CubeManager.effectMagnet > 600)
             {
                 CubeManager.effectMagnet = 0;
-                renderer.material = materialCube;
-                light.color = Color.white;
+                rendererCube.material = materialCube;
+                lightCube.color = Color.white;
             }
             else
             {
@@ -58,16 +58,16 @@ public class CubeEffects : MonoBehaviour
                 
                 if(CubeManager.effectMagnet < 500)
                 {
-                    renderer.material = World.materialMagnet;
+                    rendererCube.material = World.materialMagnet;
                 }
                 else if (cntTimerMagnet % 2 == 1)
                 {
-                    renderer.material = World.materialMagnet;
-                    light.color = World.colorMagnet;
+                    rendererCube.material = World.materialMagnet;
+                    lightCube.color = World.colorMagnet;
                 }
                 else {
-                    renderer.material = materialCube;
-                    light.color = Color.white;
+                    rendererCube.material = materialCube;
+                    lightCube.color = Color.white;
                 }
             }
         }

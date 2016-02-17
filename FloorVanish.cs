@@ -3,13 +3,13 @@ using System.Collections;
 
 public class FloorVanish : MonoBehaviour {
 
-    private new BoxCollider collider;
+    private BoxCollider colliderFloor;
     private bool isStartVanish;
     public int cnt;
 
 	// Use this for initialization
 	void Start () {
-        collider = GetComponent<BoxCollider>();
+        colliderFloor = GetComponent<BoxCollider>();
         isStartVanish = false;
     }
 	
@@ -19,7 +19,7 @@ public class FloorVanish : MonoBehaviour {
 
         if (CubeManager.isResetCube) reset();
 
-        if (cnt++ > 200) collider.enabled = false;
+        if (cnt++ > 200) colliderFloor.enabled = false;
 
         float alpha = (200f - cnt) / 200f;
 
@@ -35,7 +35,7 @@ public class FloorVanish : MonoBehaviour {
 
     void reset()
     {
-        collider.enabled = true;
+        colliderFloor.enabled = true;
         GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 0.8f);
         isStartVanish = false;
         cnt = 0;

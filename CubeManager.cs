@@ -100,8 +100,9 @@ public class CubeManager : MonoBehaviour {
         if (life < 0) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         World.audioSource.PlayOneShot(damageSE);
+        Handheld.Vibrate();
         stopCube();
-        transform.position = new Vector3(0f, 2.0f, 0f);
+        transform.position = World.posReborn;
         isOnEnemy = false;
         isResetCube = true;
     }
@@ -116,13 +117,15 @@ public class CubeManager : MonoBehaviour {
         {
             --life;
             isOnEnemy = true;
+            return;
         }
 
-        if (isOnBlock || isOnFloor || isOnLift)
-        {
-            World.audioSource.PlayOneShot(contactSE);
-            cntJump = 0;
-        }
+        if (isOnBlock || isOnFloor || isOnLift) cntJump = 0;
+
+        World.audioSource.PlayOneShot(contactSE);
+        Vibration.Initialize();
+        Vibration.set(35);
+        Vibration.Destruct();
     }
 
     void OnCollisionExit(Collision collision)

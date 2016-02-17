@@ -4,7 +4,7 @@ using System.Collections;
 public class Goal : MonoBehaviour {
 
     public GameObject Flag;
-    public new Light light;
+    public Light lightGoal;
     public static bool isEnterCube;
 
     private static float R, G, B;
@@ -21,7 +21,7 @@ public class Goal : MonoBehaviour {
         if (World.pause) return;
 
         Flag.GetComponent<Renderer>().material.color = new Color(R, G, B);
-        light.color = new Color(R, G, B);
+        lightGoal.color = new Color(R, G, B);
 
         switch (mode)
         {

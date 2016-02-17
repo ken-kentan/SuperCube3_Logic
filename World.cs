@@ -6,7 +6,7 @@ public class World : MonoBehaviour {
 
     public static GameObject Cube, EnemyChieldren;
     public static AudioSource audioSource;
-    public static AudioClip killEnemySE, getAquaSE, getMagnetSE, pointSE;
+    public static AudioClip killEnemySE, getAquaSE, getMagnetSE, pointSE, saveSE;
     public static Color alpha = new Color(0, 0, 0, 0.01f);
     public static Material materialAqua, materialMagnet;
     public static float drawDistance;
@@ -14,6 +14,7 @@ public class World : MonoBehaviour {
                         colorMagnet = new Color(0.6f, 1, 0, 1);
     public static int sumPoint;
     public static bool pause;
+    public static Vector3 posReborn = new Vector3(0f, 2.0f, 0f);
 
     // Use this for initialization
     void Start () {
@@ -26,6 +27,7 @@ public class World : MonoBehaviour {
         getAquaSE   = Resources.Load("SEs/aqua_get")   as AudioClip;
         getMagnetSE = Resources.Load("SEs/magnet_get") as AudioClip;
         pointSE     = Resources.Load("SEs/1point_get") as AudioClip;
+        saveSE      = Resources.Load("SEs/save")       as AudioClip;
 
         drawDistance = 20.0f;
         sumPoint = 0;
