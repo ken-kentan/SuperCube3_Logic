@@ -46,7 +46,6 @@ public class CubeManager : MonoBehaviour {
         else isResetCube = false;
 
         //jump
-        //ToDo バグ　上接地無限ジャンプ
         if (Input.GetMouseButtonDown(0) && (isOnFloor || isOnBlock || isOnLift || cntJump < maxJump))
         {
             World.audioSource.PlayOneShot(jumpSE);
