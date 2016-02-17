@@ -61,11 +61,11 @@ public class CubeManager : MonoBehaviour {
         if (Input.GetKey("left"))
         {
             if (speedX > -maxSpeed) cubeBody.AddForce(-9f, 0, 0);
-            else                    cubeBody.AddForce(5f, 0, 0);
+            else                    cubeBody.AddForce( 5f, 0, 0);
         }
         else if (Input.GetKey("right"))
         {
-            if (speedX < maxSpeed) cubeBody.AddForce(9f, 0, 0);
+            if (speedX < maxSpeed) cubeBody.AddForce( 9f, 0, 0);
             else                   cubeBody.AddForce(-5f, 0, 0);
         }
     }

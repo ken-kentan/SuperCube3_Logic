@@ -50,7 +50,7 @@ public class LiftManager : MonoBehaviour {
                 {
                     LiftBody.velocity = Vector3.ClampMagnitude(LiftBody.velocity, 0f);
                     if (Mathf.Abs(pos - posStart) < 0.02f) mode = true;
-                    else mode = false;
+                    else                                   mode = false;
                 }
 
                 if (mode) LiftBody.AddForce( force, 0, 0);
@@ -63,7 +63,7 @@ public class LiftManager : MonoBehaviour {
                 {
                     LiftBody.velocity = Vector3.ClampMagnitude(LiftBody.velocity, 0f);
                     if (Mathf.Abs(pos - posStart) < 0.02f) mode = true;
-                    else                                  mode = false;
+                    else                                   mode = false;
                 }
 
                 if (mode) LiftBody.AddForce(0,  force, 0);
