@@ -13,8 +13,11 @@ public class World : MonoBehaviour {
     public static Color colorAqua   = new Color(0, 0.5f, 1, 1),
                         colorMagnet = new Color(0.6f, 1, 0, 1);
     public static int sumPoint;
-    public static bool pause;
+    public static bool isPause, isGameOver, isClear;
     public static Vector3 posReborn;
+
+    private static bool isChangeVolume;
+    private static float volume, targetVolume;
 
     // Use this for initialization
     void Start () {
@@ -31,7 +34,11 @@ public class World : MonoBehaviour {
 
         drawDistance = 20.0f;
         sumPoint = 0;
-        pause = false;
+
+        //UI Init
+        isPause = isGameOver = isClear = false;
+
+        isChangeVolume = false;
 
         posReborn = new Vector3(0f, 2.0f, 0f);
 
@@ -40,6 +47,26 @@ public class World : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+        if (isChangeVolume) changeVolume();
+    }
+
+    public static void audioVolume(float _volume)
+    {
+        isChangeVolume = true;
+        targetVolume = _volume;
+    }
+
+    static void changeVolume()
+    {
+        if (-0.01f < Mathf.Abs(volume - targetVolume) && Mathf.Abs(volume - targetVolume) < 0.01f)
+        {
+            isChangeVolume = false;
+            audioSource.volume = volume = targetVolume;
+        }
+        volume += (targetVolume - volume) / 7.0f;
+        volume = Mathf.Min(Mathf.Max(volume, 0.0f), 1.0f);
+        audioSource.volume = volume;
+
+        UnityEngine.Debug.Log(volume);
+    }
 }

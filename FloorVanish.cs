@@ -15,7 +15,7 @@ public class FloorVanish : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (World.pause || !isStartVanish) return;
+        if (World.isPause || !isStartVanish) return;
 
         if (CubeManager.isResetCube) reset();
 

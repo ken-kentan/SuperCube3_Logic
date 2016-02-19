@@ -14,7 +14,7 @@ public class PointManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (World.pause) return;
+        if (World.isPause) return;
 
         distanceCube = Vector3.Distance(World.Cube.transform.position, transform.position);
 

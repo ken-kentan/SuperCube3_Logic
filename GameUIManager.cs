@@ -6,12 +6,12 @@ using System.Collections;
 public class GameUIManager : MonoBehaviour {
 
     public Text Clear;
-    public GameObject Paused;
+    public GameObject Paused, GameOver;
     public UnityStandardAssets.ImageEffects.BlurOptimized Blur;
 
     private static int cntDelay;
     private float animationBlur;
-    private int modeAnimBlur; //0:nonde 1:Active 2:Disable
+    private int modeAnimBlur; //0:none 1:Enable 2:Disable
 
 	// Use this for initialization
 	void Start () {
@@ -25,7 +25,7 @@ public class GameUIManager : MonoBehaviour {
         //Clear
         if (Goal.isEnterCube)
         {
-            World.pause = true;
+            World.isPause = true;
             Time.timeScale = 0;
             Clear.enabled = true;
         }
@@ -34,18 +34,27 @@ public class GameUIManager : MonoBehaviour {
         if (Input.GetKey(KeyCode.Escape) && cntDelay == 0 && !Goal.isEnterCube)
         {
             cntDelay = 1;
-            World.pause = !World.pause;
+            World.isPause = !World.isPause;
 
             if (Time.timeScale != 0)
             {
-                modeAnimBlur = 1;
-                Blur.enabled = true;
-                Time.timeScale = 0;
+                World.audioVolume(0.3f);
+                enablePause();
                 Paused.SetActive(true);
             }
             else {
+                World.audioVolume(1.0f);
                 disablePause();
             }
+        }
+
+        //GameOver
+        if (World.isGameOver)
+        {
+            World.isPause = true;
+            World.audioVolume(0.0f);
+            enablePause();
+            GameOver.SetActive(true);
         }
 
         switch (modeAnimBlur)
@@ -91,6 +100,13 @@ public class GameUIManager : MonoBehaviour {
         if (cntDelay > 20) cntDelay = 0;
     }
 
+    void enablePause()
+    {
+        modeAnimBlur = 1;
+        Blur.enabled = true;
+        Time.timeScale = 0;
+    }
+
     void disablePause()
     {
         modeAnimBlur = 2;
@@ -107,10 +123,10 @@ public class GameUIManager : MonoBehaviour {
                 SceneManager.LoadScene("Home");
                 break;
             case "Resum":
-                World.pause = false;
+                World.isPause = false;
                 cntDelay = 1;
-                modeAnimBlur = 2;
-                Time.timeScale = 1;
+                World.audioVolume(1.0f);
+                disablePause();
                 break;
             case "Retry":
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

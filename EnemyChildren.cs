@@ -20,7 +20,7 @@ public class EnemyChildren : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (World.pause) return;
+        if (World.isPause) return;
 
         if (Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance || CubeManager.isResetCube) Destroy(EnemyChieldren);
 	}

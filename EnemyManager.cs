@@ -53,7 +53,7 @@ public class EnemyManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //return when over distance
-        if (World.pause || modeEnemy == 0 || ((isFirst || modeEnemy == 2) && Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance)) return;
+        if (World.isPause || modeEnemy == 0 || ((isFirst || modeEnemy == 2) && Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance)) return;
 
         switch (modeEnemy)
         {

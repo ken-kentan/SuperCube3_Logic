@@ -37,7 +37,7 @@ public class CubeManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (World.pause) return;
+        if (World.isPause) return;
 
         posX = transform.position.x;
         posY = transform.position.y;
@@ -97,7 +97,7 @@ public class CubeManager : MonoBehaviour {
 
     void resetCube()
     {
-        if (life < 0) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (life < 0) World.isGameOver = true;
 
         World.audioSource.PlayOneShot(damageSE);
         Vibration.Vibrate(600);
