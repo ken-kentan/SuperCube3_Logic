@@ -9,8 +9,9 @@ public class LiftManager : MonoBehaviour {
     public float distance;
     
     private Rigidbody LiftBody;
-    private float posStart, posEnd, pos, force;
-    private bool mode, isOnCube;
+    private float posStart, posEnd, pos, posPrev;
+    private bool mode, isOnCube, isPositive;
+    private int cnt;
 
 	// Use this for initialization
 	void Start () {
@@ -22,19 +23,16 @@ public class LiftManager : MonoBehaviour {
         {
             case 1:
                 pos = posStart = Lift.transform.localPosition.x;
-                posEnd = posStart + distance;
-
-                if (posStart < posEnd) force = 200;
-                else                   force = -200;
                 break;
             case 2:
                 pos = posStart = Lift.transform.localPosition.y;
-                posEnd = posStart + distance;
-
-                if (posStart < posEnd) force =  200;
-                else                   force = -200;
                 break;
         }
+
+        posEnd = posStart + distance;
+
+        if (posStart < posEnd) isPositive = true;
+        else isPositive = false;
     }
 	
 	// Update is called once per frame
@@ -46,28 +44,40 @@ public class LiftManager : MonoBehaviour {
             case 1:
                 pos = Lift.transform.localPosition.x;
 
-                if (Mathf.Abs(pos - posStart) < 0.02f || Mathf.Abs(pos - posEnd) < 0.02f)
+                checkError();
+
+                if (isPositive)
                 {
-                    LiftBody.velocity = Vector3.ClampMagnitude(LiftBody.velocity, 0f);
-                    if (Mathf.Abs(pos - posStart) < 0.02f) mode = true;
-                    else                                   mode = false;
+                    if(pos <= posStart)    mode = true;
+                    else if(posEnd <= pos) mode = false;
+                }
+                else
+                {
+                    if(posStart <= pos)    mode = false;
+                    else if(pos <= posEnd) mode = true;
                 }
 
-                if (mode) LiftBody.AddForce( force, 0, 0);
-                else      LiftBody.AddForce(-force, 0, 0);
+                if (mode) LiftBody.AddForce( 180, 0, 0);
+                else      LiftBody.AddForce(-180, 0, 0);
                 break;
             case 2:
                 pos = Lift.transform.localPosition.y;
 
-                if (Mathf.Abs(pos - posStart) < 0.02f || Mathf.Abs(pos - posEnd) < 0.02f)
+                checkError();
+
+                if (isPositive)
                 {
-                    LiftBody.velocity = Vector3.ClampMagnitude(LiftBody.velocity, 0f);
-                    if (Mathf.Abs(pos - posStart) < 0.02f) mode = true;
-                    else                                   mode = false;
+                    if (pos <= posStart)    mode = true;
+                    else if (posEnd <= pos) mode = false;
+                }
+                else
+                {
+                    if (posStart <= pos)    mode = false;
+                    else if (pos <= posEnd) mode = true;
                 }
 
-                if (mode) LiftBody.AddForce(0,  force, 0);
-                else      LiftBody.AddForce(0, -force, 0);
+                if (mode) LiftBody.AddForce(0, 180, 0);
+                else      LiftBody.AddForce(0, -180, 0);
                 break;
 
         }
@@ -81,5 +91,15 @@ public class LiftManager : MonoBehaviour {
     void OnCollisionExit(Collision collision)
     {
         if (isOnCube) isOnCube = false;
+    }
+
+    void checkError()
+    {
+        if(Mathf.Abs(posPrev - pos) < 0.015f && cnt++ > 50)
+        {
+            mode = !mode;
+            cnt = 0;
+        }
+        posPrev = pos;
     }
 }

@@ -58,7 +58,8 @@ public class World : MonoBehaviour {
 
     static void changeVolume()
     {
-        if (-0.01f < Mathf.Abs(volume - targetVolume) && Mathf.Abs(volume - targetVolume) < 0.01f)
+        float diff = Mathf.Abs(volume - targetVolume);
+        if (-0.01f < diff && diff < 0.01f)
         {
             isChangeVolume = false;
             audioSource.volume = volume = targetVolume;
