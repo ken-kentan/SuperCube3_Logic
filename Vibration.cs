@@ -1,31 +1,61 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Vibration : MonoBehaviour {
+public static class Vibration
+{
 
-    private static AndroidJavaObject unityPlayer;
-    private static AndroidJavaObject currentActivity;
-    private static AndroidJavaObject vibrator;
+#if UNITY_ANDROID && !UNITY_EDITOR
+    public static AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+    public static AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+    public static AndroidJavaObject vibrator = currentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator");
+#else
+    public static AndroidJavaClass unityPlayer;
+    public static AndroidJavaObject currentActivity;
+    public static AndroidJavaObject vibrator;
+#endif
 
-    // 初期処理
-    public static void Initialize()
+    public static void Vibrate()
     {
-        unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-        vibrator = currentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator");
+        if (isAndroid())
+            vibrator.Call("vibrate");
+        else
+            Handheld.Vibrate();
     }
 
-    // バイブレーション機能呼び出し
-    public static void set(long msec)
+
+    public static void Vibrate(long milliseconds)
     {
-        vibrator.Call("vibrate", msec);
+        if (isAndroid())
+            vibrator.Call("vibrate", milliseconds);
+        else
+            Handheld.Vibrate();
     }
 
-    // 終了処理
-    public static void Destruct()
+    public static void Vibrate(long[] pattern, int repeat)
     {
-        vibrator.Dispose();
-        currentActivity.Dispose();
-        unityPlayer.Dispose();
+        if (isAndroid())
+            vibrator.Call("vibrate", pattern, repeat);
+        else
+            Handheld.Vibrate();
+    }
+
+    public static bool HasVibrator()
+    {
+        return isAndroid();
+    }
+
+    public static void Cancel()
+    {
+        if (isAndroid())
+            vibrator.Call("cancel");
+    }
+
+    private static bool isAndroid()
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+	return true;
+#else
+        return false;
+#endif
     }
 }

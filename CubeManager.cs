@@ -100,7 +100,7 @@ public class CubeManager : MonoBehaviour {
         if (life < 0) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         World.audioSource.PlayOneShot(damageSE);
-        Handheld.Vibrate();
+        Vibration.Vibrate(600);
         stopCube();
         transform.position = World.posReborn;
         isOnEnemy = false;
@@ -123,9 +123,7 @@ public class CubeManager : MonoBehaviour {
         if (isOnBlock || isOnFloor || isOnLift) cntJump = 0;
 
         World.audioSource.PlayOneShot(contactSE);
-        Vibration.Initialize();
-        Vibration.set(35);
-        Vibration.Destruct();
+        Vibration.Vibrate(35);
     }
 
     void OnCollisionExit(Collision collision)

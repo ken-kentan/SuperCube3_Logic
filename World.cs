@@ -14,7 +14,7 @@ public class World : MonoBehaviour {
                         colorMagnet = new Color(0.6f, 1, 0, 1);
     public static int sumPoint;
     public static bool pause;
-    public static Vector3 posReborn = new Vector3(0f, 2.0f, 0f);
+    public static Vector3 posReborn;
 
     // Use this for initialization
     void Start () {
@@ -31,6 +31,11 @@ public class World : MonoBehaviour {
 
         drawDistance = 20.0f;
         sumPoint = 0;
+        pause = false;
+
+        posReborn = new Vector3(0f, 2.0f, 0f);
+
+        Time.timeScale = 1;
     }
 	
 	// Update is called once per frame
