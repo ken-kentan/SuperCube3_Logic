@@ -12,9 +12,11 @@ public class World : MonoBehaviour {
     public static float drawDistance;
     public static Color colorAqua   = new Color(0, 0.5f, 1, 1),
                         colorMagnet = new Color(0.6f, 1, 0, 1);
-    public static int sumPoint;
     public static bool isPause, isGameOver, isClear;
     public static Vector3 posReborn;
+
+    //Game data
+    public static int sumPoint, sumJump, sumDead, sumKill;
 
     private static bool isChangeVolume;
     private static float volume, targetVolume;

@@ -5,7 +5,7 @@ using System.Collections;
 
 public class GameUIManager : MonoBehaviour {
 
-    public Text Clear;
+    public Text Clear, Hint;
     public GameObject Paused, GameOver;
     public UnityStandardAssets.ImageEffects.BlurOptimized Blur;
 
@@ -55,6 +55,13 @@ public class GameUIManager : MonoBehaviour {
             World.audioVolume(0.0f);
             enablePause();
             GameOver.SetActive(true);
+            if (Hint != null)
+            {
+                if(Msg.isLangJa) Hint.text = Msg.jaHint[generateRand(0, 6)];
+                else             Hint.text = Msg.enHint[generateRand(0, 6)];
+
+                Hint = null;
+            }
         }
 
         switch (modeAnimBlur)
@@ -134,5 +141,10 @@ public class GameUIManager : MonoBehaviour {
             default:
                 break;
         }
+    }
+
+    int generateRand(int rangeX = 0, int rangeY = 0)
+    {
+        return Random.Range(rangeX, rangeY);
     }
 }

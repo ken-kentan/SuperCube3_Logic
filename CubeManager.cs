@@ -97,7 +97,7 @@ public class CubeManager : MonoBehaviour {
 
     void resetCube()
     {
-        if (life < 0) World.isGameOver = true;
+        if (life < 3) World.isGameOver = true;
 
         World.audioSource.PlayOneShot(damageSE);
         Vibration.Vibrate(600);
