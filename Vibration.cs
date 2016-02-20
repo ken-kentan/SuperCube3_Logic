@@ -25,6 +25,8 @@ public static class Vibration
 
     public static void Vibrate(long milliseconds)
     {
+        if (!World.isVibration) return;
+
         if (isAndroid())
             vibrator.Call("vibrate", milliseconds);
         else

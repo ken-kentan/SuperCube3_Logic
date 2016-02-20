@@ -12,7 +12,7 @@ public class CubeManager : MonoBehaviour {
     public AudioClip jumpSE, contactSE, damageSE;
     private float maxSpeed;
     private static int cntJump;
-    private bool isOnFloor, isOnBlock, isOnEnemy, isOnLift;
+    private static bool isOnFloor, isOnBlock, isOnEnemy, isOnLift;
 
     // Use this for initialization
     void Start() {
@@ -48,28 +48,32 @@ public class CubeManager : MonoBehaviour {
         else isResetCube = false;
 
         //jump
-        if (Input.GetMouseButtonDown(0) && (isOnFloor || isOnBlock || isOnLift || cntJump < maxJump))
+        if (((Input.GetMouseButtonDown(0) && !World.isController) || GameUIManager.isJump) && (isOnFloor || isOnBlock || isOnLift || cntJump < maxJump))
         {
             World.audioSource.PlayOneShot(jumpSE);
             cntJump++;
+            World.sumJump++;
             stopCube();
             transform.GetComponent<Rigidbody>().AddForce(0, 260f, 0);
         }
+        GameUIManager.isJump = false;
 
         //Gyro ctrl
         cubeBody.AddForce(Input.acceleration.x * 25.0f, 0f, 0f);
 
         //X move
-        if (Input.GetKey("left"))
+        if (Input.GetKey("left") || GameUIManager.isLeft)
         {
             if (speedX > -maxSpeed) cubeBody.AddForce(-9f, 0, 0);
             else                    cubeBody.AddForce( 5f, 0, 0);
         }
-        else if (Input.GetKey("right"))
+        else if (Input.GetKey("right") || GameUIManager.isRight)
         {
             if (speedX < maxSpeed) cubeBody.AddForce( 9f, 0, 0);
             else                   cubeBody.AddForce(-5f, 0, 0);
         }
+
+        //GameUIManager.resetController();
     }
 
     void FixedUpdate()
@@ -97,9 +101,10 @@ public class CubeManager : MonoBehaviour {
 
     void resetCube()
     {
-        if (life < 3) World.isGameOver = true;
+        if (life < 0) World.isGameOver = true;
 
         World.audioSource.PlayOneShot(damageSE);
+        World.sumDead++;
         Vibration.Vibrate(600);
         stopCube();
         transform.position = World.posReborn;

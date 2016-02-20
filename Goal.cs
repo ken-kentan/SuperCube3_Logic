@@ -12,6 +12,8 @@ public class Goal : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        isEnterCube = false;
+
         R = 1;
         G = B = 0;
 	}

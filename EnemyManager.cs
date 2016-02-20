@@ -89,8 +89,9 @@ public class EnemyManager : MonoBehaviour {
         if (modeEnemy != 2 && collider.gameObject.tag == "Cube" && CubeManager.posY - enemyCube.transform.localPosition.y > 0.8f)
         {
             World.audioSource.PlayOneShot(World.killEnemySE);
+            World.sumKill++;
             enemyCube.tag = "Untagged";
-            World.Cube.transform.GetComponent<Rigidbody>().AddForce(0, 13.5f, 0, ForceMode.VelocityChange);
+            World.Cube.transform.GetComponent<Rigidbody>().AddForce(0, 100f, 0);
             animator.enabled = true;
             Destroy(enemyCube.GetComponent<Collider>());
             Destroy(enemyCube, 1.0f);

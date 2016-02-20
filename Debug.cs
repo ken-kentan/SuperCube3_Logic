@@ -31,6 +31,8 @@ public class Debug : MonoBehaviour {
         Status.text = "Life " + CubeManager.life + "\nPoint " + World.sumPoint;
 
         StatusCube.text = "Pos(X,Y) = " + (int)CubeManager.posX + "," + (int)CubeManager.posY + "\nSpeed(X,Y) = " + (int)CubeManager.speedX + "," + (int)CubeManager.speedY +
-            "\nLife = " + CubeManager.life + "\nmodeEffect = " + CubeManager.effectAqua + "," + CubeManager.effectMagnet;
+            "\nLife = " + CubeManager.life + "\nmodeEffect = " + CubeManager.effectAqua + "," + CubeManager.effectMagnet +
+            "\nWorld sumPoint = " + World.sumPoint + " sumJump = " + World.sumJump + " sumDead = " + World.sumDead + " sumKill = " + World.sumKill +
+            " sumAqua = " + World.sumAqua + " sumMagnet = " + World.sumMagnet;
     }
 }

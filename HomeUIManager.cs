@@ -21,6 +21,9 @@ public class HomeUIManager : MonoBehaviour {
             case "Play":
                 SceneManager.LoadScene("Base");
                 break;
+            case "Setting":
+                SceneManager.LoadScene("Setting");
+                break;
             case "Exit":
                 Application.Quit();
                 break;

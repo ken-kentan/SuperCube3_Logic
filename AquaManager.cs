@@ -32,6 +32,7 @@ public class AquaManager : MonoBehaviour {
         {
             World.audioSource.PlayOneShot(World.getAquaSE);
             CubeManager.life++;
+            World.sumAqua++;
             CubeManager.effectAqua = 1;
             gameObject.SetActive(false);
             Destroy(gameObject);

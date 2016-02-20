@@ -16,7 +16,10 @@ public class World : MonoBehaviour {
     public static Vector3 posReborn;
 
     //Game data
-    public static int sumPoint, sumJump, sumDead, sumKill;
+    public static int sumPoint, sumJump, sumDead, sumKill, sumScore, sumAqua, sumMagnet;
+
+    //Setting data
+    public static bool isController, isVibration, isBlur;
 
     private static bool isChangeVolume;
     private static float volume, targetVolume;
@@ -34,6 +37,11 @@ public class World : MonoBehaviour {
         pointSE     = Resources.Load("SEs/1point_get") as AudioClip;
         saveSE      = Resources.Load("SEs/save")       as AudioClip;
 
+        //Setting data
+        isController = (PlayerPrefs.GetInt("isController", 0) != 0);
+        isVibration  = (PlayerPrefs.GetInt("isVibration" , 1) != 0);
+        isBlur       = (PlayerPrefs.GetInt("isBlur"      , 1) != 0);
+
         drawDistance = 20.0f;
         sumPoint = 0;
 
@@ -41,6 +49,7 @@ public class World : MonoBehaviour {
         isPause = isGameOver = isClear = false;
 
         isChangeVolume = false;
+        volume = 1.0f;
 
         posReborn = new Vector3(0f, 2.0f, 0f);
 
@@ -69,7 +78,11 @@ public class World : MonoBehaviour {
         volume += (targetVolume - volume) / 7.0f;
         volume = Mathf.Min(Mathf.Max(volume, 0.0f), 1.0f);
         audioSource.volume = volume;
+    }
 
-        UnityEngine.Debug.Log(volume);
+    public static void calcScore()
+    {
+        UnityEngine.Debug.Log(sumPoint + "," + CubeManager.life);
+        sumScore = sumPoint*10 + CubeManager.life*100 + sumJump + sumKill*5 + sumAqua*5 + sumMagnet*5 - sumKill*10;
     }
 }

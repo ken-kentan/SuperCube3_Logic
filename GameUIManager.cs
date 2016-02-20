@@ -5,19 +5,28 @@ using System.Collections;
 
 public class GameUIManager : MonoBehaviour {
 
-    public Text Clear, Hint;
-    public GameObject Paused, GameOver;
+    public Text Hint, Score;
+    public GameObject Paused, GameOver, Clear, Controller;
     public UnityStandardAssets.ImageEffects.BlurOptimized Blur;
+
+    public static bool isLeft, isRight, isJump;
 
     private static int cntDelay;
     private float animationBlur;
     private int modeAnimBlur; //0:none 1:Enable 2:Disable
+    private static bool isLock;
 
 	// Use this for initialization
 	void Start () {
         cntDelay = 0;
         animationBlur = 0.0f;
         modeAnimBlur = 0;
+
+        isLeft = isRight = isJump = false;
+
+        if (World.isController) Controller.SetActive(true);
+
+        isLock = false;
     }
 	
 	// Update is called once per frame
@@ -26,8 +35,14 @@ public class GameUIManager : MonoBehaviour {
         if (Goal.isEnterCube)
         {
             World.isPause = true;
-            Time.timeScale = 0;
-            Clear.enabled = true;
+            enablePause();
+            Clear.SetActive(true);
+            if (World.sumScore == 0)
+            {
+                World.audioVolume(0.0f);
+                World.calcScore();
+            }
+            Score.text = World.sumScore.ToString();
         }
 
         //Pause
@@ -57,8 +72,10 @@ public class GameUIManager : MonoBehaviour {
             GameOver.SetActive(true);
             if (Hint != null)
             {
-                if(Msg.isLangJa) Hint.text = Msg.jaHint[generateRand(0, 6)];
-                else             Hint.text = Msg.enHint[generateRand(0, 6)];
+                World.audioVolume(0.0f);
+
+                if (Msg.isLangJa) Hint.text = Msg.jaHint[generateRand(0, 6)];
+                else              Hint.text = Msg.enHint[generateRand(0, 6)];
 
                 Hint = null;
             }
@@ -67,7 +84,7 @@ public class GameUIManager : MonoBehaviour {
         switch (modeAnimBlur)
         {
             case 1:
-                Blur.blurSize = animationBlur;
+                if(World.isBlur) Blur.blurSize = animationBlur;
 
                 if (animationBlur >= 2.0f)
                 {
@@ -80,7 +97,7 @@ public class GameUIManager : MonoBehaviour {
                 }
                 break;
             case 2:
-                Blur.blurSize = animationBlur;
+                if (World.isBlur) Blur.blurSize = animationBlur;
 
                 if (animationBlur <= 0.0f)
                 {
@@ -110,7 +127,7 @@ public class GameUIManager : MonoBehaviour {
     void enablePause()
     {
         modeAnimBlur = 1;
-        Blur.enabled = true;
+        if (World.isBlur) Blur.enabled = true;
         Time.timeScale = 0;
     }
 
@@ -122,6 +139,7 @@ public class GameUIManager : MonoBehaviour {
 
     public void OnClick(string button)
     {
+        string shareMsg;
         UnityEngine.Debug.Log(button + " button cliked.");
 
         switch (button)
@@ -138,9 +156,44 @@ public class GameUIManager : MonoBehaviour {
             case "Retry":
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                 break;
+            case "Twitter":
+                if(Msg.isLangJa) shareMsg = Msg.jaTwitter.Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
+                else             shareMsg = Msg.enTwitter.Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
+
+                Application.OpenURL(shareMsg);
+                break;
+            case "LINE":
+                if (Msg.isLangJa) shareMsg = Msg.jaLINE.Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
+                else              shareMsg = Msg.enLINE.Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
+
+                Application.OpenURL(shareMsg);
+                break;
             default:
                 break;
         }
+    }
+
+    public void OnPressLeft(bool isPress)
+    {
+        isLeft = isPress;
+    }
+
+    public void OnPressRight(bool isPress)
+    {
+        isRight = isPress;
+    }
+
+    public void OnPressJump(bool isPress)
+    {
+        if (isLock)
+        {
+            if (!isPress) isLock = false;
+            return;
+        }
+
+        if (isPress) isLock = true;
+
+        isJump = true;
     }
 
     int generateRand(int rangeX = 0, int rangeY = 0)
