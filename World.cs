@@ -6,13 +6,13 @@ public class World : MonoBehaviour {
 
     public static GameObject Cube, EnemyChieldren;
     public static AudioSource audioSource;
-    public static AudioClip killEnemySE, getAquaSE, getMagnetSE, pointSE, saveSE;
+    public static AudioClip killEnemySE, getAquaSE, getMagnetSE, pointSE, saveSE, jumpSE, contactSE, damageSE;
     public static Color alpha = new Color(0, 0, 0, 0.01f);
     public static Material materialAqua, materialMagnet;
     public static float drawDistance;
     public static Color colorAqua   = new Color(0, 0.5f, 1, 1),
                         colorMagnet = new Color(0.6f, 1, 0, 1);
-    public static bool isPause, isGameOver, isClear;
+    public static bool isPause, isGameOver, isClear, isLoading;
     public static Vector3 posReborn;
 
     //Game data
@@ -36,6 +36,9 @@ public class World : MonoBehaviour {
         getMagnetSE = Resources.Load("SEs/magnet_get") as AudioClip;
         pointSE     = Resources.Load("SEs/1point_get") as AudioClip;
         saveSE      = Resources.Load("SEs/save")       as AudioClip;
+        jumpSE      = Resources.Load("SEs/jump")       as AudioClip;
+        contactSE   = Resources.Load("SEs/contact")    as AudioClip;
+        damageSE    = Resources.Load("SEs/damage")     as AudioClip;
 
         //Setting data
         isController = (PlayerPrefs.GetInt("isController", 0) != 0);
@@ -43,9 +46,12 @@ public class World : MonoBehaviour {
         isBlur       = (PlayerPrefs.GetInt("isBlur"      , 1) != 0);
 
         drawDistance = 20.0f;
-        sumPoint = 0;
+
+        //sum Init
+        sumPoint = sumJump = sumDead = sumKill = sumScore = sumAqua = sumMagnet = 0;
 
         //UI Init
+        isLoading = true;
         isPause = isGameOver = isClear = false;
 
         isChangeVolume = false;
@@ -53,7 +59,8 @@ public class World : MonoBehaviour {
 
         posReborn = new Vector3(0f, 2.0f, 0f);
 
-        Time.timeScale = 1;
+        Time.timeScale = 0;
+        isPause = true;
     }
 	
 	// Update is called once per frame

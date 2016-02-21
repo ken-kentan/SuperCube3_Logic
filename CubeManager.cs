@@ -9,8 +9,7 @@ public class CubeManager : MonoBehaviour {
     public static int effectAqua, effectMagnet;
     public static bool isResetCube;
     public Rigidbody cubeBody;
-    public AudioClip jumpSE, contactSE, damageSE;
-    private float maxSpeed;
+    private static float maxSpeed, accGyro;
     private static int cntJump;
     private static bool isOnFloor, isOnBlock, isOnEnemy, isOnLift;
 
@@ -25,6 +24,7 @@ public class CubeManager : MonoBehaviour {
         effectAqua = effectMagnet = 0;
 
         maxSpeed = 8.0f;
+        accGyro = PlayerPrefs.GetFloat("accGyro", 25.0f);
 
         maxJump = 2;
         cntJump = 0;
@@ -50,7 +50,7 @@ public class CubeManager : MonoBehaviour {
         //jump
         if (((Input.GetMouseButtonDown(0) && !World.isController) || GameUIManager.isJump) && (isOnFloor || isOnBlock || isOnLift || cntJump < maxJump))
         {
-            World.audioSource.PlayOneShot(jumpSE);
+            World.audioSource.PlayOneShot(World.jumpSE);
             cntJump++;
             World.sumJump++;
             stopCube();
@@ -59,7 +59,7 @@ public class CubeManager : MonoBehaviour {
         GameUIManager.isJump = false;
 
         //Gyro ctrl
-        cubeBody.AddForce(Input.acceleration.x * 25.0f, 0f, 0f);
+        if(!World.isController) cubeBody.AddForce(Input.acceleration.x * accGyro, 0f, 0f);
 
         //X move
         if (Input.GetKey("left") || GameUIManager.isLeft)
@@ -72,8 +72,6 @@ public class CubeManager : MonoBehaviour {
             if (speedX < maxSpeed) cubeBody.AddForce( 9f, 0, 0);
             else                   cubeBody.AddForce(-5f, 0, 0);
         }
-
-        //GameUIManager.resetController();
     }
 
     void FixedUpdate()
@@ -86,7 +84,7 @@ public class CubeManager : MonoBehaviour {
 
     bool isOverWorld()
     {
-        if (posY < -10.0f)
+        if (posY < -5.0f)
         {
             --life;
             return true;
@@ -103,7 +101,7 @@ public class CubeManager : MonoBehaviour {
     {
         if (life < 0) World.isGameOver = true;
 
-        World.audioSource.PlayOneShot(damageSE);
+        World.audioSource.PlayOneShot(World.damageSE);
         World.sumDead++;
         Vibration.Vibrate(600);
         stopCube();
@@ -127,7 +125,7 @@ public class CubeManager : MonoBehaviour {
 
         if (isOnBlock || isOnFloor || isOnLift) cntJump = 0;
 
-        World.audioSource.PlayOneShot(contactSE);
+        World.audioSource.PlayOneShot(World.contactSE);
         Vibration.Vibrate(35);
     }
 

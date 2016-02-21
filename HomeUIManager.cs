@@ -4,6 +4,8 @@ using System.Collections;
 
 public class HomeUIManager : MonoBehaviour {
 
+    public GameObject parentLoading;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -19,7 +21,8 @@ public class HomeUIManager : MonoBehaviour {
         switch (button)
         {
             case "Play":
-                SceneManager.LoadScene("Base");
+                parentLoading.SetActive(true);
+                SceneManager.LoadSceneAsync("Base");
                 break;
             case "Setting":
                 SceneManager.LoadScene("Setting");

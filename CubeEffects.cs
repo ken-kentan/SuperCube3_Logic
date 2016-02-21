@@ -7,6 +7,7 @@ public class CubeEffects : MonoBehaviour
     public Renderer rendererCube;
     public Light lightCube;
     public Material materialCube;
+    public ParticleSystem particleDead;
 
     public static int cntTimer, cntTimerAqua, cntTimerMagnet;
 
@@ -70,6 +71,13 @@ public class CubeEffects : MonoBehaviour
                     lightCube.color = Color.white;
                 }
             }
+        }
+
+        //Dead
+        if (CubeManager.isResetCube)
+        {
+            particleDead.time = 0.0f;
+            particleDead.Play();
         }
 
     }

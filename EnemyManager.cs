@@ -106,7 +106,7 @@ public class EnemyManager : MonoBehaviour {
 
     bool isOverWorld()
     {
-        if (enemyCube.transform.localPosition.y < -15f) return true;
+        if (enemyCube.transform.localPosition.y < -10.0f) return true;
         return false;
     }
 }

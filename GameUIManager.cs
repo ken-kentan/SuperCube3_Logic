@@ -31,6 +31,8 @@ public class GameUIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (World.isLoading) return;
+
         //Clear
         if (Goal.isEnterCube)
         {
@@ -74,8 +76,8 @@ public class GameUIManager : MonoBehaviour {
             {
                 World.audioVolume(0.0f);
 
-                if (Msg.isLangJa) Hint.text = Msg.jaHint[generateRand(0, 6)];
-                else              Hint.text = Msg.enHint[generateRand(0, 6)];
+                if (Msg.isLangJa) Hint.text = Msg.jaHint[generateRand(0, 7)];
+                else              Hint.text = Msg.enHint[generateRand(0, 7)];
 
                 Hint = null;
             }

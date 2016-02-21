@@ -4,8 +4,9 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class SettingUIManager : MonoBehaviour {
-
+    
     public Toggle toggleGyro, toggleVib, toggleBlur;
+    public Slider sliderGyro;
     public Text infoGyro, infoCtrl;
 
     private static bool isController;
@@ -16,6 +17,8 @@ public class SettingUIManager : MonoBehaviour {
 
         if (PlayerPrefs.GetInt("isVibration", 1) == 1)  toggleVib.isOn = true;
         if (PlayerPrefs.GetInt("isBlur", 1)      == 1) toggleBlur.isOn = true;
+
+        sliderGyro.value = PlayerPrefs.GetFloat("accGyro", 25.0f) / 25.0f;
 
         if (Msg.isLangJa)
         {
@@ -39,7 +42,6 @@ public class SettingUIManager : MonoBehaviour {
         else                 isController = false;
 
         PlayerPrefs.SetInt("isController", System.Convert.ToInt32(isController));
-        PlayerPrefs.Save();
     }
 
     public void onValueChanged(string toggle)
@@ -53,11 +55,20 @@ public class SettingUIManager : MonoBehaviour {
                 PlayerPrefs.SetInt("isBlur", System.Convert.ToInt32(toggleBlur.isOn));
                 break;
         }
-        PlayerPrefs.Save();
+    }
+
+    public void onClickReset()
+    {
+        sliderGyro.value = 1.0f;
+        toggleGyro.isOn  = true;
+        toggleVib.isOn   = true;
+        toggleBlur.isOn  = true;
     }
 
     public void onClickBack()
     {
+        PlayerPrefs.SetFloat("accGyro", sliderGyro.value * 25.0f);
+        PlayerPrefs.Save();
         SceneManager.LoadScene("Home");
     }
 }
