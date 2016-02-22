@@ -18,7 +18,7 @@ public class SettingUIManager : MonoBehaviour {
         if (PlayerPrefs.GetInt("isVibration", 1) == 1)  toggleVib.isOn = true;
         if (PlayerPrefs.GetInt("isBlur", 1)      == 1) toggleBlur.isOn = true;
 
-        sliderGyro.value = PlayerPrefs.GetFloat("accGyro", 25.0f) / 25.0f;
+        sliderGyro.value = PlayerPrefs.GetFloat("KaccGyro", 25.0f) / 25.0f;
 
         if (Msg.isLangJa)
         {
@@ -67,7 +67,7 @@ public class SettingUIManager : MonoBehaviour {
 
     public void onClickBack()
     {
-        PlayerPrefs.SetFloat("accGyro", sliderGyro.value * 25.0f);
+        PlayerPrefs.SetFloat("KaccGyro", sliderGyro.value * 25.0f);
         PlayerPrefs.Save();
         SceneManager.LoadScene("Home");
     }

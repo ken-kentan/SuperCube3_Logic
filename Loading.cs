@@ -23,6 +23,7 @@ public class Loading : MonoBehaviour {
 	void Update () {
         if (isHome)
         {
+            angle -= 1.5f;
             imgLoading.transform.Rotate(0, 0, -1.5f);
             return;
         }
@@ -40,8 +41,6 @@ public class Loading : MonoBehaviour {
             frameCount = 0;
             prevTime = Time.realtimeSinceStartup;
         }
-
-        angle -= 1.5f;
 
         imgLoading.transform.Rotate(0, 0, -1.5f);
     }

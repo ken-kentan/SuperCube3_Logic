@@ -89,7 +89,6 @@ public class World : MonoBehaviour {
 
     public static void calcScore()
     {
-        UnityEngine.Debug.Log(sumPoint + "," + CubeManager.life);
         sumScore = sumPoint*10 + CubeManager.life*100 + sumJump + sumKill*5 + sumAqua*5 + sumMagnet*5 - sumKill*10;
     }
 }

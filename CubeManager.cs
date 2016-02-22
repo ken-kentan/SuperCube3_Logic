@@ -9,7 +9,7 @@ public class CubeManager : MonoBehaviour {
     public static int effectAqua, effectMagnet;
     public static bool isResetCube;
     public Rigidbody cubeBody;
-    private static float maxSpeed, accGyro;
+    private static float maxSpeed, KaccGyro;
     private static int cntJump;
     private static bool isOnFloor, isOnBlock, isOnEnemy, isOnLift;
 
@@ -24,7 +24,7 @@ public class CubeManager : MonoBehaviour {
         effectAqua = effectMagnet = 0;
 
         maxSpeed = 8.0f;
-        accGyro = PlayerPrefs.GetFloat("accGyro", 25.0f);
+        KaccGyro = PlayerPrefs.GetFloat("KaccGyro", 25.0f);
 
         maxJump = 2;
         cntJump = 0;
@@ -59,18 +59,24 @@ public class CubeManager : MonoBehaviour {
         GameUIManager.isJump = false;
 
         //Gyro ctrl
-        if(!World.isController) cubeBody.AddForce(Input.acceleration.x * accGyro, 0f, 0f);
+        if (!World.isController)
+        {
+            float accGyro = Input.acceleration.x * KaccGyro;
+
+            if(Mathf.Abs(speedX) < maxSpeed) cubeBody.AddForce( accGyro, 0f, 0f);
+            else                             cubeBody.AddForce(-accGyro, 0f, 0f);
+        }
 
         //X move
         if (Input.GetKey("left") || GameUIManager.isLeft)
         {
             if (speedX > -maxSpeed) cubeBody.AddForce(-9f, 0, 0);
-            else                    cubeBody.AddForce( 5f, 0, 0);
+            else                    cubeBody.AddForce( 9f, 0, 0);
         }
         else if (Input.GetKey("right") || GameUIManager.isRight)
         {
             if (speedX < maxSpeed) cubeBody.AddForce( 9f, 0, 0);
-            else                   cubeBody.AddForce(-5f, 0, 0);
+            else                   cubeBody.AddForce(-9f, 0, 0);
         }
     }
 
@@ -78,7 +84,7 @@ public class CubeManager : MonoBehaviour {
     {
         if (Mathf.Abs(cubeBody.velocity.x) > maxSpeed)
         {
-            cubeBody.velocity = Vector3.ClampMagnitude(cubeBody.velocity, maxSpeed);
+//            cubeBody.velocity = Vector3.ClampMagnitude(cubeBody.velocity, maxSpeed);
         }
     }
 
