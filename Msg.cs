@@ -10,7 +10,7 @@ public class Msg : MonoBehaviour {
     public static string appName, appVer, appURL, appURLenc;
     public static string jaTwitter, jaLINE, jaRevival,
                          enTwitter, enLINE, enRevival;
-    public static string errRevival;
+    public static string errRevival, failRevival;
     public static string[] jaHint = new string[7],
                            enHint = new string[7];
     public static string[] jaSetting = new string[2],
@@ -34,9 +34,10 @@ public class Msg : MonoBehaviour {
         jaLINE = "http://line.me/R/msg/text/?SuperCube3のレベル{level}をスコア{score}でクリアしたよ！ " + appURLenc;
         enLINE = "http://line.me/R/msg/text/?SuperCube3 Level{level}Clear! Score{score}. " + appURLenc;
 
-        jaRevival = "動画を見て復活！";
-        enRevival = "watch the video :)";
-        errRevival = "Sorry, Not Available X(";
+        jaRevival   = "動画を見て復活！";
+        enRevival   = "watch the video :)";
+        errRevival  = "Sorry, Not Available X(";
+        failRevival = "Sorry, V4VC failed X(";
 
         jaHint[0] = "HomeのSettingからジャイロ感度の変更が行えます。";
         jaHint[1] = "HomeのSettingでバイブレーションやパフォーマンスの変更が行えます。";

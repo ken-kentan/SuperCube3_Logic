@@ -151,6 +151,17 @@ public class GameUIManager : MonoBehaviour {
         btnHome.transform.localPosition = new Vector3( 288, -8, 0);
     }
 
+    public void runRevival(int life = 0)
+    {
+        cntRevival++;
+        CubeManager.life = life;
+        World.isGameOver = false;
+        World.isPause = false;
+        World.audioVolume(1.0f);
+        disablePause();
+        GameOver.SetActive(false);
+    }
+
     public void OnClick(string button)
     {
         string shareMsg;
@@ -171,20 +182,7 @@ public class GameUIManager : MonoBehaviour {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                 break;
             case "Revival":
-                if (AdColonyAndroid.PlayV4VCAd())
-                {
-                    cntRevival++;
-                    CubeManager.life = 0;
-                    World.isGameOver = false;
-                    World.isPause = false;
-                    World.audioVolume(1.0f);
-                    disablePause();
-                    GameOver.SetActive(false);
-                }
-                else
-                {
-                    infoRevival.text = Msg.errRevival;
-                }
+                if(!AdColonyAndroid.PlayV4VCAd(this)) infoRevival.text = Msg.errRevival;
                 break;
             case "Twitter":
                 if(Msg.isLangJa) shareMsg = Msg.jaTwitter.Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
