@@ -32,4 +32,9 @@ public class HomeUIManager : MonoBehaviour {
                 break;
         }
     }
+
+    public void testAdColony()
+    {
+        AdColonyAndroid.PlayV4VCAd();
+    }
 }

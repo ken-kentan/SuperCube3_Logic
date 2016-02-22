@@ -7,9 +7,10 @@ public class Msg : MonoBehaviour {
     public static bool isLangJa;
 
     public static string sample;
-    public static string appName, version, appURL, appURLenc;
-    public static string jaTwitter, jaLINE,
-                         enTwitter, enLINE;
+    public static string appName, appVer, appURL, appURLenc;
+    public static string jaTwitter, jaLINE, jaRevival,
+                         enTwitter, enLINE, enRevival;
+    public static string errRevival;
     public static string[] jaHint = new string[7],
                            enHint = new string[7];
     public static string[] jaSetting = new string[2],
@@ -23,7 +24,7 @@ public class Msg : MonoBehaviour {
         sample = "Sample";
 
         appName   = "SuperCube3";
-        version   = "dev";
+        appVer    = "dev";
         appURL    = "http://ken.kentan.jp";
         appURLenc = "http%3a%2f%2fken%2ekentan%2ejp";
 
@@ -33,6 +34,10 @@ public class Msg : MonoBehaviour {
         jaLINE = "http://line.me/R/msg/text/?SuperCube3のレベル{level}をスコア{score}でクリアしたよ！ " + appURLenc;
         enLINE = "http://line.me/R/msg/text/?SuperCube3 Level{level}Clear! Score{score}. " + appURLenc;
 
+        jaRevival = "動画を見て復活！";
+        enRevival = "watch the video :)";
+        errRevival = "Sorry, Not Available X(";
+
         jaHint[0] = "HomeのSettingからジャイロ感度の変更が行えます。";
         jaHint[1] = "HomeのSettingでバイブレーションやパフォーマンスの変更が行えます。";
         jaHint[2] = "グリーンのブロックに触れるとセーブされます。";
@@ -41,13 +46,13 @@ public class Msg : MonoBehaviour {
         jaHint[5] = "PinkCubeは上から踏んでも無力化できません。";
         jaHint[6] = "HomeのSettingから操作方法の変更が行えます。";
 
-        enHint[0] = "You can change the gyro sensitivity from in the Setting of Home.";
+        enHint[0] = "You can change the gyro sensitivity in the Setting of Home.";
         enHint[1] = "You can change the vibration and performance in the Setting of Home.";
         enHint[2] = "Spwan points will save when touch the block of Green.";
         enHint[3] = "Jump can be twice in a row.";
         enHint[4] = "You can incapacitate the RedCube by touch from top.";
         enHint[5] = "You cannot incapacitate the RedCube";
-        jaHint[6] = "You can change the control mode from in the Setting of Home.";
+        jaHint[6] = "You can change the control mode in the Setting of Home.";
 
         jaSetting[0] = "本体の傾きとタップで操作";
         jaSetting[1] = "画面上のボタンで操作";

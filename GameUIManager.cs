@@ -5,20 +5,21 @@ using System.Collections;
 
 public class GameUIManager : MonoBehaviour {
 
-    public Text Hint, Score;
+    public Text Hint, Score, infoRevival;
     public GameObject Paused, GameOver, Clear, Controller;
+    public GameObject btnRetry, btnRevival, btnHome;
     public UnityStandardAssets.ImageEffects.BlurOptimized Blur;
 
     public static bool isLeft, isRight, isJump;
 
-    private static int cntDelay;
+    private static int cntDelay, cntRevival;
     private float animationBlur;
     private int modeAnimBlur; //0:none 1:Enable 2:Disable
     private static bool isLock;
 
 	// Use this for initialization
 	void Start () {
-        cntDelay = 0;
+        cntDelay = cntRevival = 0;
         animationBlur = 0.0f;
         modeAnimBlur = 0;
 
@@ -27,6 +28,9 @@ public class GameUIManager : MonoBehaviour {
         if (World.isController) Controller.SetActive(true);
 
         isLock = false;
+
+        if (Msg.isLangJa) infoRevival.text = Msg.jaRevival;
+        else              infoRevival.text = Msg.enRevival;
     }
 	
 	// Update is called once per frame
@@ -71,6 +75,7 @@ public class GameUIManager : MonoBehaviour {
             World.isPause = true;
             World.audioVolume(0.0f);
             enablePause();
+            if (cntRevival >= 2) disableRevival();
             GameOver.SetActive(true);
             if (Hint != null)
             {
@@ -139,6 +144,13 @@ public class GameUIManager : MonoBehaviour {
         Time.timeScale = 1;
     }
 
+    void disableRevival()
+    {
+        btnRevival.SetActive(false);
+        btnRetry.transform.localPosition = new Vector3(-290, -8, 0);
+        btnHome.transform.localPosition = new Vector3( 288, -8, 0);
+    }
+
     public void OnClick(string button)
     {
         string shareMsg;
@@ -157,6 +169,22 @@ public class GameUIManager : MonoBehaviour {
                 break;
             case "Retry":
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                break;
+            case "Revival":
+                if (AdColonyAndroid.PlayV4VCAd())
+                {
+                    cntRevival++;
+                    CubeManager.life = 0;
+                    World.isGameOver = false;
+                    World.isPause = false;
+                    World.audioVolume(1.0f);
+                    disablePause();
+                    GameOver.SetActive(false);
+                }
+                else
+                {
+                    infoRevival.text = Msg.errRevival;
+                }
                 break;
             case "Twitter":
                 if(Msg.isLangJa) shareMsg = Msg.jaTwitter.Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
