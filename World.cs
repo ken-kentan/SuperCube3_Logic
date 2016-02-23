@@ -48,7 +48,8 @@ public class World : MonoBehaviour {
         drawDistance = 20.0f;
 
         //sum Init
-        sumPoint = sumJump = sumDead = sumKill = sumScore = sumAqua = sumMagnet = 0;
+        sumPoint = sumJump = sumDead = sumKill = sumAqua = sumMagnet = 0;
+        sumScore = -1;
 
         //UI Init
         isLoading = true;

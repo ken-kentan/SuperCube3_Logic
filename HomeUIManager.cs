@@ -8,8 +8,8 @@ public class HomeUIManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
-	}
+        GPGS.Login();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -22,13 +22,16 @@ public class HomeUIManager : MonoBehaviour {
         {
             case "Play":
                 parentLoading.SetActive(true);
-                SceneManager.LoadSceneAsync("Base");
+                SceneManager.LoadSceneAsync("Beta0");
                 break;
             case "Setting":
                 SceneManager.LoadScene("Setting");
                 break;
             case "Exit":
                 Application.Quit();
+                break;
+            case "GPGS":
+                GPGS.Login();
                 break;
         }
     }

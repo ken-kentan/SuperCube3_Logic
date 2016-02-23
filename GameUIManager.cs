@@ -5,7 +5,7 @@ using System.Collections;
 
 public class GameUIManager : MonoBehaviour {
 
-    public Text Hint, Score, infoRevival;
+    public Text Hint, Score, infoRevival, infoGPGS, cubeUnits, points;
     public GameObject Paused, GameOver, Clear, Controller;
     public GameObject btnRetry, btnRevival, btnHome;
     public UnityStandardAssets.ImageEffects.BlurOptimized Blur;
@@ -25,17 +25,35 @@ public class GameUIManager : MonoBehaviour {
 
         isLeft = isRight = isJump = false;
 
+        //UI Init
+        cubeUnits.text = "3";
+        points.text = World.sumPoint.ToString();
+
         if (World.isController) Controller.SetActive(true);
 
         isLock = false;
 
-        if (Msg.isLangJa) infoRevival.text = Msg.jaRevival;
-        else              infoRevival.text = Msg.enRevival;
+        if (Msg.isLangJa)
+        {
+            infoGPGS.text = Msg.jaGPGSneedLogin;
+            infoRevival.text = Msg.jaRevival;
+        }
+        else {
+            infoRevival.text = Msg.enRevival;
+            infoGPGS.text = Msg.enGPGSneedLogin;
+        }
+
+        AdColonyAndroid.setInstance(this);
+        GPGS.setInstance(this);
     }
 	
 	// Update is called once per frame
 	void Update () {
         if (World.isLoading) return;
+
+        //Main UI
+        if(CubeManager.life >= 0) cubeUnits.text = CubeManager.life.ToString();
+        points.text = World.sumPoint.ToString();
 
         //Clear
         if (Goal.isEnterCube)
@@ -43,10 +61,11 @@ public class GameUIManager : MonoBehaviour {
             World.isPause = true;
             enablePause();
             Clear.SetActive(true);
-            if (World.sumScore == 0)
+            if (World.sumScore == -1)
             {
                 World.audioVolume(0.0f);
                 World.calcScore();
+                if (GPGS.isLogin) GPGS.Leaderboards(GPGSids.leaderboard_beta_score, World.sumScore);
             }
             Score.text = World.sumScore.ToString();
         }
@@ -73,9 +92,8 @@ public class GameUIManager : MonoBehaviour {
         if (World.isGameOver)
         {
             World.isPause = true;
-            World.audioVolume(0.0f);
             enablePause();
-            if (cntRevival >= 2) disableRevival();
+            if (cntRevival >= 2 || (!AdColonyAndroid.checkV4VC() && Hint != null)) disableRevival();
             GameOver.SetActive(true);
             if (Hint != null)
             {
@@ -148,7 +166,7 @@ public class GameUIManager : MonoBehaviour {
     {
         btnRevival.SetActive(false);
         btnRetry.transform.localPosition = new Vector3(-290, -8, 0);
-        btnHome.transform.localPosition = new Vector3( 288, -8, 0);
+        btnHome.transform.localPosition  = new Vector3( 288, -8, 0);
     }
 
     public void runRevival(int life = 0)
@@ -182,7 +200,7 @@ public class GameUIManager : MonoBehaviour {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                 break;
             case "Revival":
-                if(!AdColonyAndroid.PlayV4VCAd(this)) infoRevival.text = Msg.errRevival;
+                if(!AdColonyAndroid.PlayV4VCAd()) infoRevival.text = Msg.errRevival;
                 break;
             case "Twitter":
                 if(Msg.isLangJa) shareMsg = Msg.jaTwitter.Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
@@ -195,6 +213,12 @@ public class GameUIManager : MonoBehaviour {
                 else              shareMsg = Msg.enLINE.Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
 
                 Application.OpenURL(shareMsg);
+                break;
+            case "Leaderboards":
+                GPGS.showLeaderboards();
+                break;
+            case "Achievements":
+                GPGS.showAchievements();
                 break;
             default:
                 break;
@@ -226,6 +250,7 @@ public class GameUIManager : MonoBehaviour {
 
     int generateRand(int rangeX = 0, int rangeY = 0)
     {
+        Random.seed = System.DateTime.Now.Second;
         return Random.Range(rangeX, rangeY);
     }
 }

@@ -15,6 +15,8 @@ public class Msg : MonoBehaviour {
                            enHint = new string[7];
     public static string[] jaSetting = new string[2],
                            enSetting = new string[2];
+    public static string jaGPGSneedLogin, jaGPGSsendingScore, jaGPGSsendScore, jaGPGSfaildScore,
+                         enGPGSneedLogin, enGPGSsendingScore, enGPGSsendScore, enGPGSfaildScore;
 
     // Use this for initialization
     void Start () {
@@ -23,10 +25,10 @@ public class Msg : MonoBehaviour {
 
         sample = "Sample";
 
-        appName   = "SuperCube3";
+        appName   = "SuperCube_World";
         appVer    = "dev";
-        appURL    = "http://ken.kentan.jp";
-        appURLenc = "http%3a%2f%2fken%2ekentan%2ejp";
+        appURL    = "http://ken.kentan.jp/SuperCube_World";
+        appURLenc = "http%3a%2f%2fken%2ekentan%2ejp%2fSuperCube_World";
 
         jaTwitter = "https://twitter.com/intent/tweet?text=レベル{level}をスコア{score}でクリア！ %23" + appName + " " + appURL;
         enTwitter = "https://twitter.com/intent/tweet?text=Level{level} Clear! Score{score}. %23" + appName + " " + appURL;
@@ -53,12 +55,23 @@ public class Msg : MonoBehaviour {
         enHint[3] = "Jump can be twice in a row.";
         enHint[4] = "You can incapacitate the RedCube by touch from top.";
         enHint[5] = "You cannot incapacitate the RedCube";
-        jaHint[6] = "You can change the control mode in the Setting of Home.";
+        enHint[6] = "You can change the control mode in the Setting of Home.";
 
         jaSetting[0] = "本体の傾きとタップで操作";
         jaSetting[1] = "画面上のボタンで操作";
 
         enSetting[0] = "Control by gyro and tap.";
         enSetting[1] = "Control by button in the display.";
+
+        jaGPGSneedLogin    = "オンライン機能を利用するにはログインを行ってください。";
+        jaGPGSsendingScore = "スコアを送信中です。";
+        jaGPGSsendScore    = "スコアの送信に成功しました！";
+        jaGPGSfaildScore   = "スコアの送信に失敗しました。";
+
+        enGPGSneedLogin    = "Online function need login.";
+        enGPGSsendingScore = "Sending your score...";
+        enGPGSsendScore    = "Success to send your score!";
+        enGPGSfaildScore   = "Failed to send your score X(";
+
     }
 }
