@@ -13,6 +13,8 @@ public class SettingUIManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Time.timeScale = 1;
+
         if (PlayerPrefs.GetInt("isController", 0) == 0) toggleGyro.isOn = true;
 
         if (PlayerPrefs.GetInt("isVibration", 1) == 1)  toggleVib.isOn = true;

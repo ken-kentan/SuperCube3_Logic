@@ -35,4 +35,9 @@ public class Debug : MonoBehaviour {
             "\nWorld sumPoint = " + World.sumPoint + " sumJump = " + World.sumJump + " sumDead = " + World.sumDead + " sumKill = " + World.sumKill +
             " sumAqua = " + World.sumAqua + " sumMagnet = " + World.sumMagnet;
     }
+
+    public static void Log(string str)
+    {
+        UnityEngine.Debug.Log(str);
+    }
 }

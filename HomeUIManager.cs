@@ -1,28 +1,40 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class HomeUIManager : MonoBehaviour {
 
-    public GameObject parentLoading;
+    public GameObject parentLoading, btnPlay, bgPlay;
+    public GameObject LevelSelect;
+    
+    public Animator animLevelSelect;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
+        Time.timeScale = 1;
+
         GPGS.Login();
+
+        startAnim();
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    // Update is called once per frame
+    void Update() {
+    }
 
     public void OnClick(string button)
     {
         switch (button)
         {
             case "Play":
-                parentLoading.SetActive(true);
-                SceneManager.LoadSceneAsync("Beta0");
+                LevelSelect.SetActive(true);
+                btnPlay.SetActive(false);
+                bgPlay.SetActive(false);
+                animLevelSelect.SetFloat("Speed", 1);
+                break;
+            case "Back":
+                animLevelSelect.SetFloat("Speed", -1);
                 break;
             case "Setting":
                 SceneManager.LoadScene("Setting");
@@ -34,5 +46,28 @@ public class HomeUIManager : MonoBehaviour {
                 GPGS.Login();
                 break;
         }
+    }
+
+    public void OnClickLevel(string level)
+    {
+        parentLoading.SetActive(true);
+        SceneManager.LoadSceneAsync(level);
+    }
+
+    public void endAnim() {
+        animLevelSelect.SetFloat("Speed", 0);
+        UnityEngine.Debug.Log("End.");
+    }
+
+    public void startAnim()
+    {
+        animLevelSelect.SetFloat("Speed", 0);
+        if (!btnPlay.activeInHierarchy)
+        {
+            btnPlay.SetActive(true);
+            bgPlay.SetActive(true);
+        }
+        LevelSelect.SetActive(false);
+        UnityEngine.Debug.Log("Start.");
     }
 }
