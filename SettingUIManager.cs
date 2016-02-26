@@ -32,6 +32,8 @@ public class SettingUIManager : MonoBehaviour {
             infoGyro.text = Msg.enSetting[0];
             infoCtrl.text = Msg.enSetting[1];
         }
+
+        while (World.isPause) World.isPause = false;
     }
 	
 	// Update is called once per frame
@@ -43,6 +45,7 @@ public class SettingUIManager : MonoBehaviour {
         if(!toggleGyro.isOn) isController = true;
         else                 isController = false;
 
+        World.isController = isController;
         PlayerPrefs.SetInt("isController", System.Convert.ToInt32(isController));
     }
 
