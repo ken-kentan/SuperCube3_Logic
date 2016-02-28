@@ -5,8 +5,8 @@ using System.Collections;
 
 public class GameUIManager : MonoBehaviour {
 
-    public Text Hint, Score, infoRevival, infoGPGS, cubeUnits, points;
-    public GameObject Paused, GameOver, Clear, Controller;
+    public Text Hint, Score, infoRevival, infoGPGS, cubeUnits, points, textFPS;
+    public GameObject Paused, GameOver, Clear, Controller, FPS;
     public GameObject btnRetry, btnRevival, btnHome;
     public UnityStandardAssets.ImageEffects.BlurOptimized Blur;
 
@@ -17,8 +17,12 @@ public class GameUIManager : MonoBehaviour {
     private int modeAnimBlur; //0:none 1:Enable 2:Disable
     private static bool isLock;
 
-	// Use this for initialization
-	void Start () {
+    //fps
+    private int frameCount;
+    private float prevTime;
+
+    // Use this for initialization
+    void Start () {
         cntDelay = cntRevival = 0;
         animationBlur = 0.0f;
         modeAnimBlur = 0;
@@ -30,6 +34,11 @@ public class GameUIManager : MonoBehaviour {
         points.text = World.sumPoint.ToString();
 
         if (World.isController) Controller.SetActive(true);
+        if (World.isDisplayFPS) FPS.SetActive(true);
+
+        //Init fps
+        frameCount = 0;
+        prevTime = 0.0f;
 
         isLock = false;
 
@@ -49,6 +58,7 @@ public class GameUIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (World.isDisplayFPS) updateFPS();
         if (World.isLoading) return;
 
         //Main UI
@@ -167,6 +177,20 @@ public class GameUIManager : MonoBehaviour {
         btnRevival.SetActive(false);
         btnRetry.transform.localPosition = new Vector3(-290, -8, 0);
         btnHome.transform.localPosition  = new Vector3( 288, -8, 0);
+    }
+
+    void updateFPS()
+    {
+        ++frameCount;
+        float time = Time.realtimeSinceStartup - prevTime;
+
+        if (time >= 0.5f)
+        {
+            textFPS.text = ((int)(frameCount / time)).ToString();
+
+            frameCount = 0;
+            prevTime = Time.realtimeSinceStartup;
+        }
     }
 
     public void runRevival(int life = 0)

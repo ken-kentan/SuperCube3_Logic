@@ -4,12 +4,12 @@ using System.Collections;
 
 public class CubeManager : MonoBehaviour {
 
-    public static float posX, posY, speedX, speedY;
+    public static float posX, posY, speedX, speedY, KaccGyro;
     public static int maxJump, life;
     public static int effectAqua, effectMagnet;
     public static bool isResetCube;
     public Rigidbody cubeBody;
-    private static float maxSpeed, KaccGyro;
+    private static float maxSpeed;
     private static int cntJump;
     private static bool isOnFloor, isOnBlock, isOnEnemy, isOnLift;
 

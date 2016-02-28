@@ -19,7 +19,7 @@ public class World : MonoBehaviour {
     public static int sumPoint, sumJump, sumDead, sumKill, sumScore, sumAqua, sumMagnet;
 
     //Setting data
-    public static bool isController, isVibration, isBlur;
+    public static bool isController, isVibration, isBlur, isDisplayFPS;
 
     private static bool isChangeVolume;
     private static float volume, targetVolume;
@@ -44,6 +44,7 @@ public class World : MonoBehaviour {
         isController = (PlayerPrefs.GetInt("isController", 0) != 0);
         isVibration  = (PlayerPrefs.GetInt("isVibration" , 1) != 0);
         isBlur       = (PlayerPrefs.GetInt("isBlur"      , 1) != 0);
+        isDisplayFPS = (PlayerPrefs.GetInt("isDisplayFPS", 0) != 0);
 
         drawDistance = 20.0f;
 

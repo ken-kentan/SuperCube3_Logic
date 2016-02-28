@@ -4,29 +4,14 @@ using System.Collections;
 
 public class Debug : MonoBehaviour {
 
-    public Text FPS, Status, StatusCube;
-
-    private int frameCount;
-    private float prevTime;
+    public Text Status, StatusCube;
 
     // Use this for initialization
     void Start () {
-        frameCount = 0;
-        prevTime = 0.0f;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        ++frameCount;
-        float time = Time.realtimeSinceStartup - prevTime;
-
-        if (time >= 0.5f)
-        {
-            FPS.text = (int)(frameCount / time) + " fps";
-
-            frameCount = 0;
-            prevTime = Time.realtimeSinceStartup;
-        }
 
         Status.text = "Life " + CubeManager.life + "\nPoint " + World.sumPoint;
 

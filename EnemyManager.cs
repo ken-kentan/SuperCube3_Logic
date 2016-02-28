@@ -4,13 +4,13 @@ using System.Collections;
 public class EnemyManager : MonoBehaviour {
 
     public GameObject enemyCube;
-    public bool moveDirection;
+    public bool isOpposite;
     public int cycleShot;
     private Animator animator;
     private Rigidbody enemyBody;
     private SphereCollider colliderEnemyCube;
     private int modeEnemy, cntCyclShot;
-    private bool isFirst;
+    private bool isFirst, isFly;
 
     // Use this for initialization
     void Start () {
@@ -25,15 +25,17 @@ public class EnemyManager : MonoBehaviour {
                 modeEnemy = 1;
                 enemyBody = enemyCube.GetComponent<Rigidbody>();
 
-                if (moveDirection) enemyBody.AddForce(10, 0, 0);
+                if (isOpposite) enemyBody.AddForce(10, 0, 0);
                 else enemyBody.AddForce(-10, 0, 0);
+
+                isFly = false;
 
                 break;
             case "EnemyStaticMove (UnityEngine.GameObject)":
                 modeEnemy = 2;
                 enemyBody = enemyCube.GetComponent<Rigidbody>();
 
-                if (moveDirection) enemyBody.AddForce(10, 0, 0);
+                if (isOpposite) enemyBody.AddForce(10, 0, 0);
                 else enemyBody.AddForce(-10, 0, 0);
                 break;
             case "EnemyRotate (UnityEngine.GameObject)":
@@ -53,23 +55,31 @@ public class EnemyManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //return when over distance
-        if (World.isPause || modeEnemy == 0 || ((isFirst || modeEnemy == 2) && Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance)) return;
+        if (World.isPause || modeEnemy == 0 || ((isFirst || modeEnemy == 2) && Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance - 3)) return;
 
         switch (modeEnemy)
         {
             case 1:
             case 2:
-                if (!isOnFloor() && modeEnemy == 1) break;
-
-                //Change move direction
-                if (Mathf.Abs(enemyBody.velocity.x) < 0.003f)
+                if (!isOnFloor() && modeEnemy == 1)
                 {
-                    moveDirection = !moveDirection;
-                    enemyBody.velocity = Vector3.ClampMagnitude(enemyBody.velocity, 0f);
+                    isFly = true;
+                    break;
                 }
 
-                if (moveDirection) enemyBody.AddForce(10, 0, 0);
-                else enemyBody.AddForce(-10, 0, 0);
+                //Change move direction
+                if (Mathf.Abs(enemyBody.velocity.x) < 0.003f && !isFly)
+                {
+                    isOpposite = !isOpposite;
+                    enemyBody.velocity = Vector3.ClampMagnitude(enemyBody.velocity, 0f);
+                }
+                else if(Mathf.Abs(enemyBody.velocity.x) > 2)
+                {
+                    isFly = false;
+                }
+
+                if (isOpposite) enemyBody.AddForce(10, 0, 0);
+                else            enemyBody.AddForce(-10, 0, 0);
                 break;
             case 3:
                 animator.enabled = true;

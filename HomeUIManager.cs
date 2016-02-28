@@ -39,6 +39,9 @@ public class HomeUIManager : MonoBehaviour {
             case "Setting":
                 SceneManager.LoadScene("Setting");
                 break;
+            case "Feedback":
+                Application.OpenURL("https://twitter.com/intent/tweet?screen_name=ken_kentan");
+                break;
             case "Exit":
                 Application.Quit();
                 break;
