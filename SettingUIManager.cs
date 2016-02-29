@@ -5,7 +5,7 @@ using System.Collections;
 
 public class SettingUIManager : MonoBehaviour {
     
-    public Toggle toggleGyro, toggleVib, toggleBlur, toggleFPS;
+    public Toggle toggleGyro, toggleVib, toggleBlur, toggleFPS, toggleDebug;
     public Slider sliderGyro;
     public Text infoGyro, infoCtrl;
 
@@ -15,11 +15,11 @@ public class SettingUIManager : MonoBehaviour {
 	void Start () {
         Time.timeScale = 1;
 
-        if (PlayerPrefs.GetInt("isController", 0) == 0) toggleGyro.isOn = true;
-
-        if (PlayerPrefs.GetInt("isVibration", 1)  == 1) toggleVib.isOn = true;
-        if (PlayerPrefs.GetInt("isBlur", 1)       == 1) toggleBlur.isOn = true;
-        if (PlayerPrefs.GetInt("isDisplayFPS", 0) == 1) toggleFPS.isOn = true;
+        if (PlayerPrefs.GetInt("isController", 0) == 0) toggleGyro.isOn  = true;
+        if (PlayerPrefs.GetInt("isVibration",  1) == 1) toggleVib.isOn   = true;
+        if (PlayerPrefs.GetInt("isBlur",       1) == 1) toggleBlur.isOn  = true;
+        if (PlayerPrefs.GetInt("isDisplayFPS", 0) == 1) toggleFPS.isOn   = true;
+        if (PlayerPrefs.GetInt("isDebug",      0) == 1) toggleDebug.isOn = true;
 
         sliderGyro.value = PlayerPrefs.GetFloat("KaccGyro", 25.0f) / 25.0f;
 
@@ -63,6 +63,9 @@ public class SettingUIManager : MonoBehaviour {
             case "FPS":
                 PlayerPrefs.SetInt("isDisplayFPS", System.Convert.ToInt32(toggleFPS.isOn));
                 break;
+            case "Debug":
+                PlayerPrefs.SetInt("isDebug", System.Convert.ToInt32(toggleDebug.isOn));
+                break;
         }
     }
 
@@ -78,7 +81,8 @@ public class SettingUIManager : MonoBehaviour {
         toggleVib.isOn   = true;
         toggleBlur.isOn  = true;
 
-        toggleFPS.isOn = false;
+        toggleFPS.isOn  = false;
+        toggleDebug.isOn = false;
     }
 
     public void onClickBack()

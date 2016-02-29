@@ -96,7 +96,9 @@ public class EnemyManager : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        if (modeEnemy != 2 && collider.gameObject.tag == "Cube" && CubeManager.posY - enemyCube.transform.localPosition.y > 0.8f)
+        if (modeEnemy == 2 || modeEnemy == 3) return;
+
+        if (collider.gameObject.tag == "Cube" && CubeManager.posY - enemyCube.transform.localPosition.y > 0.8f)
         {
             World.audioSource.PlayOneShot(World.killEnemySE);
             World.sumKill++;

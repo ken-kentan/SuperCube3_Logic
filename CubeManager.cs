@@ -10,8 +10,8 @@ public class CubeManager : MonoBehaviour {
     public static bool isResetCube;
     public Rigidbody cubeBody;
     private static float maxSpeed;
-    private static int cntJump;
-    private static bool isOnFloor, isOnBlock, isOnEnemy, isOnLift;
+    private static int cntJump, cntMotionDead;
+    private static bool isOnFloor, isOnBlock, isOnEnemy, isOnLift, isMotionDead;
 
     // Use this for initialization
     void Start() {
@@ -27,12 +27,13 @@ public class CubeManager : MonoBehaviour {
         KaccGyro = PlayerPrefs.GetFloat("KaccGyro", 25.0f);
 
         maxJump = 2;
-        cntJump = 0;
+        cntJump = cntMotionDead = 0;
 
         life = 3;
 
-        isOnFloor = false;
         isResetCube = false;
+
+        isOnFloor = isOnBlock = isOnEnemy = isOnLift = isMotionDead = false;
     }
 
     // Update is called once per frame
@@ -47,6 +48,12 @@ public class CubeManager : MonoBehaviour {
         if (isOnEnemy || isOverWorld()) resetCube();
         else isResetCube = false;
 
+        if (isMotionDead)
+        {
+            motionDead();
+            return;
+        }
+
         //jump
         if (((Input.GetMouseButtonDown(0) && !World.isController) || GameUIManager.isJump) && (isOnFloor || isOnBlock || isOnLift || cntJump < maxJump))
         {
@@ -54,7 +61,7 @@ public class CubeManager : MonoBehaviour {
             cntJump++;
             World.sumJump++;
             stopCube();
-            transform.GetComponent<Rigidbody>().AddForce(0, 260f, 0);
+            cubeBody.AddForce(0, 260f, 0);
         }
         GameUIManager.isJump = false;
 
@@ -90,7 +97,7 @@ public class CubeManager : MonoBehaviour {
 
     bool isOverWorld()
     {
-        if (posY < -5.0f)
+        if (posY < -5.0f && !isMotionDead)
         {
             --life;
             return true;
@@ -105,15 +112,29 @@ public class CubeManager : MonoBehaviour {
 
     void resetCube()
     {
-        if (life < 0) World.isGameOver = true;
-
         World.audioSource.PlayOneShot(World.damageSE);
         World.sumDead++;
         Vibration.Vibrate(600);
         stopCube();
-        transform.position = World.posReborn;
+        isMotionDead = true;
         isOnEnemy = false;
         isResetCube = true;
+    }
+
+    void motionDead()
+    {
+        World.Cube.GetComponent<Collider>().isTrigger = true;
+        if(cntMotionDead == 0) cubeBody.AddForce(0, 200f, 0);
+
+        if(++cntMotionDead > 120)
+        {
+            cntMotionDead = 0;
+            isMotionDead = false;
+            World.Cube.GetComponent<Collider>().isTrigger = false;
+            transform.position = World.posReborn;
+
+            if (life < 0) World.isGameOver = true;
+        }
     }
 
     void OnCollisionEnter(Collision collision)

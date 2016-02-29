@@ -8,8 +8,6 @@ public class AquaManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         renderAqua = GetComponent<Renderer>();
-
-        if (World.materialAqua == null) World.materialAqua = renderAqua.material;
     }
 	
 	// Update is called once per frame

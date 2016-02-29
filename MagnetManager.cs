@@ -8,8 +8,6 @@ public class MagnetManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         renderMagnet = GetComponent<Renderer>();
-
-        if (World.materialMagnet == null) World.materialMagnet = renderMagnet.material;
     }
 	
 	// Update is called once per frame
