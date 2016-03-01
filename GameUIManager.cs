@@ -5,13 +5,13 @@ using System.Collections;
 
 public class GameUIManager : MonoBehaviour {
 
-    public Text Hint, Score, infoRevival, infoGPGS, cubeUnits, points, textFPS;
-    public GameObject Paused, GameOver, Clear, Controller, FPS;
+    public Text Hint, Score, infoRevival, infoGPGS, cubeUnits, points, textFPS, textInfo;
+    public GameObject Paused, GameOver, Clear, Controller, FPS, Info;
     public GameObject btnRetry, btnRevival, btnHome;
     public UnityStandardAssets.ImageEffects.BlurOptimized Blur;
 
-    public static bool isLeft, isRight, isJump;
-
+    public static bool isLeft, isRight, isJump, isInfo;
+    
     private static int cntDelay, cntRevival;
     private float animationBlur;
     private int modeAnimBlur; //0:none 1:Enable 2:Disable
@@ -42,24 +42,18 @@ public class GameUIManager : MonoBehaviour {
 
         isLock = false;
 
-        if (Msg.isLangJa)
-        {
-            infoGPGS.text = Msg.jaGPGSneedLogin;
-            infoRevival.text = Msg.jaRevival;
-        }
-        else {
-            infoRevival.text = Msg.enRevival;
-            infoGPGS.text = Msg.enGPGSneedLogin;
-        }
+        infoGPGS.text = Msg.GPGSneedLogin[Msg.typeLang];
+        infoRevival.text = Msg.Revival[Msg.typeLang];
 
         AdColonyAndroid.setInstance(this);
         GPGS.setInstance(this);
+        InfoTrigger.setInstance(this);
     }
 	
 	// Update is called once per frame
 	void Update () {
         if (World.isDisplayFPS) updateFPS();
-        if (World.isLoading) return;
+        if (World.isLoading || isInfo) return;
 
         //Main UI
         if(CubeManager.life >= 0) cubeUnits.text = CubeManager.life.ToString();
@@ -75,6 +69,9 @@ public class GameUIManager : MonoBehaviour {
             {
                 World.audioVolume(0.0f);
                 World.calcScore();
+                GameDataManager.Score += World.sumScore;
+                GameDataManager.Clear++;
+                GameDataManager.SaveTotal();
                 if (GPGS.isLogin) GPGS.Leaderboards(GPGSids.leaderboard_beta_score, World.sumScore);
             }
             Score.text = World.sumScore.ToString();
@@ -109,8 +106,7 @@ public class GameUIManager : MonoBehaviour {
             {
                 World.audioVolume(0.0f);
 
-                if (Msg.isLangJa) Hint.text = Msg.jaHint[generateRand(0, 7)];
-                else              Hint.text = Msg.enHint[generateRand(0, 7)];
+                Hint.text = Msg.Hint[Msg.typeLang, generateRand(0, 7)];
 
                 Hint = null;
             }
@@ -204,6 +200,13 @@ public class GameUIManager : MonoBehaviour {
         GameOver.SetActive(false);
     }
 
+    public void showInfo(string str)
+    {
+        isInfo = true;
+        textInfo.text = str;
+        Info.SetActive(true);
+    }
+
     public void OnClick(string button)
     {
         string shareMsg;
@@ -227,15 +230,11 @@ public class GameUIManager : MonoBehaviour {
                 if(!AdColonyAndroid.PlayV4VCAd()) infoRevival.text = Msg.errRevival;
                 break;
             case "Twitter":
-                if(Msg.isLangJa) shareMsg = Msg.jaTwitter.Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
-                else             shareMsg = Msg.enTwitter.Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
-
+                shareMsg = Msg.Twitter[Msg.typeLang].Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
                 Application.OpenURL(shareMsg);
                 break;
             case "LINE":
-                if (Msg.isLangJa) shareMsg = Msg.jaLINE.Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
-                else              shareMsg = Msg.enLINE.Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
-
+                shareMsg = Msg.LINE[Msg.typeLang].Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
                 Application.OpenURL(shareMsg);
                 break;
             case "Leaderboards":
@@ -243,6 +242,12 @@ public class GameUIManager : MonoBehaviour {
                 break;
             case "Achievements":
                 GPGS.showAchievements();
+                break;
+            case "InfoOK":
+                Info.SetActive(false);
+                World.isPause = false;
+                Time.timeScale = 1;
+                isInfo = false;
                 break;
             default:
                 break;

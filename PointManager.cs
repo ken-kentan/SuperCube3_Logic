@@ -47,6 +47,8 @@ public class PointManager : MonoBehaviour {
         {
             World.sumPoint++;
             World.audioSource.PlayOneShot(World.pointSE);
+            GameDataManager.Point++;
+            GameDataManager.SaveCollection();
             this.gameObject.SetActive(false);
             Destroy(gameObject);
         }

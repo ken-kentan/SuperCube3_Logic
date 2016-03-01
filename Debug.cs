@@ -18,7 +18,8 @@ public class Debug : MonoBehaviour {
         StatusCube.text = "Cube:\nPos(X,Y) = " + (int)CubeManager.posX + "," + (int)CubeManager.posY + "\nSpeed(X,Y) = " + (int)CubeManager.speedX + "," + (int)CubeManager.speedY +
             "\nLife = " + CubeManager.life + "\nmodeEffect = " + CubeManager.effectAqua + "," + CubeManager.effectMagnet +
             "\n\nWorld:\nsumPoint = " + World.sumPoint + "\nsumJump = " + World.sumJump + "\nsumDead = " + World.sumDead + "\nsumKill = " + World.sumKill +
-            "\nsumAqua = " + World.sumAqua + "\nsumMagnet = " + World.sumMagnet;
+            "\nsumAqua = " + World.sumAqua + "\nsumMagnet = " + World.sumMagnet +
+            "\n\nGameData:\nScore = " + GameDataManager.Score + "\nJump = " + GameDataManager.Jump + "\nPoint = " + GameDataManager.Point + "\nDead = " + GameDataManager.Dead;
     }
 
     public static void Log(string str)

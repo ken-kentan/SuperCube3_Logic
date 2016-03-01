@@ -60,6 +60,8 @@ public class CubeManager : MonoBehaviour {
             World.audioSource.PlayOneShot(World.jumpSE);
             cntJump++;
             World.sumJump++;
+            GameDataManager.Jump++;
+            GameDataManager.SaveTotal();
             stopCube();
             cubeBody.AddForce(0, 260f, 0);
         }
@@ -115,6 +117,8 @@ public class CubeManager : MonoBehaviour {
         World.audioSource.PlayOneShot(World.damageSE);
         World.sumDead++;
         Vibration.Vibrate(600);
+        GameDataManager.Dead++;
+        GameDataManager.SaveEnemy();
         stopCube();
         isMotionDead = true;
         isOnEnemy = false;

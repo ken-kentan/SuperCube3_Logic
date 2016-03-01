@@ -31,6 +31,8 @@ public class MagnetManager : MonoBehaviour {
             World.audioSource.PlayOneShot(World.getMagnetSE);
             CubeManager.effectMagnet = 1;
             World.sumMagnet++;
+            GameDataManager.Magnet++;
+            GameDataManager.SaveCollection();
             gameObject.SetActive(false);
             Destroy(gameObject);
         }

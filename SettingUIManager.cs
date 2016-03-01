@@ -23,16 +23,8 @@ public class SettingUIManager : MonoBehaviour {
 
         sliderGyro.value = PlayerPrefs.GetFloat("KaccGyro", 25.0f) / 25.0f;
 
-        if (Msg.isLangJa)
-        {
-            infoGyro.text = Msg.jaSetting[0];
-            infoCtrl.text = Msg.jaSetting[1];
-        }
-        else
-        {
-            infoGyro.text = Msg.enSetting[0];
-            infoCtrl.text = Msg.enSetting[1];
-        }
+        infoGyro.text = Msg.Setting[Msg.typeLang, 0];
+        infoCtrl.text = Msg.Setting[Msg.typeLang, 1];
 
         World.isPause = false;
     }
