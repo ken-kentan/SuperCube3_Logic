@@ -4,6 +4,8 @@ using System.Collections;
 public class PointManager : MonoBehaviour {
     
     public Renderer renderPoint;
+    public bool isBig;
+
     private float distanceCube;
     private bool isMagnet;
 
@@ -45,9 +47,17 @@ public class PointManager : MonoBehaviour {
     {
         if (collider.gameObject.tag == "Cube")
         {
-            World.sumPoint++;
+            if (isBig)
+            {
+                World.sumPoint += 10;
+                GameDataManager.Point += 10;
+            }
+            else {
+                World.sumPoint++;
+                GameDataManager.Point++;
+            }
+
             World.audioSource.PlayOneShot(World.pointSE);
-            GameDataManager.Point++;
             GameDataManager.SaveCollection();
             this.gameObject.SetActive(false);
             Destroy(gameObject);

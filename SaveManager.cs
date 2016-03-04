@@ -33,6 +33,9 @@ public class SaveManager : MonoBehaviour {
             cntTimer = 1;
             World.posReborn = new Vector3(transform.localPosition.x, transform.localPosition.y + 1.5f, 0);
 
+            GameDataManager.Save++;
+            GameDataManager.SaveTotal();
+
             Destroy(this, 5f);
         }
     }

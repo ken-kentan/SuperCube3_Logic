@@ -3,10 +3,10 @@ using System.Collections;
 
 public class GameDataManager : MonoBehaviour {
 
-    public static int Score, Jump, Clear;
+    public static int Score, Jump, Clear, Save;
     public static int Point, Aqua, Magnet;
     public static int Kill, Dead;
-    public static int SecretBlock;
+    public static int SecretBlock, SecretRoute;
 
 	// Use this for initialization
 	void Start () {
@@ -14,6 +14,7 @@ public class GameDataManager : MonoBehaviour {
         Score = PlayerPrefs.GetInt("totalScore", 0);
         Jump  = PlayerPrefs.GetInt("totalJump",  0);
         Clear = PlayerPrefs.GetInt("totalClear", 0);
+        Save  = PlayerPrefs.GetInt("totalSave",  0);
 
         //Collection
         Point  = PlayerPrefs.GetInt("collectPoint",  0);
@@ -23,6 +24,10 @@ public class GameDataManager : MonoBehaviour {
         //Enemy
         Kill = PlayerPrefs.GetInt("enemyKill", 0);
         Dead = PlayerPrefs.GetInt("enemyDead", 0);
+
+        //Secret
+        SecretBlock = PlayerPrefs.GetInt("secretBlock", 0);
+        SecretRoute = PlayerPrefs.GetInt("secretRoute", 0);
     }
 	
 	// Update is called once per frame
@@ -34,6 +39,7 @@ public class GameDataManager : MonoBehaviour {
         PlayerPrefs.SetInt("totalScore", Score);
         PlayerPrefs.SetInt("totalJump",   Jump);
         PlayerPrefs.SetInt("totalClear", Clear);
+        PlayerPrefs.SetInt("totalSave",   Save);
         PlayerPrefs.Save();
     }
 
@@ -49,6 +55,13 @@ public class GameDataManager : MonoBehaviour {
     {
         PlayerPrefs.SetInt("enemyKill", Kill);
         PlayerPrefs.SetInt("enemyDead", Dead);
+        PlayerPrefs.Save();
+    }
+
+    public static void SaveSecret()
+    {
+        PlayerPrefs.SetInt("secretBlock", SecretBlock);
+        PlayerPrefs.SetInt("secretRoute", SecretRoute);
         PlayerPrefs.Save();
     }
 }

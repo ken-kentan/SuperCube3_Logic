@@ -20,9 +20,14 @@ public class BlockSecret : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.tag != "Cube") return;
+
         GetComponent<Renderer>().material = World.materialBlockSecret;
 
         if (objectsSecret != null) objectsSecret.SetActive(true);
+
+        GameDataManager.SecretBlock++;
+        GameDataManager.SaveSecret();
 
         Destroy(this);
     }

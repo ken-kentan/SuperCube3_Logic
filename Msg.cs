@@ -12,7 +12,7 @@ public class Msg : MonoBehaviour {
                            LINE    = new string[2],
                            Revival = new string[2];
     public static string errRevival, failRevival;
-    public static string[,] Info = new string[2, 4];
+    public static string[,] Info = new string[2, 5];
     public static string[,] Hint = new string[2, 7];
     public static string[,] Setting = new string[2, 2];
     public static string[] GPGSneedLogin    = new string[2],
@@ -45,15 +45,17 @@ public class Msg : MonoBehaviour {
         errRevival  = "Sorry, Not Available X(";
         failRevival = "Sorry, V4VC failed X(";
 
-        Info[ja, 0] = "スマホを左右に傾けて移動！";
+        Info[ja, 0] = "Welcome to the SuperCube World!\nスマホを左右に傾けて移動！";
         Info[ja, 1] = "画面をタップするとジャンプ！\nジャンプは2回連続できるよ。";
-        Info[ja, 2] = "RedCubeは上から踏むと無力化できるよ。";
-        Info[ja, 3] = "GreenCubeに触れるとリスポーン地点をセーブできるよ。";
+        Info[ja, 2] = "初めての敵だ!\nRedCubeは上から踏むと無力化できるよ。";
+        Info[ja, 3] = "セーブポイントを発見!\nGreenCubeに触れるとリスポーン地点をセーブできるよ。";
+        Info[ja, 4] = "Rainbow Flag に触れるとレベルクリア!\nクリア画面の「Leaderboards」でランキング、「Achievements」で実績が確認できるよ。";
 
-        Info[en, 0] = "none";
-        Info[en, 1] = "none";
-        Info[en, 2] = "none";
-        Info[en, 3] = "none";
+        Info[en, 0] = "Welcome to the SuperCube World!\nMove by tilting the device to the left and right.";
+        Info[en, 1] = "Jump by tapping the screen!\nYou can jump be continuously twice.";
+        Info[en, 2] = "Enemy!!\nYou can incapacitate the RedCube by touch from top.";
+        Info[en, 3] = "Found the Save points!\nSpwan points will save when touch the block of Green.";
+        Info[en, 4] = "Rainbow Flag!";
 
         Hint[ja, 0] = "HomeのSettingからジャイロ感度の変更が行えます。";
         Hint[ja, 1] = "HomeのSettingでバイブレーションやパフォーマンスの変更が行えます。";

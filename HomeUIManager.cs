@@ -7,7 +7,7 @@ public class HomeUIManager : MonoBehaviour {
 
     public GameObject parentLoading, btnPlay, bgPlay, btnData, bgData;
     public GameObject LevelSelect, Data;
-    public Text textScore, textJump, textClear;
+    public Text textScore, textJump, textClear, textSave, textPoint, textPlusOne, textMagnet, textDead, textKill, textSBlock, textSRoute;
     
     public Animator animLevelSelect;
     private bool isFirst;
@@ -29,9 +29,20 @@ public class HomeUIManager : MonoBehaviour {
 
     void setGameData()
     {
-        textScore.text = PlayerPrefs.GetInt("totalScore", 0).ToString();
-        textJump.text  = PlayerPrefs.GetInt("totalJump",  0).ToString();
-        textClear.text = PlayerPrefs.GetInt("totalClear", 0).ToString();
+        textScore.text = GameDataManager.Score.ToString();
+        textJump.text  = GameDataManager.Jump.ToString();
+        textClear.text = GameDataManager.Clear.ToString();
+        textSave.text  = GameDataManager.Save.ToString();
+
+        textPoint.text   = GameDataManager.Point.ToString();
+        textPlusOne.text = GameDataManager.Aqua.ToString();
+        textMagnet.text  = GameDataManager.Magnet.ToString();
+
+        textDead.text = GameDataManager.Dead.ToString();
+        textKill.text = GameDataManager.Kill.ToString();
+
+        textSBlock.text = GameDataManager.SecretBlock.ToString();
+        textSRoute.text = GameDataManager.SecretRoute.ToString();
     }
 
     public void OnClick(string button)
