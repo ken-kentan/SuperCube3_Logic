@@ -5,11 +5,12 @@ using System.Collections;
 
 public class HomeUIManager : MonoBehaviour {
 
-    public GameObject parentLoading, btnPlay, bgPlay, btnData, bgData;
-    public GameObject LevelSelect, Data;
+    public GameObject parentLoading, btnPlay, bgPlay, btnData, bgData, btnOnline, bgOnline;
+    public GameObject LevelSelect, Data, Online;
     public Text textScore, textJump, textClear, textSave, textPoint, textPlusOne, textMagnet, textDead, textKill, textSBlock, textSRoute;
+    public Text textUserName;
     
-    public Animator animLevelSelect;
+    public Animator thisAnimator;
     private bool isFirst;
 
     // Use this for initialization
@@ -20,7 +21,7 @@ public class HomeUIManager : MonoBehaviour {
 
         isFirst = true;
 
-        animLevelSelect.SetFloat("Speed", 0);
+        thisAnimator.SetFloat("Speed", 0);
     }
 
     // Update is called once per frame
@@ -54,20 +55,34 @@ public class HomeUIManager : MonoBehaviour {
                 LevelSelect.SetActive(true);
                 btnPlay.SetActive(false);
                 bgPlay.SetActive(false);
-                animLevelSelect.Play("openLevelSelect");
-                animLevelSelect.SetFloat("Speed", 1);
+                thisAnimator.Play("openLevelSelect");
+                thisAnimator.SetFloat("Speed", 1);
                 break;
             case "Back":
-                animLevelSelect.SetFloat("Speed", -1);
+                thisAnimator.SetFloat("Speed", -1);
                 break;
             case "Data":
                 isFirst = true;
                 Data.SetActive(true);
                 btnData.SetActive(false);
                 bgData.SetActive(false);
-                animLevelSelect.Play("openGameData");
-                animLevelSelect.SetFloat("Speed", 1);
+                thisAnimator.Play("openGameData");
+                thisAnimator.SetFloat("Speed", 1);
                 setGameData();
+                break;
+            case "Online":
+                if (!GPGS.isLogin)
+                {
+                    GPGS.Login();
+                    return;
+                }
+                isFirst = true;
+                Online.SetActive(true);
+                btnOnline.SetActive(false);
+                bgOnline.SetActive(false);
+                thisAnimator.Play("openOnlineService");
+                thisAnimator.SetFloat("Speed", 1);
+                textUserName.text = GPGS.userName;
                 break;
             case "Setting":
                 SceneManager.LoadScene("Setting");
@@ -100,7 +115,7 @@ public class HomeUIManager : MonoBehaviour {
     }
 
     public void endAnim() {
-        animLevelSelect.SetFloat("Speed", 0);
+        thisAnimator.SetFloat("Speed", 0);
         UnityEngine.Debug.Log("End.");
         isFirst = false;
     }
@@ -116,7 +131,7 @@ public class HomeUIManager : MonoBehaviour {
                 {
                     btnPlay.SetActive(true);
                     bgPlay.SetActive(true);
-                    animLevelSelect.SetFloat("Speed", 0);
+                    thisAnimator.SetFloat("Speed", 0);
                     LevelSelect.SetActive(false);
                     UnityEngine.Debug.Log("LS Start.");
                 }
@@ -126,9 +141,19 @@ public class HomeUIManager : MonoBehaviour {
                 {
                     btnData.SetActive(true);
                     bgData.SetActive(true);
-                    animLevelSelect.SetFloat("Speed", 0);
+                    thisAnimator.SetFloat("Speed", 0);
                     Data.SetActive(false);
                     UnityEngine.Debug.Log("GD Start.");
+                }
+                break;
+            case "OnlineService":
+                if (!btnOnline.activeInHierarchy)
+                {
+                    btnOnline.SetActive(true);
+                    bgOnline.SetActive(true);
+                    thisAnimator.SetFloat("Speed", 0);
+                    Online.SetActive(false);
+                    UnityEngine.Debug.Log("OS Start.");
                 }
                 break;
         }
