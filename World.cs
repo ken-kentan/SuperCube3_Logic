@@ -12,7 +12,8 @@ public class World : MonoBehaviour {
     public static Material materialAqua, materialMagnet, materialBlockSecret;
     public static float drawDistance;
     public static Color colorAqua   = new Color(0, 0.5f, 1, 1),
-                        colorMagnet = new Color(0.6f, 1, 0, 1);
+                        colorMagnet = new Color(0.6f, 1, 0, 1),
+                        colorWhite  = new Color(222.0f/255.0f, 236.0f/255.0f, 1, 1);
     public static bool isPause, isGameOver, isClear, isLoading;
     public static Vector3 posReborn;
     public static string nameScene;

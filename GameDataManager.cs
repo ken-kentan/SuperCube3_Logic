@@ -39,6 +39,7 @@ public class GameDataManager : MonoBehaviour {
     void Update() {
         if (World.isPause || !GPGS.isLogin) return;
 
+        //TODO 呼び出し回数を減らす
         if (Jump >= 100) GPGS.Achievements(GPGSids.achievement_jumper);
 	}
 

@@ -16,7 +16,6 @@ public class HomeUIManager : MonoBehaviour {
     private bool isFirst;
     private int cntTimer;
 
-
     // Use this for initialization
     void Start() {
         Time.timeScale = 1;
@@ -28,7 +27,9 @@ public class HomeUIManager : MonoBehaviour {
 
         thisAnimator.SetFloat("Speed", 0);
 
-        if(GameDataManager.GetHighScore("0") != -1) textHighScore0.text = GameDataManager.GetHighScore("0").ToString();
+        textOnlineStatus.color = GPGS.Green;
+
+        if (GameDataManager.GetHighScore("0") != -1) textHighScore0.text = GameDataManager.GetHighScore("0").ToString();
     }
 
     // Update is called once per frame
@@ -37,11 +38,14 @@ public class HomeUIManager : MonoBehaviour {
         if (!GPGS.isConnecting)
         {
             textOnlineStatus.text = "●";
-            if(!GPGS.isLogin) textOnlineStatus.color = new Color(214.0f / 255.0f, 0, 2.0f / 255.0f, 1);
+            if (GPGS.isLogin) textOnlineStatus.color = GPGS.Green;
+            else              textOnlineStatus.color = new Color(214.0f / 255.0f, 0, 2.0f / 255.0f, 1);
         }
 
         if (GPGS.isConnecting)
         {
+            textOnlineStatus.color = World.colorWhite;
+
             if (cntTimer++ < 10)
             {
                 textOnlineStatus.text = "●";
