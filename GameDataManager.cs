@@ -34,10 +34,23 @@ public class GameDataManager : MonoBehaviour {
 
         isInitEnd = true;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update() {
+        if (World.isPause || !GPGS.isLogin) return;
+
+        if (Jump >= 100) GPGS.Achievements(GPGSids.achievement_jumper);
 	}
+
+    public static int GetHighScore(string stageLevel)
+    {
+        return PlayerPrefs.GetInt("scoreHigh_" + stageLevel, -1);
+    }
+
+    public static void SetHighScore(string stageLevel, int score)
+    {
+        if(score > PlayerPrefs.GetInt("scoreHigh_" + stageLevel, -1)) PlayerPrefs.SetInt("scoreHigh_" + stageLevel, score);
+    } 
 
     public static void SaveTotal()
     {

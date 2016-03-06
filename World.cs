@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
 
@@ -14,6 +15,7 @@ public class World : MonoBehaviour {
                         colorMagnet = new Color(0.6f, 1, 0, 1);
     public static bool isPause, isGameOver, isClear, isLoading;
     public static Vector3 posReborn;
+    public static string nameScene;
 
     //Game data
     public static int sumPoint, sumJump, sumDead, sumKill, sumScore, sumAqua, sumMagnet;
@@ -65,6 +67,8 @@ public class World : MonoBehaviour {
         volume = 1.0f;
 
         posReborn = new Vector3(0f, 2.0f, 0f);
+
+        nameScene = SceneManager.GetActiveScene().name;
 
         Time.timeScale = 0;
         isPause = true;

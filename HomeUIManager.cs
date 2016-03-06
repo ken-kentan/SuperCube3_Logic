@@ -7,11 +7,15 @@ public class HomeUIManager : MonoBehaviour {
 
     public GameObject parentLoading, btnPlay, bgPlay, btnData, bgData, btnOnline, bgOnline;
     public GameObject LevelSelect, Data, Online;
+    public Text textOnlineStatus;
+    public Text textHighScore0;
     public Text textScore, textJump, textClear, textSave, textPoint, textPlusOne, textMagnet, textDead, textKill, textSBlock, textSRoute;
     public Text textUserName;
-    
     public Animator thisAnimator;
+
     private bool isFirst;
+    private int cntTimer;
+
 
     // Use this for initialization
     void Start() {
@@ -20,12 +24,33 @@ public class HomeUIManager : MonoBehaviour {
         GPGS.Login();
 
         isFirst = true;
+        cntTimer = 0;
 
         thisAnimator.SetFloat("Speed", 0);
+
+        if(GameDataManager.GetHighScore("0") != -1) textHighScore0.text = GameDataManager.GetHighScore("0").ToString();
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
+        if (!GPGS.isConnecting)
+        {
+            textOnlineStatus.text = "●";
+            if(!GPGS.isLogin) textOnlineStatus.color = new Color(214.0f / 255.0f, 0, 2.0f / 255.0f, 1);
+        }
+
+        if (GPGS.isConnecting)
+        {
+            if (cntTimer++ < 10)
+            {
+                textOnlineStatus.text = "●";
+            }
+            else {
+                textOnlineStatus.text = "";
+                if (cntTimer > 20) cntTimer = 0;
+            }
+        }
     }
 
     void setGameData()

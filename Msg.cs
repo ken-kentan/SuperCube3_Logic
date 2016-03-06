@@ -49,7 +49,7 @@ public class Msg : MonoBehaviour {
         Info[ja, 1] = "画面をタップするとジャンプ！\nジャンプは2回連続できるよ。";
         Info[ja, 2] = "初めての敵だ!\nRedCubeは上から踏むと無力化できるよ。";
         Info[ja, 3] = "セーブポイントを発見!\nGreenCubeに触れるとリスポーン地点をセーブできるよ。";
-        Info[ja, 4] = "Rainbow Flag に触れるとレベルクリア!\nクリア画面の「Leaderboards」でランキング、「Achievements」で実績が確認できるよ。";
+        Info[ja, 4] = "Rainbow Flag に触れるとレベルクリア!\nクリア画面の「Leaderboards」でランキング、\n「Achievements」で実績が確認できるよ。";
 
         Info[en, 0] = "Welcome to the SuperCube World!\nMove by tilting the device to the left and right.";
         Info[en, 1] = "Jump by tapping the screen!\nYou can jump be continuously twice.";

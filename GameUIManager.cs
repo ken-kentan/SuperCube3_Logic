@@ -70,9 +70,16 @@ public class GameUIManager : MonoBehaviour {
                 World.audioVolume(0.0f);
                 World.calcScore();
                 GameDataManager.Score += World.sumScore;
+                GameDataManager.SetHighScore(World.nameScene, World.sumScore);
                 GameDataManager.Clear++;
                 GameDataManager.SaveTotal();
-                if (GPGS.isLogin) GPGS.Leaderboards(GPGSids.leaderboard_beta_score, World.sumScore);
+                if (GPGS.isLogin)
+                {
+                    GPGS.Leaderboards(World.nameScene, World.sumScore);
+                    GPGS.Achievements(GPGS.getAchievementsID(World.nameScene));
+
+                    if (GameDataManager.Clear >= 5) GPGS.Achievements(GPGSids.achievement_5_clear);
+                }
             }
             Score.text = World.sumScore.ToString();
         }
@@ -230,11 +237,11 @@ public class GameUIManager : MonoBehaviour {
                 if(!AdColonyAndroid.PlayV4VCAd()) infoRevival.text = Msg.errRevival;
                 break;
             case "Twitter":
-                shareMsg = Msg.Twitter[Msg.typeLang].Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
+                shareMsg = Msg.Twitter[Msg.typeLang].Replace("{level}", World.nameScene).Replace("{score}", World.sumScore.ToString());
                 Application.OpenURL(shareMsg);
                 break;
             case "LINE":
-                shareMsg = Msg.LINE[Msg.typeLang].Replace("{level}", SceneManager.GetActiveScene().name).Replace("{score}", World.sumScore.ToString());
+                shareMsg = Msg.LINE[Msg.typeLang].Replace("{level}", World.nameScene).Replace("{score}", World.sumScore.ToString());
                 Application.OpenURL(shareMsg);
                 break;
             case "Leaderboards":
