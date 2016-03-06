@@ -96,6 +96,12 @@ public class HomeUIManager : MonoBehaviour {
             case "GPGS":
                 GPGS.Login();
                 break;
+            case "Achievements":
+                GPGS.showAchievements();
+                break;
+            case "Leaderboards":
+                GPGS.showLeaderboards();
+                break;
             case "@ken":
                 Application.OpenURL("https://twitter.com/ken_kentan");
                 break;

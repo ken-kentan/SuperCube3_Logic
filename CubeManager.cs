@@ -8,7 +8,7 @@ public class CubeManager : MonoBehaviour {
     public static int maxJump, life;
     public static int effectAqua, effectMagnet;
     public static bool isResetCube;
-    public Rigidbody cubeBody;
+    public static Rigidbody cubeBody;
     private static float maxSpeed;
     private static int cntJump, cntMotionDead;
     private static bool isOnFloor, isOnBlock, isOnEnemy, isOnLift, isMotionDead;
@@ -17,6 +17,8 @@ public class CubeManager : MonoBehaviour {
     void Start() {
         posX = transform.position.x;
         posY = transform.position.y;
+
+        cubeBody = GetComponent<Rigidbody>();
 
         speedX = cubeBody.velocity.x;
         speedY = cubeBody.velocity.y;

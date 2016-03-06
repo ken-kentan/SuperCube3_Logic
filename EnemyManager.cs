@@ -105,7 +105,8 @@ public class EnemyManager : MonoBehaviour {
             GameDataManager.Kill++;
             GameDataManager.SaveEnemy();
             enemyCube.tag = "Untagged";
-            World.Cube.transform.GetComponent<Rigidbody>().AddForce(0, 100f, 0);
+            CubeManager.cubeBody.velocity = Vector3.ClampMagnitude(CubeManager.cubeBody.velocity, 0f);
+            CubeManager.cubeBody.AddForce(0, 200, 0);
             animator.enabled = true;
             Destroy(enemyCube.GetComponent<Collider>());
             Destroy(enemyCube, 1.0f);

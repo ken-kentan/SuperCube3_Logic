@@ -7,9 +7,12 @@ public class GameDataManager : MonoBehaviour {
     public static int Point, Aqua, Magnet;
     public static int Kill, Dead;
     public static int SecretBlock, SecretRoute;
+    public static bool isInitEnd;
 
 	// Use this for initialization
 	void Start () {
+        isInitEnd = false;
+
         //Total
         Score = PlayerPrefs.GetInt("totalScore", 0);
         Jump  = PlayerPrefs.GetInt("totalJump",  0);
@@ -28,6 +31,8 @@ public class GameDataManager : MonoBehaviour {
         //Secret
         SecretBlock = PlayerPrefs.GetInt("secretBlock", 0);
         SecretRoute = PlayerPrefs.GetInt("secretRoute", 0);
+
+        isInitEnd = true;
     }
 	
 	// Update is called once per frame
