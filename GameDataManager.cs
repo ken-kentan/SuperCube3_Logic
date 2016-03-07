@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class GameDataManager : MonoBehaviour {
@@ -7,12 +8,10 @@ public class GameDataManager : MonoBehaviour {
     public static int Point, Aqua, Magnet;
     public static int Kill, Dead;
     public static int SecretBlock, SecretRoute;
-    public static bool isInitEnd;
+    public static string UUID, UUIDinfo;
 
 	// Use this for initialization
 	void Start () {
-        isInitEnd = false;
-
         //Total
         Score = PlayerPrefs.GetInt("totalScore", 0);
         Jump  = PlayerPrefs.GetInt("totalJump",  0);
@@ -31,8 +30,6 @@ public class GameDataManager : MonoBehaviour {
         //Secret
         SecretBlock = PlayerPrefs.GetInt("secretBlock", 0);
         SecretRoute = PlayerPrefs.GetInt("secretRoute", 0);
-
-        isInitEnd = true;
     }
 
     // Update is called once per frame
@@ -82,5 +79,26 @@ public class GameDataManager : MonoBehaviour {
         PlayerPrefs.SetInt("secretBlock", SecretBlock);
         PlayerPrefs.SetInt("secretRoute", SecretRoute);
         PlayerPrefs.Save();
+    }
+
+    public static void CheckUUID()
+    {
+        if (PlayerPrefs.GetString("UUID", "None.") == "None.")//Generate
+        {
+            PlayerPrefs.SetString("UUID_info", SystemInfo.operatingSystem + "," + SystemInfo.deviceModel + "," + DateTime.Now + "," + Msg.appVer);
+            PlayerPrefs.SetString("UUID", generateRand(55) + "-" + generateRand(66) + "-" + generateRand(77) + "-" + generateRand(88));
+            PlayerPrefs.Save();
+        }
+
+        UUIDinfo = PlayerPrefs.GetString("UUID_info");
+        UUID = PlayerPrefs.GetString("UUID");
+
+        ServerBridge.ken_kentan_jp.SendUUIDinfo();
+    }
+
+    static int generateRand(int seed = 0)
+    {
+        UnityEngine.Random.seed = System.DateTime.Now.Millisecond + System.DateTime.Now.Second + seed;
+        return UnityEngine.Random.Range(1000, 10000);
     }
 }

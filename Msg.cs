@@ -7,7 +7,10 @@ public class Msg : MonoBehaviour {
     public static int typeLang;
 
     public static string sample;
-    public static string appName, appVer, appURL, appURLenc;
+    public const string appName = "SuperCube_World",
+                        appVer = "0.3.5beta",
+                        appURL = "http://ken.kentan.jp/SuperCube_World",
+                        appURLenc = "http%3a%2f%2fken%2ekentan%2ejp%2fSuperCube_World";
     public static string[] Twitter = new string[2],
                            LINE    = new string[2],
                            Revival = new string[2];
@@ -28,11 +31,6 @@ public class Msg : MonoBehaviour {
         else                                                       typeLang = en;
 
         sample = "Sample";
-
-        appName   = "SuperCube_World";
-        appVer    = "dev";
-        appURL    = "http://ken.kentan.jp/SuperCube_World";
-        appURLenc = "http%3a%2f%2fken%2ekentan%2ejp%2fSuperCube_World";
 
         Twitter[ja] = "https://twitter.com/intent/tweet?text=レベル{level}をスコア{score}でクリア！ %23" + appName + " " + appURL;
         Twitter[en] = "https://twitter.com/intent/tweet?text=Level{level} Clear! Score{score}. %23" + appName + " " + appURL;
