@@ -86,7 +86,7 @@ public class GameDataManager : MonoBehaviour {
         if (PlayerPrefs.GetString("UUID", "None.") == "None.")//Generate
         {
             PlayerPrefs.SetString("UUID_info", SystemInfo.operatingSystem + "," + SystemInfo.deviceModel + "," + DateTime.Now + "," + Msg.appVer);
-            PlayerPrefs.SetString("UUID", generateRand(55) + "-" + generateRand(66) + "-" + generateRand(77) + "-" + generateRand(88));
+            PlayerPrefs.SetString("UUID", Guid.NewGuid().ToString("D"));
             PlayerPrefs.Save();
         }
 
@@ -94,11 +94,5 @@ public class GameDataManager : MonoBehaviour {
         UUID = PlayerPrefs.GetString("UUID");
 
         ServerBridge.ken_kentan_jp.SendUUIDinfo();
-    }
-
-    static int generateRand(int seed = 0)
-    {
-        UnityEngine.Random.seed = System.DateTime.Now.Millisecond + System.DateTime.Now.Second + seed;
-        return UnityEngine.Random.Range(1000, 10000);
     }
 }
