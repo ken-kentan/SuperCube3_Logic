@@ -47,7 +47,7 @@ public class CubeEffects : MonoBehaviour
         //Magnet
         if(CubeManager.effectMagnet > 0)
         {
-            if(++CubeManager.effectMagnet > 600)
+            if(++CubeManager.effectMagnet > 1100)
             {
                 CubeManager.effectMagnet = 0;
                 rendererCube.material = materialCube;
@@ -57,7 +57,7 @@ public class CubeEffects : MonoBehaviour
             {
                 if (CubeManager.effectMagnet % 15 == 0) cntTimerMagnet++;
                 
-                if(CubeManager.effectMagnet < 500)
+                if(CubeManager.effectMagnet < 1000)
                 {
                     rendererCube.material = World.materialMagnet;
                 }

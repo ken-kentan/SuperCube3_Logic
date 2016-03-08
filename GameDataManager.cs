@@ -11,7 +11,7 @@ public class GameDataManager : MonoBehaviour {
     public static string UUID, UUIDinfo;
 
 	// Use this for initialization
-	void Start () {
+	void Awake() {
         //Total
         Score = PlayerPrefs.GetInt("totalScore", 0);
         Jump  = PlayerPrefs.GetInt("totalJump",  0);
@@ -45,10 +45,25 @@ public class GameDataManager : MonoBehaviour {
         return PlayerPrefs.GetInt("scoreHigh_" + stageLevel, -1);
     }
 
-    public static void SetHighScore(string stageLevel, int score)
+    public static int GetMaxClearedLevel()
     {
-        if(score > PlayerPrefs.GetInt("scoreHigh_" + stageLevel, -1)) PlayerPrefs.SetInt("scoreHigh_" + stageLevel, score);
-    } 
+        return PlayerPrefs.GetInt("clearedMaxLevel", -1);
+    }
+
+    public static bool SetHighScore(string stageLevel, int score)
+    {
+        if (score > PlayerPrefs.GetInt("scoreHigh_" + stageLevel, -1))
+        {
+            PlayerPrefs.SetInt("scoreHigh_" + stageLevel, score);
+            return true;
+        }
+        return false;
+    }
+
+    public static void SetMaxClearedLevel(int stageLevel)
+    {
+        if (stageLevel > GetMaxClearedLevel()) PlayerPrefs.SetInt("clearedMaxLevel", stageLevel);
+    }
 
     public static void SaveTotal()
     {

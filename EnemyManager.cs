@@ -37,6 +37,8 @@ public class EnemyManager : MonoBehaviour {
 
                 if (isOpposite) enemyBody.AddForce(10, 0, 0);
                 else enemyBody.AddForce(-10, 0, 0);
+
+                isFly = false;
                 break;
             case "EnemyRotate (UnityEngine.GameObject)":
                 modeEnemy = 3;
@@ -55,13 +57,13 @@ public class EnemyManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //return when over distance
-        if (World.isPause || modeEnemy == 0 || ((isFirst || modeEnemy == 2) && Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance - 3)) return;
+        if (World.isPause || modeEnemy == 0 || (isFirst && Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance - 3)) return;
 
         switch (modeEnemy)
         {
             case 1:
             case 2:
-                if (!isOnFloor() && modeEnemy == 1)
+                if (!isOnFloor())
                 {
                     isFly = true;
                     break;

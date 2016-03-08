@@ -5,12 +5,14 @@ public class FloorVanish : MonoBehaviour {
 
     private BoxCollider colliderFloor;
     private bool isStartVanish;
-    public int cnt;
+    public int alpha;
 
 	// Use this for initialization
 	void Start () {
         colliderFloor = GetComponent<BoxCollider>();
         isStartVanish = false;
+
+        alpha = 150;
     }
 	
 	// Update is called once per frame
@@ -19,13 +21,9 @@ public class FloorVanish : MonoBehaviour {
 
         if (CubeManager.isResetCube) reset();
 
-        if (cnt++ > 200) colliderFloor.enabled = false;
+        if (alpha-- <= 0) colliderFloor.enabled = false;
 
-        float alpha = (200f - cnt) / 200f;
-
-        if (alpha > 0.8f) alpha = 0.8f;
-
-        GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, alpha);
+        GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, alpha/255.0f);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -35,9 +33,10 @@ public class FloorVanish : MonoBehaviour {
 
     void reset()
     {
+        alpha = 150;
+
         colliderFloor.enabled = true;
-        GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 0.8f);
+        GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, alpha/255.0f);
         isStartVanish = false;
-        cnt = 0;
     }
 }

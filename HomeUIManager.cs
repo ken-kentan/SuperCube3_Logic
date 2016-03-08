@@ -8,9 +8,11 @@ public class HomeUIManager : MonoBehaviour {
     public GameObject parentLoading, btnPlay, bgPlay, btnData, bgData, btnOnline, bgOnline;
     public GameObject LevelSelect, Data, Online;
     public Text textOnlineStatus;
-    public Text textHighScore0;
+    public Text textHighScore0, textHighScore1, textHighScore2;
     public Text textScore, textJump, textClear, textSave, textPoint, textPlusOne, textMagnet, textDead, textKill, textSBlock, textSRoute;
     public Text textUserName;
+    public Button btn1, btn2;
+    public Image imgBtn1, imgBtn2;
     public Animator thisAnimator;
 
     private bool isFirst;
@@ -20,8 +22,6 @@ public class HomeUIManager : MonoBehaviour {
     void Start() {
         Time.timeScale = 1;
 
-        GPGS.Login();
-
         isFirst = true;
         cntTimer = 0;
 
@@ -30,6 +30,31 @@ public class HomeUIManager : MonoBehaviour {
         textOnlineStatus.color = GPGS.Green;
 
         if (GameDataManager.GetHighScore("0") != -1) textHighScore0.text = GameDataManager.GetHighScore("0").ToString();
+        if (GameDataManager.GetHighScore("1") != -1) textHighScore1.text = GameDataManager.GetHighScore("1").ToString();
+        if (GameDataManager.GetHighScore("2") != -1) textHighScore2.text = GameDataManager.GetHighScore("2").ToString();
+
+        GPGS.Login();
+        
+        setGameData();
+
+        //Button color Init(Level Select)
+        imgBtn1.color = new Color(1, 1, 1, 0);
+
+        switch (GameDataManager.GetMaxClearedLevel())
+        {
+            case -1://defa
+                btn1.enabled = false;
+                btn2.enabled = false;
+                imgBtn1.color = new Color(0.5f, 0.5f, 0.5f, 1);
+                imgBtn2.color = new Color(0.5f, 0.5f, 0.5f, 1);
+                break;
+            case 0:
+                btn2.enabled = false;
+                imgBtn2.color = new Color(0.5f, 0.5f, 0.5f, 1);
+                break;
+            case 1:
+                break;
+        }
     }
 
     // Update is called once per frame
@@ -97,7 +122,6 @@ public class HomeUIManager : MonoBehaviour {
                 bgData.SetActive(false);
                 thisAnimator.Play("openGameData");
                 thisAnimator.SetFloat("Speed", 1);
-                setGameData();
                 break;
             case "Online":
                 if (!GPGS.isLogin)

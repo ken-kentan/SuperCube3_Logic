@@ -6,7 +6,7 @@ using System.Collections;
 public class GameUIManager : MonoBehaviour {
 
     public Text Hint, Score, infoRevival, infoGPGS, cubeUnits, points, textFPS, textInfo;
-    public GameObject Paused, GameOver, Clear, Controller, FPS, Info;
+    public GameObject Paused, GameOver, Clear, Controller, FPS, Info, New;
     public GameObject btnRetry, btnRevival, btnHome;
     public UnityStandardAssets.ImageEffects.BlurOptimized Blur;
 
@@ -35,6 +35,8 @@ public class GameUIManager : MonoBehaviour {
 
         if (World.isController) Controller.SetActive(true);
         if (World.isDisplayFPS) FPS.SetActive(true);
+
+        New.SetActive(false);
 
         //Init fps
         frameCount = 0;
@@ -70,7 +72,8 @@ public class GameUIManager : MonoBehaviour {
                 World.audioVolume(0.0f);
                 World.calcScore();
                 GameDataManager.Score += World.sumScore;
-                GameDataManager.SetHighScore(World.nameScene, World.sumScore);
+                if (GameDataManager.SetHighScore(World.nameScene, World.sumScore)) New.SetActive(true);
+                GameDataManager.SetMaxClearedLevel(int.Parse(World.nameScene));
                 GameDataManager.Clear++;
                 GameDataManager.SaveTotal();
                 if (GPGS.isLogin)
@@ -235,6 +238,16 @@ public class GameUIManager : MonoBehaviour {
                 break;
             case "Revival":
                 if(!AdColonyAndroid.PlayV4VCAd()) infoRevival.text = Msg.errRevival;
+                break;
+            case "Next":
+                int nextScene = int.Parse(World.nameScene) + 1;
+                if (nextScene <= 2)
+                {
+                    World.Loading.SetActive(true);
+                    Loading.RestartLoad();
+                    SceneManager.LoadSceneAsync(nextScene.ToString());
+                }
+                else SceneManager.LoadScene("Home");
                 break;
             case "Twitter":
                 shareMsg = Msg.Twitter[Msg.typeLang].Replace("{level}", World.nameScene).Replace("{score}", World.sumScore.ToString());

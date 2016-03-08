@@ -7,15 +7,15 @@ public class Msg : MonoBehaviour {
     public static int typeLang;
 
     public static string sample;
-    public const string appName = "SuperCube_World",
-                        appVer = "0.3.5beta",
-                        appURL = "http://ken.kentan.jp/SuperCube_World",
+    public const string appName   = "SuperCube_World",
+                        appVer    = "0.3.5beta",
+                        appURL    = "http://ken.kentan.jp/SuperCube_World",
                         appURLenc = "http%3a%2f%2fken%2ekentan%2ejp%2fSuperCube_World";
     public static string[] Twitter = new string[2],
                            LINE    = new string[2],
                            Revival = new string[2];
     public static string errRevival, failRevival;
-    public static string[,] Info = new string[2, 5];
+    public static string[,] Info = new string[2, 6];
     public static string[,] Hint = new string[2, 7];
     public static string[,] Setting = new string[2, 2];
     public static string[] GPGSneedLogin    = new string[2],
@@ -48,12 +48,14 @@ public class Msg : MonoBehaviour {
         Info[ja, 2] = "初めての敵だ!\nRedCubeは上から踏むと無力化できるよ。";
         Info[ja, 3] = "セーブポイントを発見!\nGreenCubeに触れるとリスポーン地点をセーブできるよ。";
         Info[ja, 4] = "Rainbow Flag に触れるとレベルクリア!\nクリア画面の「Leaderboards」でランキング、\n「Achievements」で実績が確認できるよ。";
+        Info[ja, 5] = "Pink Cube!\nこいつは踏んでも無力化できない。避けて進もう。";
 
         Info[en, 0] = "Welcome to the SuperCube World!\nMove by tilting the device to the left and right.";
         Info[en, 1] = "Jump by tapping the screen!\nYou can jump be continuously twice.";
         Info[en, 2] = "Enemy!!\nYou can incapacitate the RedCube by touch from top.";
         Info[en, 3] = "Found the Save points!\nSpwan points will save when touch the block of Green.";
         Info[en, 4] = "Rainbow Flag!";
+        Info[en, 5] = "Pink Cube!\nこいつは踏んでも無力化できない。避けて進もう。";
 
         Hint[ja, 0] = "HomeのSettingからジャイロ感度の変更が行えます。";
         Hint[ja, 1] = "HomeのSettingでバイブレーションやパフォーマンスの変更が行えます。";
@@ -78,9 +80,9 @@ public class Msg : MonoBehaviour {
         Setting[en, 1] = "Control by button in the display.";
 
         GPGSneedLogin[ja]    = "オンライン機能を利用するにはログインを行ってください。";
-        GPGSsendingScore[ja] = "スコアを送信中です。";
-        GPGSsendScore[ja]    = "スコアの送信に成功しました！";
-        GPGSfaildScore[ja]   = "スコアの送信に失敗しました。";
+        GPGSsendingScore[ja] = "スコアを送信中...";
+        GPGSsendScore[ja]    = "スコアの送信に成功！";
+        GPGSfaildScore[ja]   = "スコアの送信に失敗。";
 
         GPGSneedLogin[en]    = "Online function need login.";
         GPGSsendingScore[en] = "Sending your score...";

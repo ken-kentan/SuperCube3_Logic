@@ -5,7 +5,7 @@ using System.Collections;
 
 public class World : MonoBehaviour {
 
-    public static GameObject Cube, EnemyChieldren;
+    public static GameObject Cube, EnemyChieldren, Loading;
     public static AudioSource audioSource;
     public static AudioClip killEnemySE, getAquaSE, getMagnetSE, pointSE, saveSE, jumpSE, contactSE, damageSE;
     public static Color alpha = new Color(0, 0, 0, 0.01f);
@@ -29,7 +29,8 @@ public class World : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        Cube = GameObject.Find("Cube");
+        Cube    = GameObject.Find("Cube");
+        Loading = GameObject.Find("Loading");
         audioSource = Cube.GetComponent<AudioSource>();
 
         EnemyChieldren = Resources.Load("Objects/EnemyChieldren") as GameObject;
@@ -101,6 +102,6 @@ public class World : MonoBehaviour {
 
     public static void calcScore()
     {
-        sumScore = sumPoint*10 + CubeManager.life*100 + sumJump + sumKill*5 + sumAqua*5 + sumMagnet*5 - sumKill*10;
+        sumScore = sumPoint*10 + CubeManager.life*100 + sumJump + sumKill*5 + sumAqua*5 + sumMagnet*5 - sumDead;
     }
 }

@@ -9,6 +9,7 @@ public class LiftManager : MonoBehaviour {
     public float distance;
     
     private Rigidbody LiftBody;
+    private const float speedX = 300, speedY = 180;
     private float posStart, posEnd, pos, posPrev;
     private bool mode, isOnCube, isPositive;
     private int cnt;
@@ -37,11 +38,13 @@ public class LiftManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (World.isPause || (!isWakeUp && !isOnCube)) return;
+        if (World.isPause || (!isWakeUp && !isOnCube && !CubeManager.isResetCube)) return;
 
         switch (modeLift)
         {
-            case 1:
+            case 1://X
+                if (!isWakeUp && CubeManager.isResetCube) Lift.transform.localPosition = new Vector3(posStart, Lift.transform.localPosition.y, 0);
+
                 pos = Lift.transform.localPosition.x;
 
                 checkError();
@@ -57,10 +60,12 @@ public class LiftManager : MonoBehaviour {
                     else if(pos <= posEnd) mode = true;
                 }
 
-                if (mode) LiftBody.AddForce( 180, 0, 0);
-                else      LiftBody.AddForce(-180, 0, 0);
+                if (mode) LiftBody.AddForce( speedX, 0, 0);
+                else      LiftBody.AddForce(-speedX, 0, 0);
                 break;
-            case 2:
+            case 2://Y
+                if (!isWakeUp && CubeManager.isResetCube) Lift.transform.localPosition = new Vector3(Lift.transform.localPosition.x, posStart, 0) ;
+
                 pos = Lift.transform.localPosition.y;
 
                 checkError();
@@ -76,8 +81,8 @@ public class LiftManager : MonoBehaviour {
                     else if (pos <= posEnd) mode = true;
                 }
 
-                if (mode) LiftBody.AddForce(0, 180, 0);
-                else      LiftBody.AddForce(0, -180, 0);
+                if (mode) LiftBody.AddForce(0,  speedY, 0);
+                else      LiftBody.AddForce(0, -speedY, 0);
                 break;
 
         }
