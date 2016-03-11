@@ -13,7 +13,7 @@ public class EnemyChildren : MonoBehaviour {
         Vector3 forceDirection = World.Cube.transform.localPosition - transform.localPosition;
         float sum = (Mathf.Abs(forceDirection.x) + Mathf.Abs(forceDirection.y));
 
-        float rate = 500 / sum;
+        float rate = 500.0f / sum;
 
         EnemyBody.AddForce(forceDirection * rate);
     }

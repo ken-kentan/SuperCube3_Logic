@@ -7,11 +7,11 @@ public class CubeManager : MonoBehaviour {
     public static float posX, posY, speedX, speedY, KaccGyro;
     public static int maxJump, life;
     public static int effectAqua, effectMagnet;
-    public static bool isResetCube;
+    public static bool isResetCube, isMotionDead;
     public static Rigidbody cubeBody;
-    private static float maxSpeed;
+    private static readonly float maxSpeed = 8.0f;
     private static int cntJump, cntMotionDead;
-    private static bool isOnFloor, isOnBlock, isOnEnemy, isOnLift, isMotionDead;
+    private static bool isOnFloor, isOnBlock, isOnEnemy, isOnLift;
 
     // Use this for initialization
     void Start() {
@@ -25,7 +25,6 @@ public class CubeManager : MonoBehaviour {
 
         effectAqua = effectMagnet = 0;
 
-        maxSpeed = 8.0f;
         KaccGyro = PlayerPrefs.GetFloat("KaccGyro", 25.0f);
 
         maxJump = 2;
@@ -91,14 +90,6 @@ public class CubeManager : MonoBehaviour {
         }
     }
 
-    void FixedUpdate()
-    {
-        if (Mathf.Abs(cubeBody.velocity.x) > maxSpeed)
-        {
-//            cubeBody.velocity = Vector3.ClampMagnitude(cubeBody.velocity, maxSpeed);
-        }
-    }
-
     bool isOverWorld()
     {
         if (posY < -5.0f && !isMotionDead)
@@ -124,13 +115,16 @@ public class CubeManager : MonoBehaviour {
         stopCube();
         isMotionDead = true;
         isOnEnemy = false;
-        isResetCube = true;
     }
 
     void motionDead()
     {
         World.Cube.GetComponent<Collider>().isTrigger = true;
-        if(cntMotionDead == 0) cubeBody.AddForce(0, 200f, 0);
+        if (cntMotionDead == 0)
+        {
+            CubeEffects.Run.Dead();
+            cubeBody.AddForce(0, 200f, 0);
+        }
 
         if(++cntMotionDead > 120)
         {
@@ -138,6 +132,7 @@ public class CubeManager : MonoBehaviour {
             isMotionDead = false;
             World.Cube.GetComponent<Collider>().isTrigger = false;
             transform.position = World.posReborn;
+            isResetCube = true;
 
             if (life < 0) World.isGameOver = true;
         }

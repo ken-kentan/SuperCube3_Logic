@@ -9,7 +9,13 @@ public class CubeEffects : MonoBehaviour
     public Material materialCube;
     public ParticleSystem particleDead;
 
+    public static CubeEffects Run;
     public static int cntTimer, cntTimerAqua, cntTimerMagnet;
+
+    void Awake()
+    {
+        Run = this;
+    }
 
     // Use this for initialization
     void Start()
@@ -72,13 +78,11 @@ public class CubeEffects : MonoBehaviour
                 }
             }
         }
+    }
 
-        //Dead
-        if (CubeManager.isResetCube)
-        {
-            particleDead.time = 0.0f;
-            particleDead.Play();
-        }
-
+    public void Dead()
+    {
+        particleDead.time = 0.0f;
+        particleDead.Play();
     }
 }

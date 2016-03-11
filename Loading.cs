@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class Loading : MonoBehaviour {
@@ -9,6 +10,7 @@ public class Loading : MonoBehaviour {
     private static int frameCount, frameSum;
     private float prevTime, fps;
 
+    private static GameObject staticImgLoading;
     private static float angle;
     private static bool isLoading;
 
@@ -17,12 +19,13 @@ public class Loading : MonoBehaviour {
         frameCount = frameSum = 0;
         prevTime = fps = 0.0f;
 
-        if (World.nameScene == "Home") isHome = true;
-        else                           isHome = false;
+        staticImgLoading = imgLoading;
+
+        if (SceneManager.GetActiveScene().name == "Home") isHome = true;
+        else                                              isHome = false;
 
         if (isHome) angle = default(float);
-
-        if (angle != default(float)) imgLoading.transform.rotation = Quaternion.Euler(0, 0, angle);
+        else imgLoading.transform.rotation = Quaternion.Euler(0, 0, angle);
 
         isLoading = true;
     }
@@ -73,5 +76,6 @@ public class Loading : MonoBehaviour {
         World.isPause = true;
 
         angle = default(float);
+        staticImgLoading.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 }

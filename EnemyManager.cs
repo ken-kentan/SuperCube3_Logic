@@ -9,8 +9,11 @@ public class EnemyManager : MonoBehaviour {
     private Animator animator;
     private Rigidbody enemyBody;
     private SphereCollider colliderEnemyCube;
-    private int modeEnemy, cntCyclShot;
+    private int cntCyclShot;
     private bool isFirst, isFly;
+
+    private enum Enemy { None, Move, StaticMove, Rotate, Shot };
+    private Enemy type;
 
     // Use this for initialization
     void Start () {
@@ -22,7 +25,7 @@ public class EnemyManager : MonoBehaviour {
         switch (enemyCube.ToString())
         {
             case "EnemyMove (UnityEngine.GameObject)":
-                modeEnemy = 1;
+                type = Enemy.Move;
                 enemyBody = enemyCube.GetComponent<Rigidbody>();
 
                 if (isOpposite) enemyBody.AddForce(10, 0, 0);
@@ -32,7 +35,7 @@ public class EnemyManager : MonoBehaviour {
 
                 break;
             case "EnemyStaticMove (UnityEngine.GameObject)":
-                modeEnemy = 2;
+                type = Enemy.StaticMove;
                 enemyBody = enemyCube.GetComponent<Rigidbody>();
 
                 if (isOpposite) enemyBody.AddForce(10, 0, 0);
@@ -41,15 +44,15 @@ public class EnemyManager : MonoBehaviour {
                 isFly = false;
                 break;
             case "EnemyRotate (UnityEngine.GameObject)":
-                modeEnemy = 3;
+                type = Enemy.Rotate;
                 break;
             case "EnemyShot (UnityEngine.GameObject)":
-                modeEnemy = 4;
+                type = Enemy.Shot;
                 cntCyclShot = 0;
                 if (cycleShot == 0) cycleShot = 300;
                 break;
             default:
-                modeEnemy = 0;
+                type = Enemy.None;
                 break;
         }
     }
@@ -57,12 +60,12 @@ public class EnemyManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //return when over distance
-        if (World.isPause || modeEnemy == 0 || (isFirst && Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance - 3)) return;
+        if (World.isPause || type == Enemy.None || (isFirst && Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance - 3)) return;
 
-        switch (modeEnemy)
+        switch (type)
         {
-            case 1:
-            case 2:
+            case Enemy.Move:
+            case Enemy.StaticMove:
                 if (!isOnFloor())
                 {
                     isFly = true;
@@ -83,10 +86,10 @@ public class EnemyManager : MonoBehaviour {
                 if (isOpposite) enemyBody.AddForce(10, 0, 0);
                 else            enemyBody.AddForce(-10, 0, 0);
                 break;
-            case 3:
+            case Enemy.Rotate:
                 animator.enabled = true;
                 break;
-            case 4:
+            case Enemy.Shot:
                 if (cntCyclShot++ % cycleShot == 0) Instantiate(World.EnemyChieldren, transform.position, transform.rotation);
                 break;
         }
@@ -98,7 +101,7 @@ public class EnemyManager : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        if (modeEnemy == 2 || modeEnemy == 3) return;
+        if (type == Enemy.StaticMove || type == Enemy.Rotate || CubeManager.isMotionDead) return;
 
         if (collider.gameObject.tag == "Cube" && CubeManager.posY - enemyCube.transform.localPosition.y > 0.8f)
         {
