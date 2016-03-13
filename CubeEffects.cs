@@ -41,10 +41,11 @@ public class CubeEffects : MonoBehaviour
             {
                 rendererCube.material = World.materialAqua;
                 lightCube.color = World.colorAqua;
+
+                return;
             }
             else {
-                rendererCube.material = materialCube;
-                lightCube.color = Color.white;
+                ResetEffect();
             }
 
             if (cntTimerAqua > 2) CubeManager.effectAqua = 0;
@@ -56,8 +57,7 @@ public class CubeEffects : MonoBehaviour
             if(++CubeManager.effectMagnet > 1100)
             {
                 CubeManager.effectMagnet = 0;
-                rendererCube.material = materialCube;
-                lightCube.color = Color.white;
+                ResetEffect();
             }
             else
             {
@@ -73,11 +73,43 @@ public class CubeEffects : MonoBehaviour
                     lightCube.color = World.colorMagnet;
                 }
                 else {
-                    rendererCube.material = materialCube;
-                    lightCube.color = Color.white;
+                    ResetEffect();
                 }
             }
         }
+
+        //PlusJump
+        if(CubeManager.effectPlusJump > 0)
+        {
+            rendererCube.material = World.materialPlusJump;
+            lightCube.color = Color.green;
+
+            if (CubeManager.isResetCube)
+            {
+                CubeManager.effectPlusJump = 0;
+                CubeManager.maxJump = 2;
+                ResetEffect();
+            }
+        }
+    }
+
+    void ResetEffect()
+    {
+        rendererCube.material = materialCube;
+        lightCube.color = Color.white;
+    }
+
+    void ResetAllTimers()
+    {
+        cntTimer = cntTimerAqua = cntTimerMagnet = 0;
+    }
+
+    public void KillAllEffects()
+    {
+        CubeManager.effectMagnet = CubeManager.effectAqua = CubeManager.effectPlusJump = 0;
+        CubeManager.maxJump = 2;
+        ResetAllTimers();
+        ResetEffect();
     }
 
     public void Dead()

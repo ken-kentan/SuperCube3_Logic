@@ -4,6 +4,7 @@ using System.Collections;
 public class BlockSecret : MonoBehaviour {
 
     public GameObject objectsSecret;
+    public bool isItemBlock;
 
     private Collider thisCollider;
     private float posY;
@@ -16,20 +17,25 @@ public class BlockSecret : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (isItemBlock) return;
+
 	    if(CubeManager.posY > posY) thisCollider.isTrigger = true;
         else                        thisCollider.isTrigger = false;
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag != "Cube") return;
+        if (collision.gameObject.tag != "Cube" || CubeManager.posY > posY) return;
 
         GetComponent<Renderer>().material = World.materialBlockSecret;
 
         if (objectsSecret != null) objectsSecret.SetActive(true);
 
-        GameDataManager.SecretBlock++;
-        GameDataManager.SaveSecret();
+        if (!isItemBlock)
+        {
+            GameDataManager.SecretBlock++;
+            GameDataManager.SaveSecret();
+        }
 
         Destroy(this);
     }

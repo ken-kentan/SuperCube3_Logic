@@ -6,7 +6,7 @@ public class CubeManager : MonoBehaviour {
 
     public static float posX, posY, speedX, speedY, KaccGyro;
     public static int maxJump, life;
-    public static int effectAqua, effectMagnet;
+    public static int effectAqua, effectMagnet, effectPlusJump;
     public static bool isResetCube, isMotionDead;
     public static Rigidbody cubeBody;
     private static readonly float maxSpeed = 8.0f;
@@ -23,7 +23,7 @@ public class CubeManager : MonoBehaviour {
         speedX = cubeBody.velocity.x;
         speedY = cubeBody.velocity.y;
 
-        effectAqua = effectMagnet = 0;
+        effectAqua = effectMagnet = effectPlusJump = 0;
 
         KaccGyro = PlayerPrefs.GetFloat("KaccGyro", 25.0f);
 

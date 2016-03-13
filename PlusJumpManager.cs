@@ -1,26 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MagnetManager : MonoBehaviour {
-    
-    private Renderer renderMagnet;
+public class PlusJumpManager : MonoBehaviour {
+
+    private Renderer renderJump;
 
     // Use this for initialization
-    void Start () {
-        renderMagnet = GetComponent<Renderer>();
+    void Start()
+    {
+        renderJump = GetComponent<Renderer>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         if (World.isPause) return;
 
         if (Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance)
         {
-            renderMagnet.enabled = false;
+            renderJump.enabled = false;
             return;
         }
 
-        renderMagnet.enabled = true;
+        renderJump.enabled = true;
         transform.Rotate(1, 1, 1);
     }
 
@@ -28,12 +30,10 @@ public class MagnetManager : MonoBehaviour {
     {
         if (collider.gameObject.tag == "Cube")
         {
-            World.audioSource.PlayOneShot(World.getMagnetSE);
+            World.audioSource.PlayOneShot(World.getJumpSE);
             CubeEffects.Run.KillAllEffects();
-            CubeManager.effectMagnet = 1;
-            World.sumMagnet++;
-            GameDataManager.Magnet++;
-            GameDataManager.SaveCollection();
+            CubeManager.maxJump = 3;
+            CubeManager.effectPlusJump = 1;
             gameObject.SetActive(false);
             Destroy(gameObject);
         }

@@ -45,6 +45,7 @@ public class EnemyManager : MonoBehaviour {
                 break;
             case "EnemyRotate (UnityEngine.GameObject)":
                 type = Enemy.Rotate;
+                if (isOpposite) animator.SetFloat("Speed", -1);
                 break;
             case "EnemyShot (UnityEngine.GameObject)":
                 type = Enemy.Shot;
