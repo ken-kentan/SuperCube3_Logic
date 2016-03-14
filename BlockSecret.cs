@@ -2,8 +2,8 @@
 using System.Collections;
 
 public class BlockSecret : MonoBehaviour {
-
-    public GameObject objectsSecret;
+    
+    public bool Magnet, Aqua, PlusJump, BigPoint, Point;
     public bool isItemBlock;
 
     private Collider thisCollider;
@@ -29,7 +29,11 @@ public class BlockSecret : MonoBehaviour {
 
         GetComponent<Renderer>().material = World.materialBlockSecret;
 
-        if (objectsSecret != null) objectsSecret.SetActive(true);
+        if (Magnet)        Instantiate(World.Magnet, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+        else if (Aqua)     Instantiate(World.Aqua, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+        else if (PlusJump) Instantiate(World.PlusJump, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+        else if (BigPoint) Instantiate(World.BigPoint, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+        else if (Point)    Instantiate(World.Point, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
 
         if (!isItemBlock)
         {

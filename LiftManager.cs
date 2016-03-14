@@ -12,7 +12,7 @@ public class LiftManager : MonoBehaviour {
     private const float speedX = 300, speedY = 180;
     private float posStart, posEnd, pos, posPrev;
     private bool mode, isOnCube, isPositive;
-    private int cnt;
+    private int cntStopTime;
 
 	// Use this for initialization
 	void Start () {
@@ -100,10 +100,10 @@ public class LiftManager : MonoBehaviour {
 
     void checkError()
     {
-        if(Mathf.Abs(posPrev - pos) < 0.015f && cnt++ > 50)
+        if(Mathf.Abs(posPrev - pos) < 0.015f && cntStopTime++ > 50)
         {
             mode = !mode;
-            cnt = 0;
+            cntStopTime = 0;
         }
         posPrev = pos;
     }

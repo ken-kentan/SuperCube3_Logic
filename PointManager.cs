@@ -26,7 +26,7 @@ public class PointManager : MonoBehaviour {
             return;
         }
 
-        if (CubeManager.effectMagnet > 0 && distanceCube < 9.0f) isMagnet = true;
+        if (CubeManager.effectMagnet > 0 && distanceCube < 11.0f) isMagnet = true;
 
         renderPoint.enabled = true;
         transform.Rotate(1, 1, 1);
