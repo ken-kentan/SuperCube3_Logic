@@ -66,6 +66,7 @@ public class CubeEffects : MonoBehaviour
                 if(CubeManager.effectMagnet < 1000)
                 {
                     rendererCube.material = World.materialMagnet;
+                    lightCube.color = World.colorMagnet;
                 }
                 else if (cntTimerMagnet % 2 == 1)
                 {

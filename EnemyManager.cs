@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyManager : MonoBehaviour {
 
     public GameObject enemyCube;
-    public bool isOpposite;
+    public bool isOpposite, isAllowFly;
     public int cycleShot, timeStandbyDrop;
     public float distanceDrop;
 
@@ -87,7 +87,7 @@ public class EnemyManager : MonoBehaviour {
         {
             case Enemy.Move:
             case Enemy.StaticMove:
-                if (!isOnFloor())
+                if (!isOnFloor() && !isAllowFly)
                 {
                     isFly = true;
                     break;
