@@ -7,7 +7,7 @@ public class World : MonoBehaviour {
 
     public static GameObject Cube, EnemyChieldren, Loading;
     public static AudioSource audioSource;
-    public static AudioClip killEnemySE, getAquaSE, getMagnetSE, pointSE, saveSE, jumpSE, contactSE, damageSE, getJumpSE;
+    public static AudioClip killEnemySE, getAquaSE, getMagnetSE, pointSE, saveSE, jumpSE, contactSE, damageSE, getJumpSE, dropEnemySE;
     public static Color alpha = new Color(0, 0, 0, 0.01f);
     public static Material materialAqua, materialMagnet, materialBlockSecret, materialPlusJump;
     public static float drawDistance;
@@ -44,6 +44,7 @@ public class World : MonoBehaviour {
         contactSE   = Resources.Load("SEs/contact")    as AudioClip;
         damageSE    = Resources.Load("SEs/damage")     as AudioClip;
         getJumpSE   = Resources.Load("SEs/plus_jump")  as AudioClip;
+        dropEnemySE = Resources.Load("SEs/drop_enemy") as AudioClip;
 
         materialAqua        = Resources.Load("Materials/m_aqua")        as Material;
         materialMagnet      = Resources.Load("Materials/m_magnet")      as Material;

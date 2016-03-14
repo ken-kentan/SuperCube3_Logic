@@ -5,14 +5,20 @@ public class EnemyManager : MonoBehaviour {
 
     public GameObject enemyCube;
     public bool isOpposite;
-    public int cycleShot;
+    public int cycleShot, timeStandbyDrop;
+    public float distanceDrop;
+
     private Animator animator;
     private Rigidbody enemyBody;
     private SphereCollider colliderEnemyCube;
     private int cntCyclShot;
     private bool isFirst, isFly;
 
-    private enum Enemy { None, Move, StaticMove, Rotate, Shot };
+    private Vector3 posDropHome;
+    private int cntStayTime;
+    private bool isLockDrop;
+
+    private enum Enemy { None, Move, StaticMove, Rotate, Shot, Drop};
     private Enemy type;
 
     // Use this for initialization
@@ -49,8 +55,22 @@ public class EnemyManager : MonoBehaviour {
                 break;
             case "EnemyShot (UnityEngine.GameObject)":
                 type = Enemy.Shot;
-                cntCyclShot = 0;
+                cntCyclShot = timeStandbyDrop = 0;
                 if (cycleShot == 0) cycleShot = 300;
+                break;
+            case "EnemyStaticDrop (UnityEngine.GameObject)":
+                type = Enemy.Drop;
+                posDropHome = transform.localPosition;
+
+                isLockDrop = true;
+                cntStayTime = 0;
+                if (distanceDrop == 0) distanceDrop = 3.0f;
+                if (timeStandbyDrop == 0) timeStandbyDrop = 20;
+                cntStayTime = timeStandbyDrop;
+
+                enemyBody = enemyCube.GetComponent<Rigidbody>();
+                enemyBody.useGravity = false;
+                enemyBody.constraints = RigidbodyConstraints.FreezeAll;
                 break;
             default:
                 type = Enemy.None;
@@ -93,11 +113,45 @@ public class EnemyManager : MonoBehaviour {
             case Enemy.Shot:
                 if (cntCyclShot++ % cycleShot == 0) Instantiate(World.EnemyChieldren, transform.position, transform.rotation);
                 break;
+            case Enemy.Drop:
+
+                if (Mathf.Abs(posDropHome.x - CubeManager.posX) <= distanceDrop && CubeManager.posY < posDropHome.y && isLockDrop && cntStayTime++ > timeStandbyDrop) {
+                    cntStayTime = 0;
+                    isLockDrop = false;
+                    enemyBody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+                    enemyBody.useGravity = true;
+                }
+
+                if (!isLockDrop && enemyBody.velocity.y > -0.1f && cntStayTime++ > 50)
+                {
+                    enemyBody.useGravity = false;
+
+                    if (transform.localPosition.y >= posDropHome.y)
+                    {
+                        isLockDrop = true;
+                        cntStayTime = 0;
+                        enemyBody.velocity = Vector3.ClampMagnitude(enemyBody.velocity, 0f);
+                        enemyBody.constraints = RigidbodyConstraints.FreezeAll;
+                    }
+                    else {
+                        enemyBody.AddForce(0, 30, 0);
+                    }
+                }
+                break;
         }
         
 
         if (isOverWorld()) Destroy(enemyCube);
         if (isFirst) isFirst = false;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (type == Enemy.Drop)
+        {
+            World.audioSource.PlayOneShot(World.dropEnemySE);
+            Vibration.Vibrate(35);
+        }
     }
 
     void OnTriggerEnter(Collider collider)

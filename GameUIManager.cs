@@ -95,7 +95,7 @@ public class GameUIManager : MonoBehaviour {
 
             if (Time.timeScale != 0)
             {
-                World.audioVolume(0.3f);
+                World.audioVolume(0.2f);
                 enablePause();
                 Paused.SetActive(true);
             }
@@ -241,7 +241,7 @@ public class GameUIManager : MonoBehaviour {
                 break;
             case "Next":
                 int nextScene = int.Parse(World.nameScene) + 1;
-                if (nextScene <= 2)
+                if (nextScene <= 3)
                 {
                     World.Loading.SetActive(true);
                     Loading.RestartLoad();

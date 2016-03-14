@@ -4,21 +4,22 @@ using System.Collections;
 
 public class CubeManager : MonoBehaviour {
 
+    public static Rigidbody cubeBody;
     public static float posX, posY, speedX, speedY, KaccGyro;
     public static int maxJump, life;
     public static int effectAqua, effectMagnet, effectPlusJump;
     public static bool isResetCube, isMotionDead;
-    public static Rigidbody cubeBody;
+
     private static readonly float maxSpeed = 8.0f;
     private static int cntJump, cntMotionDead;
     private static bool isOnFloor, isOnBlock, isOnEnemy, isOnLift;
 
     // Use this for initialization
     void Start() {
+        cubeBody = GetComponent<Rigidbody>();
+
         posX = transform.position.x;
         posY = transform.position.y;
-
-        cubeBody = GetComponent<Rigidbody>();
 
         speedX = cubeBody.velocity.x;
         speedY = cubeBody.velocity.y;
@@ -130,6 +131,7 @@ public class CubeManager : MonoBehaviour {
         {
             cntMotionDead = 0;
             isMotionDead = false;
+            GameUIManager.isJump = false;
             World.Cube.GetComponent<Collider>().isTrigger = false;
             transform.position = World.posReborn;
             isResetCube = true;
