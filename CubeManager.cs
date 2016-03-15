@@ -8,7 +8,7 @@ public class CubeManager : MonoBehaviour {
     public static float posX, posY, speedX, speedY, KaccGyro;
     public static int maxJump, life;
     public static int effectAqua, effectMagnet, effectPlusJump;
-    public static bool isResetCube, isMotionDead;
+    public static bool isResetCube, isMotionDead, isNotStop;
 
     private static readonly float maxSpeed = 8.0f;
     private static int cntJump, cntMotionDead;
@@ -93,7 +93,7 @@ public class CubeManager : MonoBehaviour {
 
     bool isOverWorld()
     {
-        if (posY < -5.0f && !isMotionDead)
+        if (posY < -2.0f && !isMotionDead)
         {
             --life;
             return true;
@@ -103,7 +103,8 @@ public class CubeManager : MonoBehaviour {
 
     void stopCube()
     {
-        cubeBody.velocity = Vector3.ClampMagnitude(cubeBody.velocity, 0f);
+        if(!isNotStop) cubeBody.velocity = Vector3.ClampMagnitude(cubeBody.velocity, 0f);
+        isNotStop = false;
     }
 
     void resetCube()
@@ -145,8 +146,8 @@ public class CubeManager : MonoBehaviour {
         if (collision.gameObject.tag == "Floor" && collision.transform.position.y < posY) isOnFloor = true;
         if (collision.gameObject.tag == "Block" && collision.transform.position.y < posY) isOnBlock = true;
         if (collision.gameObject.tag == "Lift"  && collision.transform.position.y < posY)  isOnLift = true;
-
-        if (collision.gameObject.tag == "Enemy")
+        
+        if (collision.gameObject.tag == "Enemy" && false)
         {
             --life;
             isOnEnemy = true;
