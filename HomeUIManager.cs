@@ -8,11 +8,11 @@ public class HomeUIManager : MonoBehaviour {
     public GameObject parentLoading, btnPlay, bgPlay, btnData, bgData, btnOnline, bgOnline;
     public GameObject LevelSelect, Data, Online;
     public Text textOnlineStatus;
-    public Text textHighScore0, textHighScore1, textHighScore2, textHighScore3;
     public Text textScore, textJump, textClear, textSave, textPoint, textPlusOne, textMagnet, textDead, textKill, textSBlock, textSRoute;
     public Text textUserName;
-    public Button btn1, btn2, btn3;
-    public Image imgBtn1, imgBtn2, imgBtn3;
+    public Text[] textHighScore = new Text[6];
+    public Button[] btn = new Button[6];
+    public Image[] imgBtn = new Image[6];
     public Animator thisAnimator;
 
     private bool isFirst;
@@ -29,40 +29,19 @@ public class HomeUIManager : MonoBehaviour {
 
         textOnlineStatus.color = GPGS.Green;
 
-        if (GameDataManager.GetHighScore("0") != -1) textHighScore0.text = GameDataManager.GetHighScore("0").ToString();
-        if (GameDataManager.GetHighScore("1") != -1) textHighScore1.text = GameDataManager.GetHighScore("1").ToString();
-        if (GameDataManager.GetHighScore("2") != -1) textHighScore2.text = GameDataManager.GetHighScore("2").ToString();
-        if (GameDataManager.GetHighScore("3") != -1) textHighScore3.text = GameDataManager.GetHighScore("3").ToString();
+        for(int i = 0; i < 6; i++) if (GameDataManager.GetHighScore(i.ToString()) != -1) textHighScore[i].text = GameDataManager.GetHighScore(i.ToString()).ToString();
 
         GPGS.Login();
         
         setGameData();
 
         //Button color Init(Level Select)
-        imgBtn1.color = new Color(1, 1, 1, 0);
+        imgBtn[1].color = new Color(1, 1, 1, 0);
 
-        switch (GameDataManager.GetMaxClearedLevel())
+        for (int i = GameDataManager.GetMaxClearedLevel() + 2; i < 6; i++)
         {
-            case -1://defa
-                btn1.enabled = false;
-                btn2.enabled = false;
-                btn3.enabled = false;
-                imgBtn1.color = new Color(0.5f, 0.5f, 0.5f, 1);
-                imgBtn2.color = new Color(0.5f, 0.5f, 0.5f, 1);
-                imgBtn3.color = new Color(0.5f, 0.5f, 0.5f, 1);
-                break;
-            case 0:
-                btn2.enabled = false;
-                btn3.enabled = false;
-                imgBtn2.color = new Color(0.5f, 0.5f, 0.5f, 1);
-                imgBtn3.color = new Color(0.5f, 0.5f, 0.5f, 1);
-                break;
-            case 1:
-                btn3.enabled = false;
-                imgBtn3.color = new Color(0.5f, 0.5f, 0.5f, 1);
-                break;
-            case 2:
-                break;
+            btn[i].enabled = false;
+            imgBtn[i].color = new Color(0.5f, 0.5f, 0.5f, 1);
         }
     }
 
