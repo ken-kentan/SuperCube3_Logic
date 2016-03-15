@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyManager : MonoBehaviour {
 
     public GameObject enemyCube;
-    public bool isOpposite, isAllowFly;
+    public bool isForward, isAllowFly;
     public int cycleShot, timeStandbyDrop;
     public float distanceDrop;
 
@@ -12,7 +12,7 @@ public class EnemyManager : MonoBehaviour {
     private Rigidbody enemyBody;
     private SphereCollider colliderEnemyCube;
     private int cntCyclShot;
-    private bool isFirst, isFly;
+    public bool isFirst, isFly;
 
     private Vector3 posDropHome;
     private int cntStayTime;
@@ -34,7 +34,7 @@ public class EnemyManager : MonoBehaviour {
                 type = Enemy.Move;
                 enemyBody = enemyCube.GetComponent<Rigidbody>();
 
-                if (isOpposite) enemyBody.AddForce(10, 0, 0);
+                if (isForward) enemyBody.AddForce(10, 0, 0);
                 else enemyBody.AddForce(-10, 0, 0);
 
                 isFly = false;
@@ -44,14 +44,14 @@ public class EnemyManager : MonoBehaviour {
                 type = Enemy.StaticMove;
                 enemyBody = enemyCube.GetComponent<Rigidbody>();
 
-                if (isOpposite) enemyBody.AddForce(10, 0, 0);
+                if (isForward) enemyBody.AddForce(10, 0, 0);
                 else enemyBody.AddForce(-10, 0, 0);
 
                 isFly = false;
                 break;
             case "EnemyRotate (UnityEngine.GameObject)":
                 type = Enemy.Rotate;
-                if (isOpposite) animator.SetFloat("Speed", -1);
+                if (!isForward) animator.SetFloat("Speed", -1);
                 break;
             case "EnemyShot (UnityEngine.GameObject)":
                 type = Enemy.Shot;
@@ -92,19 +92,25 @@ public class EnemyManager : MonoBehaviour {
                     isFly = true;
                     break;
                 }
-
-                //Change move direction
-                if (Mathf.Abs(enemyBody.velocity.x) < 0.003f && !isFly)
-                {
-                    isOpposite = !isOpposite;
-                    enemyBody.velocity = Vector3.ClampMagnitude(enemyBody.velocity, 0f);
-                }
-                else if(Mathf.Abs(enemyBody.velocity.x) > 2)
+                else
                 {
                     isFly = false;
                 }
 
-                if (isOpposite) enemyBody.AddForce(10, 0, 0);
+                if(Mathf.Abs(enemyBody.velocity.x) < 0.1f && cntStayTime++ > 10)
+                {
+                    isForward = !isForward;
+                    cntStayTime = 0;
+                }
+
+                //Change move direction
+                if ((isTouchLeft() || isTouchRight()) && !isFly)
+                {
+                    isForward = !isForward;
+                    enemyBody.velocity = Vector3.ClampMagnitude(enemyBody.velocity, 0f);
+                }
+
+                if (isForward) enemyBody.AddForce(10, 0, 0);
                 else            enemyBody.AddForce(-10, 0, 0);
                 break;
             case Enemy.Rotate:
@@ -177,6 +183,16 @@ public class EnemyManager : MonoBehaviour {
     bool isOnFloor()
     {
         return Physics.Raycast(enemyCube.transform.position, new Vector3(0, -0.5f, 0), colliderEnemyCube.radius);
+    }
+
+    bool isTouchLeft()
+    {
+        return Physics.Raycast(enemyCube.transform.position, new Vector3(-0.5f, 0, 0), colliderEnemyCube.radius);
+    }
+
+    bool isTouchRight()
+    {
+        return Physics.Raycast(enemyCube.transform.position, new Vector3( 0.5f, 0, 0), colliderEnemyCube.radius);
     }
 
     bool isOverWorld()
