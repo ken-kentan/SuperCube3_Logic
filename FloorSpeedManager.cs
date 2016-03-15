@@ -49,12 +49,16 @@ public class FloorSpeedManager : MonoBehaviour {
         }
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Cube") CubeManager.isNotStop = true;
+    }
+
     void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.tag == "Cube" && CubeManager.posY >= posY && ((!isBack && CubeManager.speedX < targetSpeed) || (isBack && CubeManager.speedX > targetSpeed)))
         {
             CubeManager.cubeBody.AddForce(forceSpeed, 0, 0);
-            CubeManager.isNotStop = true;
         }
     }
 
