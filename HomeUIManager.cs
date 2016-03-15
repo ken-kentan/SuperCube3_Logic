@@ -36,8 +36,6 @@ public class HomeUIManager : MonoBehaviour {
         setGameData();
 
         //Button color Init(Level Select)
-        imgBtn[1].color = new Color(1, 1, 1, 0);
-
         for (int i = GameDataManager.GetMaxClearedLevel() + 2; i < 6; i++)
         {
             btn[i].enabled = false;

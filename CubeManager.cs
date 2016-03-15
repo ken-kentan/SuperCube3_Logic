@@ -147,7 +147,7 @@ public class CubeManager : MonoBehaviour {
         if (collision.gameObject.tag == "Block" && collision.transform.position.y < posY) isOnBlock = true;
         if (collision.gameObject.tag == "Lift"  && collision.transform.position.y < posY)  isOnLift = true;
         
-        if (collision.gameObject.tag == "Enemy" && false)
+        if (collision.gameObject.tag == "Enemy")
         {
             --life;
             isOnEnemy = true;
