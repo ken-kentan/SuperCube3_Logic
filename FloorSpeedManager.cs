@@ -4,10 +4,10 @@ using System.Collections;
 public class FloorSpeedManager : MonoBehaviour {
     
     public GameObject[] imgArrow = new GameObject[5];
-    public float targetSpeed, animSpeed;
+    public float targetSpeed;
 
     private static readonly float posStart = -0.448f, posEnd = 0.448f;
-    private float posY, forceSpeed;
+    private float posY, forceSpeed, animSpeed;
     private bool isBack;
 
 	// Use this for initialization
@@ -16,7 +16,7 @@ public class FloorSpeedManager : MonoBehaviour {
 
         animSpeed = 0.01f * (forceSpeed/10.0f);
 
-        posY = transform.localPosition.y - 1;
+        posY = transform.localPosition.y + 0.8f;
 
         imgArrow[0].transform.localPosition = new Vector3(posStart, 0, -0.51f);
         imgArrow[1].transform.localPosition = new Vector3(-0.2688f, 0, -0.51f);
@@ -33,6 +33,7 @@ public class FloorSpeedManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (World.isPause) return;
 
         for(int i=0; i < 5; i++)
         {
@@ -50,9 +51,10 @@ public class FloorSpeedManager : MonoBehaviour {
 
     void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == "Cube" && CubeManager.posY > posY && ((!isBack && CubeManager.speedX < targetSpeed) || (isBack && CubeManager.speedX > targetSpeed)))
+        if (collision.gameObject.tag == "Cube" && CubeManager.posY >= posY && ((!isBack && CubeManager.speedX < targetSpeed) || (isBack && CubeManager.speedX > targetSpeed)))
         {
             CubeManager.cubeBody.AddForce(forceSpeed, 0, 0);
+            CubeManager.isNotStop = true;
         }
     }
 
