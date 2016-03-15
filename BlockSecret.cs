@@ -27,6 +27,8 @@ public class BlockSecret : MonoBehaviour {
     {
         if (collision.gameObject.tag != "Cube" || CubeManager.posY > posY) return;
 
+        World.audioSource.PlayOneShot(World.findItemSE);
+
         GetComponent<Renderer>().material = World.materialBlockSecret;
 
         if (Magnet)        Instantiate(World.Magnet, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);

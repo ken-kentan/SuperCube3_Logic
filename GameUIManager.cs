@@ -241,7 +241,7 @@ public class GameUIManager : MonoBehaviour {
                 break;
             case "Next":
                 int nextScene = int.Parse(World.nameScene) + 1;
-                if (nextScene <= 3)
+                if (nextScene <= 4)
                 {
                     World.Loading.SetActive(true);
                     Loading.RestartLoad();

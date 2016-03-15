@@ -95,7 +95,7 @@ public class LiftManager : MonoBehaviour {
 
     void OnCollisionExit(Collision collision)
     {
-        if (isOnCube) isOnCube = false;
+        if (isOnCube && collision.gameObject.tag == "Cube") isOnCube = false;
     }
 
     void checkError()
