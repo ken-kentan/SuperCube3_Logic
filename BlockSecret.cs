@@ -12,20 +12,20 @@ public class BlockSecret : MonoBehaviour {
     // Use this for initialization
     void Start () {
         thisCollider = GetComponent<Collider>();
-        posY = transform.position.y - 1;
+        posY = transform.position.y - 1.0f;
     }
 	
 	// Update is called once per frame
 	void Update () {
         if (isItemBlock) return;
 
-	    if(CubeManager.posY > posY) thisCollider.isTrigger = true;
-        else                        thisCollider.isTrigger = false;
+	    if(CubeManager.posY <= posY && CubeManager.speedY > 0) thisCollider.isTrigger = false;
+        else                        thisCollider.isTrigger = true;
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag != "Cube" || CubeManager.posY > posY) return;
+        if (collision.gameObject.tag != "Cube") return;
 
         World.audioSource.PlayOneShot(World.findItemSE);
 
