@@ -67,7 +67,7 @@ public class GameUIManager : MonoBehaviour {
             World.isPause = true;
             enablePause();
             Clear.SetActive(true);
-            if (World.sumScore == -1)
+            if (World.sumScore == -1) //called at once
             {
                 World.audioVolume(0.0f);
                 World.calcScore();

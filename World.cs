@@ -9,7 +9,7 @@ public class World : MonoBehaviour {
     public static AudioSource audioSource;
     public static AudioClip killEnemySE, getAquaSE, getMagnetSE, pointSE, saveSE, jumpSE, contactSE, damageSE, getJumpSE, dropEnemySE, findItemSE;
     public static Color alpha = new Color(0, 0, 0, 0.01f);
-    public static Material materialAqua, materialMagnet, materialBlockSecret, materialPlusJump;
+    public static Material materialAqua, materialMagnet, materialBlockSecret, materialPlusJump, materialBlack, materialCube;
     public static float drawDistance;
     public static Color colorAqua   = new Color(0, 0.5f, 1, 1),
                         colorMagnet = new Color(0.6f, 1, 0, 1),
@@ -56,6 +56,8 @@ public class World : MonoBehaviour {
         materialMagnet      = Resources.Load("Materials/m_magnet")      as Material;
         materialBlockSecret = Resources.Load("Materials/m_blocksecret") as Material;
         materialPlusJump    = Resources.Load("Materials/m_jump")        as Material;
+        materialBlack       = Resources.Load("Materials/m_black")       as Material;
+        materialCube        = Resources.Load("Materials/m_cube")        as Material;
 
         //Setting data
         isController = (PlayerPrefs.GetInt("isController", 0) != 0);

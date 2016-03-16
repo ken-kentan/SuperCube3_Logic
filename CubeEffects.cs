@@ -6,7 +6,6 @@ public class CubeEffects : MonoBehaviour
 
     public Renderer rendererCube;
     public Light lightCube;
-    public Material materialCube;
     public ParticleSystem particleDead;
 
     public static CubeEffects Run;
@@ -26,7 +25,7 @@ public class CubeEffects : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (World.isPause) return;
+        if (World.isPause || CubeManager.isMotionDead) return;
 
         //Aqua
         if (CubeManager.effectAqua > 0)
@@ -94,9 +93,9 @@ public class CubeEffects : MonoBehaviour
         }
     }
 
-    void ResetEffect()
+    public void ResetEffect()
     {
-        rendererCube.material = materialCube;
+        rendererCube.material = World.materialCube;
         lightCube.color = Color.white;
     }
 
@@ -117,5 +116,8 @@ public class CubeEffects : MonoBehaviour
     {
         particleDead.time = 0.0f;
         particleDead.Play();
+
+        rendererCube.material = World.materialBlack;
+        lightCube.color = Color.black;
     }
 }

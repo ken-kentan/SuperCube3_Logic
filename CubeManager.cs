@@ -4,6 +4,7 @@ using System.Collections;
 
 public class CubeManager : MonoBehaviour {
 
+    public GameObject Camera;
     public static Rigidbody cubeBody;
     public static float posX, posY, speedX, speedY, KaccGyro;
     public static int maxJump, life;
@@ -101,9 +102,9 @@ public class CubeManager : MonoBehaviour {
         return false;
     }
 
-    void stopCube()
+    void stopCube(bool isForce = false)
     {
-        if(!isNotStop) cubeBody.velocity = Vector3.ClampMagnitude(cubeBody.velocity, 0f);
+        if (!isNotStop || isForce) cubeBody.velocity = Vector3.ClampMagnitude(cubeBody.velocity, 0f);
         isNotStop = false;
     }
 
@@ -114,7 +115,7 @@ public class CubeManager : MonoBehaviour {
         Vibration.Vibrate(600);
         GameDataManager.Dead++;
         GameDataManager.SaveEnemy();
-        stopCube();
+        stopCube(true);
         isMotionDead = true;
         isOnEnemy = false;
     }
@@ -126,9 +127,11 @@ public class CubeManager : MonoBehaviour {
         {
             CubeEffects.Run.Dead();
             cubeBody.AddForce(0, 200f, 0);
+
+            Camera.transform.parent = null;
         }
 
-        if(++cntMotionDead > 120)
+        if(++cntMotionDead > 130)
         {
             cntMotionDead = 0;
             isMotionDead = false;
@@ -138,6 +141,13 @@ public class CubeManager : MonoBehaviour {
             isResetCube = true;
 
             if (life < 0) World.isGameOver = true;
+            else
+            {
+                CubeEffects.Run.ResetEffect();
+                
+                Camera.transform.parent = World.Cube.transform;
+                Camera.transform.localPosition = new Vector3(0, 6, -15);
+            }
         }
     }
 
