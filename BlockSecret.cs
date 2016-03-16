@@ -19,13 +19,13 @@ public class BlockSecret : MonoBehaviour {
 	void Update () {
         if (isItemBlock) return;
 
-	    if(CubeManager.posY <= posY && CubeManager.speedY > 0) thisCollider.isTrigger = false;
+	    if(IsTouchCube()) thisCollider.isTrigger = false;
         else                        thisCollider.isTrigger = true;
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag != "Cube") return;
+        if (collision.gameObject.tag != "Cube" || (isItemBlock && !IsTouchCube())) return;
 
         World.audioSource.PlayOneShot(World.findItemSE);
 
@@ -44,5 +44,12 @@ public class BlockSecret : MonoBehaviour {
         }
 
         Destroy(this);
+    }
+
+    bool IsTouchCube()
+    {
+        if (CubeManager.posY <= posY && CubeManager.speedY > 0) return true;
+
+        return false;
     }
 }
