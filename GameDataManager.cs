@@ -34,10 +34,6 @@ public class GameDataManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (World.isPause || !GPGS.isLogin) return;
-
-        //TODO 呼び出し回数を減らす
-        if (Jump >= 100) GPGS.Achievements(GPGSids.achievement_jumper);
 	}
 
     public static int GetHighScore(string stageLevel)
@@ -72,6 +68,8 @@ public class GameDataManager : MonoBehaviour {
         PlayerPrefs.SetInt("totalClear", Clear);
         PlayerPrefs.SetInt("totalSave",   Save);
         PlayerPrefs.Save();
+
+        Achievement(0);
     }
 
     public static void SaveCollection()
@@ -94,6 +92,58 @@ public class GameDataManager : MonoBehaviour {
         PlayerPrefs.SetInt("secretBlock", SecretBlock);
         PlayerPrefs.SetInt("secretRoute", SecretRoute);
         PlayerPrefs.Save();
+    }
+
+    public static void Achievement(int type)
+    {
+        if (!GPGS.isLogin) return;
+
+        switch (type)
+        {
+            case 0://Total
+                if (Jump >= 10000) GPGS.Achievements(GPGSids.achievement_aircraft);
+                else if (Jump >= 1000) GPGS.Achievements(GPGSids.achievement_bird);
+                else if (Jump >= 100) GPGS.Achievements(GPGSids.achievement_jumper);
+
+                if (Clear >= 20) GPGS.Achievements(GPGSids.achievement_20_clear);
+                else if (Clear >= 10) GPGS.Achievements(GPGSids.achievement_10_clear);
+                else if (Clear >= 5) GPGS.Achievements(GPGSids.achievement_5_clear);
+                break;
+            case 1://Collection
+                if (Point >= 10000) GPGS.Achievements(GPGSids.achievement_point_collector);
+                else if (Point >= 1000) GPGS.Achievements(GPGSids.achievement_point_geek);
+                else if (Point >= 500) GPGS.Achievements(GPGSids.achievement_point_love_3);
+
+                if (Aqua >= 100) GPGS.Achievements(GPGSids.achievement_1_collector);
+                else if (Aqua >= 50) GPGS.Achievements(GPGSids.achievement_1_geek);
+                else if (Aqua >= 10) GPGS.Achievements(GPGSids.achievement_1_love_3);
+
+                if (Magnet >= 100) GPGS.Achievements(GPGSids.achievement_magnet_monster);
+                else if (Magnet >= 50) GPGS.Achievements(GPGSids.achievement_magnet_man);
+                else if (Magnet >= 10) GPGS.Achievements(GPGSids.achievement_magnet_cube);
+                break;
+            case -1://All
+                if (Jump >= 10000) GPGS.Achievements(GPGSids.achievement_aircraft);
+                if (Jump >= 1000) GPGS.Achievements(GPGSids.achievement_bird);
+                if (Jump >= 100) GPGS.Achievements(GPGSids.achievement_jumper);
+
+                if (Clear >= 20) GPGS.Achievements(GPGSids.achievement_20_clear);
+                if (Clear >= 10) GPGS.Achievements(GPGSids.achievement_10_clear);
+                if (Clear >= 5) GPGS.Achievements(GPGSids.achievement_5_clear);
+
+                if (Point >= 10000) GPGS.Achievements(GPGSids.achievement_point_collector);
+                if (Point >= 1000) GPGS.Achievements(GPGSids.achievement_point_geek);
+                if (Point >= 500) GPGS.Achievements(GPGSids.achievement_point_love_3);
+
+                if (Aqua >= 100) GPGS.Achievements(GPGSids.achievement_1_collector);
+                else if (Aqua >= 50) GPGS.Achievements(GPGSids.achievement_1_geek);
+                else if (Aqua >= 10) GPGS.Achievements(GPGSids.achievement_1_love_3);
+
+                if (Magnet >= 100) GPGS.Achievements(GPGSids.achievement_magnet_monster);
+                else if (Magnet >= 50) GPGS.Achievements(GPGSids.achievement_magnet_man);
+                else if (Magnet >= 10) GPGS.Achievements(GPGSids.achievement_magnet_cube);
+                break;
+        }
     }
 
     public static void CheckUUID()
