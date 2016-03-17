@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnemyManager : MonoBehaviour {
 
-    public GameObject enemyCube;
+    public GameObject enemyCube, enemyParticle;
     public bool isForward, isAllowFly;
     public int cycleShot, timeStandbyDrop;
     public float distanceDrop;
@@ -64,7 +64,7 @@ public class EnemyManager : MonoBehaviour {
 
                 isLockDrop = true;
                 cntStayTime = 0;
-                if (distanceDrop == 0) distanceDrop = 3.0f;
+                if (distanceDrop == 0) distanceDrop = 6.0f;
                 if (timeStandbyDrop == 0) timeStandbyDrop = 20;
                 cntStayTime = timeStandbyDrop;
 
@@ -76,10 +76,19 @@ public class EnemyManager : MonoBehaviour {
                 type = Enemy.None;
                 break;
         }
+
+        if (isAllowFly)
+        {
+            enemyParticle = Instantiate(World.EnemyPatricle);
+            enemyParticle.transform.parent = enemyCube.transform;
+            enemyParticle.SetActive(false);
+        }
     }
 	
 	// Update is called once per frame
 	void Update () {
+        if (isOverWorld()) Destroy(enemyCube);
+
         //return when over distance
         if (World.isPause || type == Enemy.None || (isFirst && Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance - 3)) return;
 
@@ -95,6 +104,21 @@ public class EnemyManager : MonoBehaviour {
                 else
                 {
                     isFly = false;
+                }
+
+                if (isAllowFly)
+                {
+                    enemyParticle.SetActive(true);
+                    if (!isForward)
+                    {
+                        enemyParticle.transform.localPosition = new Vector3(0.5f, 0, 0);
+                        enemyParticle.transform.rotation = Quaternion.Euler(0, 90, 0);
+                    }
+                    else
+                    {
+                        enemyParticle.transform.localPosition = new Vector3(-0.5f, 0, 0);
+                        enemyParticle.transform.rotation = Quaternion.Euler(0, -90, 0);
+                    }
                 }
 
                 if(Mathf.Abs(enemyBody.velocity.x) < 0.1f && cntStayTime++ > 10)
@@ -120,6 +144,7 @@ public class EnemyManager : MonoBehaviour {
                 if (cntCyclShot++ % cycleShot == 0) Instantiate(World.EnemyChieldren, transform.position, transform.rotation);
                 break;
             case Enemy.Drop:
+                if (CubeManager.isResetCube) enemyBody.transform.localPosition = posDropHome;
 
                 if (Mathf.Abs(posDropHome.x - CubeManager.posX) <= distanceDrop && CubeManager.posY < posDropHome.y && isLockDrop && cntStayTime++ > timeStandbyDrop) {
                     cntStayTime = 0;
@@ -128,7 +153,7 @@ public class EnemyManager : MonoBehaviour {
                     enemyBody.useGravity = true;
                 }
 
-                if (!isLockDrop && enemyBody.velocity.y > -0.1f && cntStayTime++ > 50)
+                if (!isLockDrop && ((enemyBody.velocity.y > -0.1f && cntStayTime++ > 50) || enemyBody.transform.localPosition.y < 0))
                 {
                     enemyBody.useGravity = false;
 
@@ -140,14 +165,12 @@ public class EnemyManager : MonoBehaviour {
                         enemyBody.constraints = RigidbodyConstraints.FreezeAll;
                     }
                     else {
+                        if(enemyBody.velocity.y < 0) enemyBody.velocity = Vector3.ClampMagnitude(enemyBody.velocity, 0f);
                         enemyBody.AddForce(0, 30, 0);
                     }
                 }
                 break;
         }
-        
-
-        if (isOverWorld()) Destroy(enemyCube);
         if (isFirst) isFirst = false;
     }
 
