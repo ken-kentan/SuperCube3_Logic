@@ -5,12 +5,12 @@ using System.Collections;
 public class GameDataManager : MonoBehaviour {
 
     private static int Score, Jump, Clear, Save;
-    private static int Point, Aqua, Magnet;
+    private static int Point, Aqua, Magnet, PlusJump;
     private static int Kill, Dead;
     private static int SecretBlock, SecretRoute;
     public static string UUID, UUIDinfo;
 
-    public enum Data {All=-1, Score, Jump, Clear, Save, Point, Aqua, Magnet, Kill, Dead, SecretBlock, SecretRoute };
+    public enum Data {All=-1, Score, Jump, Clear, Save, Point, Aqua, Magnet, PlusJump, Kill, Dead, SecretBlock, SecretRoute };
     private Data type;
 
     // Use this for initialization
@@ -22,9 +22,10 @@ public class GameDataManager : MonoBehaviour {
         Save  = PlayerPrefs.GetInt("totalSave",  0);
 
         //Collection
-        Point  = PlayerPrefs.GetInt("collectPoint",  0);
-        Aqua   = PlayerPrefs.GetInt("collectAqua",   0);
-        Magnet = PlayerPrefs.GetInt("collectMagnet", 0);
+        Point    = PlayerPrefs.GetInt("collectPoint",    0);
+        Aqua     = PlayerPrefs.GetInt("collectAqua",     0);
+        Magnet   = PlayerPrefs.GetInt("collectMagnet",   0);
+        PlusJump = PlayerPrefs.GetInt("collectPlusJump", 0);
 
         //Enemy
         Kill = PlayerPrefs.GetInt("enemyKill", 0);
@@ -49,6 +50,7 @@ public class GameDataManager : MonoBehaviour {
         PlayerPrefs.SetInt("collectPoint", Point);
         PlayerPrefs.SetInt("collectAqua", Aqua);
         PlayerPrefs.SetInt("collectMagnet", Magnet);
+        PlayerPrefs.SetInt("collectPlusJump", PlusJump);
 
         PlayerPrefs.SetInt("enemyKill", Kill);
         PlayerPrefs.SetInt("enemyDead", Dead);
@@ -79,6 +81,8 @@ public class GameDataManager : MonoBehaviour {
                 return Aqua;
             case Data.Magnet:
                 return Magnet;
+            case Data.PlusJump:
+                return PlusJump;
             case Data.Dead:
                 return Dead;
             case Data.Kill:
@@ -138,6 +142,9 @@ public class GameDataManager : MonoBehaviour {
             case Data.Magnet:
                 Magnet += value;
                 break;
+            case Data.PlusJump:
+                PlusJump += value;
+                break;
             case Data.Dead:
                 Dead += value;
                 break;
@@ -189,6 +196,8 @@ public class GameDataManager : MonoBehaviour {
                 if (Magnet >= 100) GPGS.Achievements(GPGSids.achievement_magnet_monster);
                 else if (Magnet >= 50) GPGS.Achievements(GPGSids.achievement_magnet_man);
                 else if (Magnet >= 10) GPGS.Achievements(GPGSids.achievement_magnet_cube);
+                break;
+            case Data.PlusJump:
                 break;
             case Data.All://All
                 if (Jump >= 10000) GPGS.Achievements(GPGSids.achievement_aircraft);
