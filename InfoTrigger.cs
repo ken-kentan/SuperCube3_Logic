@@ -6,8 +6,6 @@ public class InfoTrigger : MonoBehaviour {
     public GameObject thisTrigger;
     public int modeMsg;
 
-    private static GameUIManager GameUI;
-
     // Use this for initialization
     void Start () {
 	
@@ -18,16 +16,11 @@ public class InfoTrigger : MonoBehaviour {
 	
 	}
 
-    public static void setInstance(GameUIManager gameUI)
-    {
-        GameUI = gameUI;
-    }
-
     void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.tag == "Cube")
         {
-            GameUI.showInfo(Msg.Info[Msg.typeLang, modeMsg]);
+            GameUIManager.thisGameUI.showInfo(Msg.Info[Msg.typeLang, modeMsg]);
             World.isPause = true;
             Time.timeScale = 0;
             Destroy(thisTrigger);

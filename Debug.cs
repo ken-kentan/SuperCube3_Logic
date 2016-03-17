@@ -9,6 +9,7 @@ public class Debug : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        parent.SetActive(false);
     }
 	
 	// Update is called once per frame

@@ -5,10 +5,13 @@ using System.Collections;
 
 public class GameUIManager : MonoBehaviour {
 
+    public static GameUIManager thisGameUI;
+
     public Text Hint, Score, infoRevival, infoGPGS, cubeUnits, points, textFPS, textInfo;
     public GameObject Paused, GameOver, Clear, Controller, FPS, Info, New;
     public GameObject btnRetry, btnRevival, btnHome;
     public UnityStandardAssets.ImageEffects.BlurOptimized Blur;
+    public Button btnLeft, btnRight, btnJump;
 
     public static bool isLeft, isRight, isJump, isInfo;
     
@@ -20,6 +23,11 @@ public class GameUIManager : MonoBehaviour {
     //fps
     private int frameCount;
     private float prevTime;
+
+    void Awake()
+    {
+        thisGameUI = this;
+    }
 
     // Use this for initialization
     void Start () {
@@ -46,10 +54,6 @@ public class GameUIManager : MonoBehaviour {
 
         infoGPGS.text = Msg.GPGSneedLogin[Msg.typeLang];
         infoRevival.text = Msg.Revival[Msg.typeLang];
-
-        AdColonyAndroid.setInstance(this);
-        GPGS.setInstance(this);
-        InfoTrigger.setInstance(this);
     }
 	
 	// Update is called once per frame
@@ -164,17 +168,24 @@ public class GameUIManager : MonoBehaviour {
         if (cntDelay > 20) cntDelay = 0;
     }
 
+    public void SetController(bool enable = true)
+    {
+        if(World.isController) btnLeft.enabled = btnRight.enabled = btnJump.enabled = enable;
+    }
+
     void enablePause()
     {
         modeAnimBlur = 1;
         if (World.isBlur) Blur.enabled = true;
         Time.timeScale = 0;
+        SetController(false);
     }
 
     void disablePause()
     {
         modeAnimBlur = 2;
         Time.timeScale = 1;
+        SetController();
     }
 
     void disableRevival()

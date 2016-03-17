@@ -65,7 +65,7 @@ public class Loading : MonoBehaviour {
         World.isPause   = false;
         isLoading = false;
         thisParent.SetActive(false);
-        //Destroy(thisParent);
+        GameUIManager.thisGameUI.SetController();
     }
 
     public static void RestartLoad()
