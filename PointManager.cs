@@ -50,15 +50,14 @@ public class PointManager : MonoBehaviour {
             if (isBig)
             {
                 World.sumPoint += 10;
-                GameDataManager.Point += 10;
+                GameDataManager.AddDataValue(GameDataManager.Data.Point, 10);
             }
             else {
                 World.sumPoint++;
-                GameDataManager.Point++;
+                GameDataManager.AddDataValue(GameDataManager.Data.Point);
             }
 
             World.audioSource.PlayOneShot(World.pointSE);
-            GameDataManager.SaveCollection();
             this.gameObject.SetActive(false);
             Destroy(gameObject);
         }

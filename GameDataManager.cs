@@ -4,14 +4,17 @@ using System.Collections;
 
 public class GameDataManager : MonoBehaviour {
 
-    public static int Score, Jump, Clear, Save;
-    public static int Point, Aqua, Magnet;
-    public static int Kill, Dead;
-    public static int SecretBlock, SecretRoute;
+    private static int Score, Jump, Clear, Save;
+    private static int Point, Aqua, Magnet;
+    private static int Kill, Dead;
+    private static int SecretBlock, SecretRoute;
     public static string UUID, UUIDinfo;
 
-	// Use this for initialization
-	void Awake() {
+    public enum Data {All=-1, Score, Jump, Clear, Save, Point, Aqua, Magnet, Kill, Dead, SecretBlock, SecretRoute };
+    private Data type;
+
+    // Use this for initialization
+    void Awake() {
         //Total
         Score = PlayerPrefs.GetInt("totalScore", 0);
         Jump  = PlayerPrefs.GetInt("totalJump",  0);
@@ -36,6 +39,60 @@ public class GameDataManager : MonoBehaviour {
     void Update() {
 	}
 
+    void OnDestroy()
+    {
+        PlayerPrefs.SetInt("totalScore", Score);
+        PlayerPrefs.SetInt("totalJump", Jump);
+        PlayerPrefs.SetInt("totalClear", Clear);
+        PlayerPrefs.SetInt("totalSave", Save);
+
+        PlayerPrefs.SetInt("collectPoint", Point);
+        PlayerPrefs.SetInt("collectAqua", Aqua);
+        PlayerPrefs.SetInt("collectMagnet", Magnet);
+
+        PlayerPrefs.SetInt("enemyKill", Kill);
+        PlayerPrefs.SetInt("enemyDead", Dead);
+
+        PlayerPrefs.SetInt("secretBlock", SecretBlock);
+        PlayerPrefs.SetInt("secretRoute", SecretRoute);
+
+        PlayerPrefs.Save();
+
+        UnityEngine.Debug.Log("Save success.");
+    }
+
+    public static int Get(Data typeData)
+    {
+        switch (typeData)
+        {
+            case Data.Score:
+                return Score;
+            case Data.Jump:
+                return Jump;
+            case Data.Clear:
+                return Clear;
+            case Data.Save:
+                return Save;
+            case Data.Point:
+                return Point;
+            case Data.Aqua:
+                return Aqua;
+            case Data.Magnet:
+                return Magnet;
+            case Data.Dead:
+                return Dead;
+            case Data.Kill:
+                return Kill;
+            case Data.SecretBlock:
+                return SecretBlock;
+            case Data.SecretRoute:
+                return SecretRoute;
+            default:
+                UnityEngine.Debug.LogError("Data:" + typeData + " is not exist.");
+                return -1;
+        }
+    }
+
     public static int GetHighScore(string stageLevel)
     {
         return PlayerPrefs.GetInt("scoreHigh_" + stageLevel, -1);
@@ -56,73 +113,84 @@ public class GameDataManager : MonoBehaviour {
         return false;
     }
 
+    public static void AddDataValue(Data typeData, int value = 1)
+    {
+        switch (typeData)
+        {
+            case Data.Score:
+                Score += value;
+                break;
+            case Data.Jump:
+                Jump += value;
+                break;
+            case Data.Clear:
+                Clear += value;
+                break;
+            case Data.Save:
+                Save += value;
+                break;
+            case Data.Point:
+                Point += value;
+                break;
+            case Data.Aqua:
+                Aqua += value;
+                break;
+            case Data.Magnet:
+                Magnet += value;
+                break;
+            case Data.Dead:
+                Dead += value;
+                break;
+            case Data.Kill:
+                Kill += value;
+                break;
+            case Data.SecretBlock:
+                SecretBlock += value;
+                break;
+            case Data.SecretRoute:
+                SecretRoute += value;
+                break;
+        }
+        Achievements(typeData);
+    }
+
     public static void SetMaxClearedLevel(int stageLevel)
     {
         if (stageLevel > GetMaxClearedLevel()) PlayerPrefs.SetInt("clearedMaxLevel", stageLevel);
     }
 
-    public static void SaveTotal()
-    {
-        PlayerPrefs.SetInt("totalScore", Score);
-        PlayerPrefs.SetInt("totalJump",   Jump);
-        PlayerPrefs.SetInt("totalClear", Clear);
-        PlayerPrefs.SetInt("totalSave",   Save);
-        PlayerPrefs.Save();
-
-        Achievement(0);
-    }
-
-    public static void SaveCollection()
-    {
-        PlayerPrefs.SetInt("collectPoint",   Point);
-        PlayerPrefs.SetInt("collectAqua",     Aqua);
-        PlayerPrefs.SetInt("collectMagnet", Magnet);
-        PlayerPrefs.Save();
-    }
-
-    public static void SaveEnemy()
-    {
-        PlayerPrefs.SetInt("enemyKill", Kill);
-        PlayerPrefs.SetInt("enemyDead", Dead);
-        PlayerPrefs.Save();
-    }
-
-    public static void SaveSecret()
-    {
-        PlayerPrefs.SetInt("secretBlock", SecretBlock);
-        PlayerPrefs.SetInt("secretRoute", SecretRoute);
-        PlayerPrefs.Save();
-    }
-
-    public static void Achievement(int type)
+    static void Achievements(Data typeData)
     {
         if (!GPGS.isLogin) return;
 
-        switch (type)
+        switch (typeData)
         {
-            case 0://Total
+            case Data.Jump://Total
                 if (Jump >= 10000) GPGS.Achievements(GPGSids.achievement_aircraft);
                 else if (Jump >= 1000) GPGS.Achievements(GPGSids.achievement_bird);
                 else if (Jump >= 100) GPGS.Achievements(GPGSids.achievement_jumper);
-
+                break;
+            case Data.Clear:
                 if (Clear >= 20) GPGS.Achievements(GPGSids.achievement_20_clear);
                 else if (Clear >= 10) GPGS.Achievements(GPGSids.achievement_10_clear);
                 else if (Clear >= 5) GPGS.Achievements(GPGSids.achievement_5_clear);
                 break;
-            case 1://Collection
+            case Data.Point:
                 if (Point >= 10000) GPGS.Achievements(GPGSids.achievement_point_collector);
                 else if (Point >= 1000) GPGS.Achievements(GPGSids.achievement_point_geek);
                 else if (Point >= 500) GPGS.Achievements(GPGSids.achievement_point_love_3);
-
+                break;
+            case Data.Aqua:
                 if (Aqua >= 100) GPGS.Achievements(GPGSids.achievement_1_collector);
                 else if (Aqua >= 50) GPGS.Achievements(GPGSids.achievement_1_geek);
                 else if (Aqua >= 10) GPGS.Achievements(GPGSids.achievement_1_love_3);
-
+                break;
+            case Data.Magnet:
                 if (Magnet >= 100) GPGS.Achievements(GPGSids.achievement_magnet_monster);
                 else if (Magnet >= 50) GPGS.Achievements(GPGSids.achievement_magnet_man);
                 else if (Magnet >= 10) GPGS.Achievements(GPGSids.achievement_magnet_cube);
                 break;
-            case -1://All
+            case Data.All://All
                 if (Jump >= 10000) GPGS.Achievements(GPGSids.achievement_aircraft);
                 if (Jump >= 1000) GPGS.Achievements(GPGSids.achievement_bird);
                 if (Jump >= 100) GPGS.Achievements(GPGSids.achievement_jumper);
@@ -136,12 +204,15 @@ public class GameDataManager : MonoBehaviour {
                 if (Point >= 500) GPGS.Achievements(GPGSids.achievement_point_love_3);
 
                 if (Aqua >= 100) GPGS.Achievements(GPGSids.achievement_1_collector);
-                else if (Aqua >= 50) GPGS.Achievements(GPGSids.achievement_1_geek);
-                else if (Aqua >= 10) GPGS.Achievements(GPGSids.achievement_1_love_3);
+                if (Aqua >= 50) GPGS.Achievements(GPGSids.achievement_1_geek);
+                if (Aqua >= 10) GPGS.Achievements(GPGSids.achievement_1_love_3);
 
                 if (Magnet >= 100) GPGS.Achievements(GPGSids.achievement_magnet_monster);
-                else if (Magnet >= 50) GPGS.Achievements(GPGSids.achievement_magnet_man);
-                else if (Magnet >= 10) GPGS.Achievements(GPGSids.achievement_magnet_cube);
+                if (Magnet >= 50) GPGS.Achievements(GPGSids.achievement_magnet_man);
+                if (Magnet >= 10) GPGS.Achievements(GPGSids.achievement_magnet_cube);
+                break;
+            default:
+                UnityEngine.Debug.Log("Data:" + typeData + " is not Achi data.");
                 break;
         }
     }

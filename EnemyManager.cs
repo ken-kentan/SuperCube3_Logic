@@ -168,8 +168,7 @@ public class EnemyManager : MonoBehaviour {
         {
             World.audioSource.PlayOneShot(World.killEnemySE);
             World.sumKill++;
-            GameDataManager.Kill++;
-            GameDataManager.SaveEnemy();
+            GameDataManager.AddDataValue(GameDataManager.Data.Kill);
             enemyCube.tag = "Untagged";
             CubeManager.cubeBody.velocity = Vector3.ClampMagnitude(CubeManager.cubeBody.velocity, 0f);
             CubeManager.cubeBody.AddForce(0, 200, 0);

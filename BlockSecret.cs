@@ -39,8 +39,7 @@ public class BlockSecret : MonoBehaviour {
 
         if (!isItemBlock)
         {
-            GameDataManager.SecretBlock++;
-            GameDataManager.SaveSecret();
+            GameDataManager.AddDataValue(GameDataManager.Data.SecretBlock);
         }
 
         Destroy(this);

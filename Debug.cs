@@ -19,7 +19,8 @@ public class Debug : MonoBehaviour {
             "\nLife = " + CubeManager.life + "\nmodeEffect = " + CubeManager.effectAqua + "," + CubeManager.effectMagnet + "," + CubeManager.effectPlusJump +
             "\n\nWorld:\nsumPoint = " + World.sumPoint + "\nsumJump = " + World.sumJump + "\nsumDead = " + World.sumDead + "\nsumKill = " + World.sumKill +
             "\nsumAqua = " + World.sumAqua + "\nsumMagnet = " + World.sumMagnet +
-            "\n\nGameData:\nScore = " + GameDataManager.Score + "\nJump = " + GameDataManager.Jump + "\nPoint = " + GameDataManager.Point + "\nDead = " + GameDataManager.Dead;
+            "\n\nGameData:\nScore = " + GameDataManager.Get(GameDataManager.Data.Score) + "\nJump = " + GameDataManager.Get(GameDataManager.Data.Jump) +
+            "\nPoint = " + GameDataManager.Get(GameDataManager.Data.Point) + "\nDead = " + GameDataManager.Get(GameDataManager.Data.Dead);
     }
 
     public static void Log(string str)

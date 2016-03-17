@@ -70,20 +70,20 @@ public class HomeUIManager : MonoBehaviour {
 
     void setGameData()
     {
-        textScore.text = GameDataManager.Score.ToString();
-        textJump.text  = GameDataManager.Jump.ToString();
-        textClear.text = GameDataManager.Clear.ToString();
-        textSave.text  = GameDataManager.Save.ToString();
+        textScore.text = GameDataManager.Get(GameDataManager.Data.Score).ToString();
+        textJump.text  = GameDataManager.Get(GameDataManager.Data.Jump).ToString();
+        textClear.text = GameDataManager.Get(GameDataManager.Data.Clear).ToString();
+        textSave.text  = GameDataManager.Get(GameDataManager.Data.Save).ToString();
 
-        textPoint.text   = GameDataManager.Point.ToString();
-        textPlusOne.text = GameDataManager.Aqua.ToString();
-        textMagnet.text  = GameDataManager.Magnet.ToString();
+        textPoint.text   = GameDataManager.Get(GameDataManager.Data.Point).ToString();
+        textPlusOne.text = GameDataManager.Get(GameDataManager.Data.Aqua).ToString();
+        textMagnet.text  = GameDataManager.Get(GameDataManager.Data.Magnet).ToString();
 
-        textDead.text = GameDataManager.Dead.ToString();
-        textKill.text = GameDataManager.Kill.ToString();
+        textDead.text = GameDataManager.Get(GameDataManager.Data.Dead).ToString();
+        textKill.text = GameDataManager.Get(GameDataManager.Data.Kill).ToString();
 
-        textSBlock.text = GameDataManager.SecretBlock.ToString();
-        textSRoute.text = GameDataManager.SecretRoute.ToString();
+        textSBlock.text = GameDataManager.Get(GameDataManager.Data.SecretBlock).ToString();
+        textSRoute.text = GameDataManager.Get(GameDataManager.Data.SecretRoute).ToString();
     }
 
     public void OnClick(string button)

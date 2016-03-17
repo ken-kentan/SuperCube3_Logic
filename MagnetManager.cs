@@ -32,8 +32,7 @@ public class MagnetManager : MonoBehaviour {
             CubeEffects.Run.KillAllEffects();
             CubeManager.effectMagnet = 1;
             World.sumMagnet++;
-            GameDataManager.Magnet++;
-            GameDataManager.SaveCollection();
+            GameDataManager.AddDataValue(GameDataManager.Data.Magnet);
             gameObject.SetActive(false);
             Destroy(gameObject);
         }
