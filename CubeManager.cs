@@ -138,22 +138,20 @@ public class CubeManager : MonoBehaviour {
             transform.position = World.posReborn;
             isResetCube = true;
 
+            CubeEffects.Run.ResetEffect();
+
+            Camera.transform.parent = World.Cube.transform;
+            Camera.transform.localPosition = new Vector3(0, 6, -15);
+
             if (life < 0) World.isGameOver = true;
-            else
-            {
-                CubeEffects.Run.ResetEffect();
-                
-                Camera.transform.parent = World.Cube.transform;
-                Camera.transform.localPosition = new Vector3(0, 6, -15);
-            }
         }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Floor" && collision.transform.position.y < posY) isOnFloor = true;
-        if (collision.gameObject.tag == "Block" && collision.transform.position.y < posY) isOnBlock = true;
-        if (collision.gameObject.tag == "Lift"  && collision.transform.position.y < posY)  isOnLift = true;
+        if (collision.gameObject.tag == "Floor" && collision.transform.position.y < posY + 0.7f) isOnFloor = true;
+        if (collision.gameObject.tag == "Block" && collision.transform.position.y < posY + 0.7f) isOnBlock = true;
+        if (collision.gameObject.tag == "Lift"  && collision.transform.position.y < posY + 0.7f)  isOnLift = true;
         
         if (collision.gameObject.tag == "Enemy")
         {
