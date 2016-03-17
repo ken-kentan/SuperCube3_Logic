@@ -5,14 +5,13 @@ using System.Collections;
 public class Loading : MonoBehaviour {
 
     public GameObject thisParent, imgLoading;
-    public static bool isHome;
+    public static bool isHome, isLoading;
 
     private static int frameCount, frameSum;
     private float prevTime, fps;
 
     private static GameObject staticImgLoading;
     private static float angle;
-    private static bool isLoading;
 
     // Use this for initialization
     void Start () {

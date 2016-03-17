@@ -296,6 +296,8 @@ public class GameUIManager : MonoBehaviour {
 
     public void OnPressJump(bool isPress)
     {
+        if (Loading.isLoading) return;
+
         if (isLock)
         {
             if (!isPress) isLock = false;

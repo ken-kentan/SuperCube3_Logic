@@ -8,7 +8,7 @@ public class HomeUIManager : MonoBehaviour {
     public GameObject parentLoading, btnPlay, bgPlay, btnData, bgData, btnOnline, bgOnline;
     public GameObject LevelSelect, Data, Online;
     public Text textOnlineStatus;
-    public Text textScore, textJump, textClear, textSave, textPoint, textPlusOne, textMagnet, textDead, textKill, textSBlock, textSRoute;
+    public Text textScore, textJump, textClear, textSave, textPoint, textPlusOne, textMagnet, textPlusJump, textDead, textKill, textSBlock, textSRoute;
     public Text textUserName;
     public Text[] textHighScore = new Text[6];
     public Button[] btn = new Button[6];
@@ -75,9 +75,10 @@ public class HomeUIManager : MonoBehaviour {
         textClear.text = GameDataManager.Get(GameDataManager.Data.Clear).ToString();
         textSave.text  = GameDataManager.Get(GameDataManager.Data.Save).ToString();
 
-        textPoint.text   = GameDataManager.Get(GameDataManager.Data.Point).ToString();
-        textPlusOne.text = GameDataManager.Get(GameDataManager.Data.Aqua).ToString();
-        textMagnet.text  = GameDataManager.Get(GameDataManager.Data.Magnet).ToString();
+        textPoint.text    = GameDataManager.Get(GameDataManager.Data.Point).ToString();
+        textPlusOne.text  = GameDataManager.Get(GameDataManager.Data.Aqua).ToString();
+        textMagnet.text   = GameDataManager.Get(GameDataManager.Data.Magnet).ToString();
+        textPlusJump.text = GameDataManager.Get(GameDataManager.Data.PlusJump).ToString();
 
         textDead.text = GameDataManager.Get(GameDataManager.Data.Dead).ToString();
         textKill.text = GameDataManager.Get(GameDataManager.Data.Kill).ToString();
