@@ -155,7 +155,7 @@ public class CubeManager : MonoBehaviour {
         if (collision.gameObject.tag == "Block" && collision.transform.position.y < posY + 0.7f) isOnBlock = true;
         if (collision.gameObject.tag == "Lift"  && collision.transform.position.y < posY + 0.7f)  isOnLift = true;
         
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy" && !isWarpLock)
         {
             --life;
             isOnEnemy = true;
@@ -173,5 +173,11 @@ public class CubeManager : MonoBehaviour {
         if (isOnFloor) isOnFloor = false;
         if (isOnBlock) isOnBlock = false;
         if (isOnLift ) isOnLift  = false;
+    }
+
+    public static void UpdatePos()
+    {
+        posX = World.Cube.transform.position.x;
+        posY = World.Cube.transform.position.y;
     }
 }

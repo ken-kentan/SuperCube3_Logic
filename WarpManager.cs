@@ -7,7 +7,8 @@ public class WarpManager : MonoBehaviour {
     public float animY;
 
     private Vector3 pos;
-    private int mode;//0:None 1:Trans 2:Import
+    private enum Mode { None, Import, Spawn};
+    private Mode mode;
     private bool isEndMotion;
 
 	// Use this for initialization
@@ -16,7 +17,7 @@ public class WarpManager : MonoBehaviour {
 
         pos = transform.localPosition;
 
-        mode = 0;
+        mode = Mode.None;
         animY = 0;
     }
 	
@@ -26,23 +27,25 @@ public class WarpManager : MonoBehaviour {
 
         switch (mode)
         {
-            case 1:
+            case Mode.Import:
                 MotionImport();
                 break;
-            case 2:
-                MotionTransport();
+            case Mode.Spawn:
+                MotionSpawn();
                 break;
         }
 	}
 
     void OnTriggerEnter(Collider collider)
     {
+        if (CubeManager.isMotionDead) return;
+
         if (collider.gameObject.tag == "Cube" && mode == 0)
         {
             CubeManager.isWarpLock = true;
             animY = 0.5f;
 
-            mode = 1;
+            mode = Mode.Import;
         }
     }
 
@@ -55,12 +58,13 @@ public class WarpManager : MonoBehaviour {
             World.Cube.transform.position = Target.pos;
             mode = 0;
 
-            Target.mode = 2;
-            Target.animY = -1;
+            Target.mode = Mode.Spawn;
+            Target.animY = -1.0f;
+            CubeManager.UpdatePos();
         }
     }
 
-    void MotionTransport()
+    void MotionSpawn()
     {
         if (!isEndMotion) World.Cube.transform.position = pos + new Vector3(0, animY += 0.01f, 0);
 
