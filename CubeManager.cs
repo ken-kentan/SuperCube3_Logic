@@ -9,7 +9,7 @@ public class CubeManager : MonoBehaviour {
     public static float posX, posY, speedX, speedY, KaccGyro;
     public static int maxJump, life;
     public static int effectAqua, effectMagnet, effectPlusJump;
-    public static bool isResetCube, isMotionDead, isNotStop;
+    public static bool isResetCube, isMotionDead, isNotStop, isWarpLock;
 
     private static readonly float maxSpeed = 8.0f;
     private static int cntJump, cntMotionDead;
@@ -34,7 +34,7 @@ public class CubeManager : MonoBehaviour {
 
         life = 3;
 
-        isResetCube = false;
+        isResetCube = isWarpLock = false;
 
         isOnFloor = isOnBlock = isOnEnemy = isOnLift = isMotionDead = false;
     }
@@ -56,6 +56,8 @@ public class CubeManager : MonoBehaviour {
             motionDead();
             return;
         }
+
+        if (isWarpLock) return;
 
         //jump
         if (((Input.GetMouseButtonDown(0) && !World.isController) || GameUIManager.isJump) && (isOnFloor || isOnBlock || isOnLift || cntJump < maxJump))

@@ -296,7 +296,7 @@ public class GameUIManager : MonoBehaviour {
 
     public void OnPressJump(bool isPress)
     {
-        if (Loading.isLoading) return;
+        if (Loading.isLoading || CubeManager.isWarpLock) return;
 
         if (isLock)
         {
