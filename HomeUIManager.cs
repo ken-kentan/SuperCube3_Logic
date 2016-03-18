@@ -10,9 +10,9 @@ public class HomeUIManager : MonoBehaviour {
     public Text textOnlineStatus;
     public Text textScore, textJump, textClear, textSave, textPoint, textPlusOne, textMagnet, textPlusJump, textDead, textKill, textSBlock, textSRoute;
     public Text textUserName;
-    public Text[] textHighScore = new Text[6];
-    public Button[] btn = new Button[6];
-    public Image[] imgBtn = new Image[6];
+    public Text[] textHighScore;
+    public Button[] btn;
+    public Image[] imgBtn;
     public Animator thisAnimator;
 
     private bool isFirst;
@@ -29,14 +29,16 @@ public class HomeUIManager : MonoBehaviour {
 
         textOnlineStatus.color = GPGS.Green;
 
-        for(int i = 0; i < 6; i++) if (GameDataManager.GetHighScore(i.ToString()) != -1) textHighScore[i].text = GameDataManager.GetHighScore(i.ToString()).ToString();
+        int btnLength = btn.Length;
+
+        for (int i = 0; i < btnLength; i++) if (GameDataManager.GetHighScore(i.ToString()) != -1) textHighScore[i].text = GameDataManager.GetHighScore(i.ToString()).ToString();
 
         GPGS.Login();
         
         setGameData();
 
         //Button color Init(Level Select)
-        for (int i = GameDataManager.GetMaxClearedLevel() + 2; i < 6; i++)
+        for (int i = GameDataManager.GetMaxClearedLevel() + 2; i < btnLength; i++)
         {
             btn[i].enabled = false;
             imgBtn[i].color = new Color(0.5f, 0.5f, 0.5f, 1);

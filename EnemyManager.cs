@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnemyManager : MonoBehaviour {
 
-    public GameObject enemyCube, enemyParticle;
+    public GameObject enemyCube;
     public bool isForward, isAllowFly;
     public int cycleShot, timeStandbyDrop;
     public float distanceDrop;
@@ -14,6 +14,7 @@ public class EnemyManager : MonoBehaviour {
     private int cntCyclShot;
     public bool isFirst, isFly;
 
+    private GameObject enemyParticle;
     private Vector3 posDropHome;
     private int cntStayTime;
     private bool isLockDrop;
