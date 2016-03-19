@@ -4,26 +4,85 @@ using System.Collections;
 public class WarpManager : MonoBehaviour {
 
     public WarpManager Target;
-    public float animY;
+    public EnemyManager.Enemy type;
+    public float distanceSpawn;
+    public bool isEnemyForward;
 
-    private Vector3 pos;
+    private GameObject Enemy;
+
+    private Vector3 pos, posSpawn, motion;
     private enum Mode { None, Import, Spawn};
+    private enum Angle { Top, Bottom, Left, Right};
     private Mode mode;
-    private bool isEndMotion;
+    private Angle angle;
+    private bool isEndSpawnMotion, isSpawned;
+    private bool isTop, isBottom, isLeft, isRight;
 
 	// Use this for initialization
 	void Start () {
-        if (Target == null) UnityEngine.Debug.LogError("Warp target is NULL.");
+        if (Target == null) UnityEngine.Debug.LogWarning("Warp target is NULL.");
 
-        pos = transform.localPosition;
+        pos = transform.position;
 
         mode = Mode.None;
-        animY = 0;
+
+        switch ((int)transform.eulerAngles.z)
+        {
+            case 0:
+                angle = Angle.Top;
+                posSpawn = pos + new Vector3(0, 0.5f, 0);
+                pos -= new Vector3(0, 1, 0);
+                motion = new Vector3(0, 0.01f, 0);
+                break;
+            case 90:
+                angle = Angle.Right;
+                posSpawn = pos + new Vector3(-0.5f, 0, 0);
+                pos -= new Vector3(-1, 0, 0);
+                motion = new Vector3(-0.01f, 0, 0);
+                break;
+            case 180:
+                angle = Angle.Bottom;
+                posSpawn = pos + new Vector3(0, -0.5f, 0);
+                pos -= new Vector3(0, -1, 0);
+                motion = new Vector3(0, -0.01f, 0);
+                break;
+            case 270:
+                angle = Angle.Left;
+                posSpawn = pos + new Vector3(0.5f, 0, 0);
+                pos -= new Vector3(1, 0, 0);
+                motion = new Vector3(0, 0, 0.01f);
+                break;
+        }
     }
 	
 	// Update is called once per frame
 	void Update () {
         if (World.isPause) return;
+
+        if (type != EnemyManager.Enemy.None && Vector3.Distance(CubeManager.pos, transform.position) < distanceSpawn)
+        {
+            if (!isSpawned)
+            {
+                isSpawned = true;
+                switch (type)
+                {
+                    case EnemyManager.Enemy.Move:
+                        Enemy = Instantiate(World.EnemyMove);
+                        GameObject Sensor = Enemy.transform.FindChild("Sensor").gameObject;
+                        Sensor.GetComponent<EnemyManager>().isForward = isEnemyForward;
+                        break;
+                    case EnemyManager.Enemy.StaticMove:
+                        Enemy = Instantiate(World.EnemyStaticMove);
+                        Enemy.GetComponent<EnemyManager>().isForward = isEnemyForward;
+                        break;
+                }
+                Enemy.transform.position = posSpawn;
+            }
+            else
+            {
+                if (Enemy == null) isSpawned = false;
+            }
+        }
 
         switch (mode)
         {
@@ -38,45 +97,45 @@ public class WarpManager : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        if (CubeManager.isMotionDead) return;
+        if (CubeManager.isMotionDead || Target == null) return;
 
         if (collider.gameObject.tag == "Cube" && mode == 0)
         {
             CubeManager.isWarpLock = true;
-            animY = 0.5f;
 
             mode = Mode.Import;
+            World.Cube.transform.position = posSpawn;
+            CubeManager.UpdatePos();
         }
     }
 
     void MotionImport()
     {
-        World.Cube.transform.position = pos + new Vector3(0, animY -= 0.01f, 0);
+        World.Cube.transform.position = CubeManager.pos - motion;
 
-        if (CubeManager.posY < pos.y - 1)
+        if (Vector3.Distance(CubeManager.pos, pos) < 0.001f)
         {
             World.Cube.transform.position = Target.pos;
             mode = 0;
 
             Target.mode = Mode.Spawn;
-            Target.animY = -1.0f;
             CubeManager.UpdatePos();
         }
     }
 
     void MotionSpawn()
     {
-        if (!isEndMotion) World.Cube.transform.position = pos + new Vector3(0, animY += 0.01f, 0);
+        if (!isEndSpawnMotion) World.Cube.transform.position = CubeManager.pos + motion;
 
-        if (CubeManager.posY > pos.y + 0.4f)
+        if (Vector3.Distance(CubeManager.pos, posSpawn) < 0.001f)
         {
-            isEndMotion = true;
+            isEndSpawnMotion = true;
             CubeManager.isWarpLock = false;
         }
 
-        if (Vector3.Distance(pos, World.Cube.transform.position) > 2)
+        if (Vector3.Distance(posSpawn, CubeManager.pos) > 2)
         {
-            isEndMotion = false;
+            isEndSpawnMotion = false;
             mode = 0;
         }
     }

@@ -3,7 +3,10 @@ using System.Collections;
 
 public class EnemyManager : MonoBehaviour {
 
+    public enum Enemy { None, Move, StaticMove, Rotate, Shot, Drop };
+
     public GameObject enemyCube;
+    public Enemy type;
     public bool isForward, isAllowFly;
     public int cycleShot, timeStandbyDrop;
     public float distanceDrop;
@@ -12,15 +15,12 @@ public class EnemyManager : MonoBehaviour {
     private Rigidbody enemyBody;
     private SphereCollider colliderEnemyCube;
     private int cntCyclShot;
-    public bool isFirst, isFly;
+    private bool isFirst, isFly;
 
     private GameObject enemyParticle;
     private Vector3 posDropHome;
     private int cntStayTime;
     private bool isLockDrop;
-
-    private enum Enemy { None, Move, StaticMove, Rotate, Shot, Drop};
-    private Enemy type;
 
     // Use this for initialization
     void Start () {
@@ -29,10 +29,9 @@ public class EnemyManager : MonoBehaviour {
 
         isFirst = true;
 
-        switch (enemyCube.ToString())
+        switch (type)
         {
-            case "EnemyMove (UnityEngine.GameObject)":
-                type = Enemy.Move;
+            case Enemy.Move:
                 enemyBody = enemyCube.GetComponent<Rigidbody>();
 
                 if (isForward) enemyBody.AddForce(10, 0, 0);
@@ -41,8 +40,7 @@ public class EnemyManager : MonoBehaviour {
                 isFly = false;
 
                 break;
-            case "EnemyStaticMove (UnityEngine.GameObject)":
-                type = Enemy.StaticMove;
+            case Enemy.StaticMove:
                 enemyBody = enemyCube.GetComponent<Rigidbody>();
 
                 if (isForward) enemyBody.AddForce(10, 0, 0);
@@ -50,17 +48,14 @@ public class EnemyManager : MonoBehaviour {
 
                 isFly = false;
                 break;
-            case "EnemyRotate (UnityEngine.GameObject)":
-                type = Enemy.Rotate;
+            case Enemy.Rotate:
                 if (!isForward) animator.SetFloat("Speed", -1);
                 break;
-            case "EnemyShot (UnityEngine.GameObject)":
-                type = Enemy.Shot;
+            case Enemy.Shot:
                 cntCyclShot = timeStandbyDrop = 0;
                 if (cycleShot == 0) cycleShot = 300;
                 break;
-            case "EnemyStaticDrop (UnityEngine.GameObject)":
-                type = Enemy.Drop;
+            case Enemy.Drop:
                 posDropHome = transform.localPosition;
 
                 isLockDrop = true;
@@ -72,9 +67,6 @@ public class EnemyManager : MonoBehaviour {
                 enemyBody = enemyCube.GetComponent<Rigidbody>();
                 enemyBody.useGravity = false;
                 enemyBody.constraints = RigidbodyConstraints.FreezeAll;
-                break;
-            default:
-                type = Enemy.None;
                 break;
         }
 
@@ -147,7 +139,7 @@ public class EnemyManager : MonoBehaviour {
             case Enemy.Drop:
                 if (CubeManager.isResetCube) enemyBody.transform.localPosition = posDropHome;
 
-                if (Mathf.Abs(posDropHome.x - CubeManager.posX) <= distanceDrop && CubeManager.posY < posDropHome.y && isLockDrop && cntStayTime++ > timeStandbyDrop) {
+                if (Mathf.Abs(posDropHome.x - CubeManager.pos.x) <= distanceDrop && CubeManager.pos.y < posDropHome.y && isLockDrop && cntStayTime++ > timeStandbyDrop) {
                     cntStayTime = 0;
                     isLockDrop = false;
                     enemyBody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
@@ -188,12 +180,13 @@ public class EnemyManager : MonoBehaviour {
     {
         if (type == Enemy.StaticMove || type == Enemy.Rotate || CubeManager.isMotionDead) return;
 
-        if (collider.gameObject.tag == "Cube" && CubeManager.posY - enemyCube.transform.localPosition.y > 0.8f)
+        if (collider.gameObject.tag == "Cube" && CubeManager.pos.y - enemyCube.transform.localPosition.y > 0.8f)
         {
             World.audioSource.PlayOneShot(World.killEnemySE);
             World.sumKill++;
             GameDataManager.AddDataValue(GameDataManager.Data.Kill);
             enemyCube.tag = "Untagged";
+            CubeManager.ResetJump();
             CubeManager.cubeBody.velocity = Vector3.ClampMagnitude(CubeManager.cubeBody.velocity, 0f);
             CubeManager.cubeBody.AddForce(0, 200, 0);
             animator.enabled = true;
