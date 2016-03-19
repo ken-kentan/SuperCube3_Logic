@@ -16,7 +16,7 @@ public class Debug : MonoBehaviour {
 	void Update () {
         if (!World.isDebug) Destroy(parent);
 
-        StatusCube.text = "Cube:\nPos(X,Y) = " + (int)CubeManager.posX + "," + (int)CubeManager.posY + "\nSpeed(X,Y) = " + (int)CubeManager.speedX + "," + (int)CubeManager.speedY +
+        StatusCube.text = "Cube:\nPos(X,Y) = " + (int)CubeManager.pos.x + "," + (int)CubeManager.pos.y + "\nSpeed(X,Y) = " + (int)CubeManager.speedX + "," + (int)CubeManager.speedY +
             "\nLife = " + CubeManager.life + "\nmodeEffect = " + CubeManager.effectAqua + "," + CubeManager.effectMagnet + "," + CubeManager.effectPlusJump +
             "\n\nWorld:\nsumPoint = " + World.sumPoint + "\nsumJump = " + World.sumJump + "\nsumDead = " + World.sumDead + "\nsumKill = " + World.sumKill +
             "\nsumAqua = " + World.sumAqua + "\nsumMagnet = " + World.sumMagnet +

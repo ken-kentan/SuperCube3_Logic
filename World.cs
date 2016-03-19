@@ -5,7 +5,7 @@ using System.Collections;
 
 public class World : MonoBehaviour {
 
-    public static GameObject Cube, EnemyChieldren, EnemyPatricle, Magnet, Aqua, PlusJump,  BigPoint, Point, Loading;
+    public static GameObject Cube, EnemyChieldren, EnemyPatricle, EnemyMove, EnemyStaticMove, Magnet, Aqua, PlusJump,  BigPoint, Point, Loading;
     public static AudioSource audioSource;
     public static AudioClip killEnemySE, getAquaSE, getMagnetSE, pointSE, saveSE, jumpSE, contactSE, damageSE, getJumpSE, dropEnemySE, findItemSE;
     public static Color alpha = new Color(0, 0, 0, 0.01f);
@@ -28,7 +28,7 @@ public class World : MonoBehaviour {
     private static float volume, targetVolume;
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         Cube    = GameObject.Find("Cube");
         Loading = GameObject.Find("Loading");
         audioSource = Cube.GetComponent<AudioSource>();
@@ -40,6 +40,8 @@ public class World : MonoBehaviour {
         PlusJump       = Resources.Load("Objects/PlusJump")       as GameObject;
         BigPoint       = Resources.Load("Objects/BigPoint")       as GameObject;
         Point          = Resources.Load("Objects/Point")          as GameObject;
+        EnemyMove      = Resources.Load("Objects/EnemyMove")      as GameObject;
+        EnemyStaticMove = Resources.Load("Objects/EnemyStaticMove") as GameObject;
 
         killEnemySE = Resources.Load("SEs/kill_enemy") as AudioClip;
         getAquaSE   = Resources.Load("SEs/aqua_get")   as AudioClip;

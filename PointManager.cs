@@ -33,11 +33,11 @@ public class PointManager : MonoBehaviour {
 
         if (isMagnet)
         {
-            float posX = transform.localPosition.x,
-                  posY = transform.localPosition.y;
+            float posX = transform.position.x,
+                  posY = transform.position.y;
 
-            posX += (CubeManager.posX - transform.localPosition.x) / 6.0f;
-            posY += (CubeManager.posY - transform.localPosition.y) / 6.0f;
+            posX += (CubeManager.pos.x - transform.position.x) / 6.0f;
+            posY += (CubeManager.pos.y - transform.position.y) / 6.0f;
 
             transform.localPosition = new Vector3(posX, posY, 0);
         }

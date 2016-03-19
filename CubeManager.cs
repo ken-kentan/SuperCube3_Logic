@@ -6,7 +6,8 @@ public class CubeManager : MonoBehaviour {
 
     public GameObject Camera;
     public static Rigidbody cubeBody;
-    public static float posX, posY, speedX, speedY, KaccGyro;
+    public static Vector3 pos;
+    public static float speedX, speedY, KaccGyro;
     public static int maxJump, life;
     public static int effectAqua, effectMagnet, effectPlusJump;
     public static bool isResetCube, isMotionDead, isNotStop, isWarpLock;
@@ -19,8 +20,7 @@ public class CubeManager : MonoBehaviour {
     void Start() {
         cubeBody = GetComponent<Rigidbody>();
 
-        posX = transform.position.x;
-        posY = transform.position.y;
+        pos = transform.position;
 
         speedX = cubeBody.velocity.x;
         speedY = cubeBody.velocity.y;
@@ -43,8 +43,7 @@ public class CubeManager : MonoBehaviour {
     void Update() {
         if (World.isPause) return;
 
-        posX = transform.position.x;
-        posY = transform.position.y;
+        pos = transform.position;
         speedX = cubeBody.velocity.x;
         speedY = cubeBody.velocity.y;
 
@@ -95,7 +94,7 @@ public class CubeManager : MonoBehaviour {
 
     bool isOverWorld()
     {
-        if (posY < -2.0f && !isMotionDead)
+        if (pos.y < -2.0f && !isMotionDead)
         {
             --life;
             return true;
@@ -151,9 +150,9 @@ public class CubeManager : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Floor" && collision.transform.position.y < posY + 0.7f) isOnFloor = true;
-        if (collision.gameObject.tag == "Block" && collision.transform.position.y < posY + 0.7f) isOnBlock = true;
-        if (collision.gameObject.tag == "Lift"  && collision.transform.position.y < posY + 0.7f)  isOnLift = true;
+        if (collision.gameObject.tag == "Floor" && collision.transform.position.y < pos.y + 0.7f) isOnFloor = true;
+        if (collision.gameObject.tag == "Block" && collision.transform.position.y < pos.y + 0.7f) isOnBlock = true;
+        if (collision.gameObject.tag == "Lift"  && collision.transform.position.y < pos.y + 0.7f)  isOnLift = true;
         
         if (collision.gameObject.tag == "Enemy" && !isWarpLock)
         {
@@ -177,7 +176,11 @@ public class CubeManager : MonoBehaviour {
 
     public static void UpdatePos()
     {
-        posX = World.Cube.transform.position.x;
-        posY = World.Cube.transform.position.y;
+        pos = World.Cube.transform.position;
+    }
+
+    public static void ResetJump(int cnt = 0)
+    {
+        cntJump = cnt;
     }
 }
