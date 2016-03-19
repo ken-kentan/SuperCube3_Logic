@@ -5,7 +5,7 @@ public class WarpManager : MonoBehaviour {
 
     public WarpManager Target;
     public EnemyManager.Enemy type;
-    public float distanceSpawn;
+    public float distanceSpawn, distanceResetSpawn, dragEnemy;
     public bool isEnemyForward;
 
     private GameObject Enemy;
@@ -24,6 +24,7 @@ public class WarpManager : MonoBehaviour {
 
         pos = transform.position;
 
+        if (dragEnemy == 0) dragEnemy = 1;
         mode = Mode.None;
 
         switch ((int)transform.eulerAngles.z)
@@ -76,11 +77,13 @@ public class WarpManager : MonoBehaviour {
                         Enemy.GetComponent<EnemyManager>().isForward = isEnemyForward;
                         break;
                 }
+
+                Enemy.GetComponent<Rigidbody>().drag = dragEnemy;
                 Enemy.transform.position = posSpawn;
             }
             else
             {
-                if (Enemy == null) isSpawned = false;
+                if (Enemy == null || (Enemy != null && distanceResetSpawn != 0 && Vector3.Distance(pos, Enemy.transform.position) > distanceResetSpawn)) isSpawned = false;
             }
         }
 
