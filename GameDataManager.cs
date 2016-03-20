@@ -198,6 +198,9 @@ public class GameDataManager : MonoBehaviour {
                 else if (Magnet >= 10) GPGS.Achievements(GPGSids.achievement_magnet_cube);
                 break;
             case Data.PlusJump:
+                if (PlusJump >= 100) GPGS.Achievements(GPGSids.achievement_jump_collector);
+                else if (PlusJump >= 50) GPGS.Achievements(GPGSids.achievement_jump_geek);
+                else if (PlusJump >= 10) GPGS.Achievements(GPGSids.achievement_jump_love_3);
                 break;
             case Data.All://All
                 if (Jump >= 10000) GPGS.Achievements(GPGSids.achievement_aircraft);
@@ -219,6 +222,10 @@ public class GameDataManager : MonoBehaviour {
                 if (Magnet >= 100) GPGS.Achievements(GPGSids.achievement_magnet_monster);
                 if (Magnet >= 50) GPGS.Achievements(GPGSids.achievement_magnet_man);
                 if (Magnet >= 10) GPGS.Achievements(GPGSids.achievement_magnet_cube);
+
+                if (PlusJump >= 100) GPGS.Achievements(GPGSids.achievement_jump_collector);
+                if (PlusJump >= 50) GPGS.Achievements(GPGSids.achievement_jump_geek);
+                if (PlusJump >= 10) GPGS.Achievements(GPGSids.achievement_jump_love_3);
                 break;
             default:
                 UnityEngine.Debug.Log("Data:" + typeData + " is not Achi data.");
