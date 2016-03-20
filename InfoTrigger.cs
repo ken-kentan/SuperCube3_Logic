@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class InfoTrigger : MonoBehaviour {
-
-    public GameObject thisTrigger;
+    
     public int modeMsg;
 
     // Use this for initialization
@@ -23,7 +22,7 @@ public class InfoTrigger : MonoBehaviour {
             GameUIManager.thisGameUI.showInfo(Msg.Info[Msg.typeLang, modeMsg]);
             World.isPause = true;
             Time.timeScale = 0;
-            Destroy(thisTrigger);
+            Destroy(gameObject);
         }
     }
 }

@@ -15,7 +15,7 @@ public class Msg : MonoBehaviour {
                            LINE    = new string[2],
                            Revival = new string[2];
     public static string errRevival, failRevival;
-    public static string[,] Info = new string[2, 7];
+    public static string[,] Info = new string[2, 8];
     public static string[,] Hint = new string[2, 7];
     public static string[,] Setting = new string[2, 2];
     public static string[] GPGSneedLogin    = new string[2],
@@ -50,6 +50,7 @@ public class Msg : MonoBehaviour {
         Info[ja, 4] = "Goal Flag に触れるとレベルクリア!\nクリア画面の「Leaderboards」でランキング、\n「Achievements」で実績が確認できるよ。";
         Info[ja, 5] = "Pink Cube!\nこいつは踏んでも無力化できない。避けて進もう。";
         Info[ja, 6] = "Item Blockを見つけた!\nアイテムブロックを下から押すのアイテムが出現するよ！";
+        Info[ja, 7] = "Spring Blockを見つけた!\n上から踏むことで跳ねることが可能だ。\n横から押せば動かせるよ。";
 
         Info[en, 0] = "Welcome to the SuperCube World!\nMove by tilting the device to the left and right.";
         Info[en, 1] = "Jump by tapping the screen!\nYou can jump be continuously twice.";
@@ -58,6 +59,7 @@ public class Msg : MonoBehaviour {
         Info[en, 4] = "Goal Flag!";
         Info[en, 5] = "Pink Cube!\nこいつは踏んでも無力化できない。避けて進もう。";
         Info[en, 6] = "Item Blockを見つけた!\nアイテムブロックを下から押すとアイテムが出現するよ！";
+        Info[en, 7] = "Spring Blockを見つけた!\n上から踏むことで跳ねることが可能だ。\n横から押すことで動かすこともできるよ。";
 
         Hint[ja, 0] = "HomeのSettingからジャイロ感度の変更が行えます。";
         Hint[ja, 1] = "HomeのSettingでバイブレーションやパフォーマンスの変更が行えます。";
