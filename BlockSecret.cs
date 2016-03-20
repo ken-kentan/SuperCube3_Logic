@@ -2,17 +2,23 @@
 using System.Collections;
 
 public class BlockSecret : MonoBehaviour {
+
+    public enum Item { None, Magnet, Aqua, PlusJump, BigPoint, Point, SpringBlock, EnemyMove, EnemyStaticMove };
     
-    public bool Magnet, Aqua, PlusJump, BigPoint, Point;
-    public bool isItemBlock;
+    public Item item;
+    public bool isItemBlock, isEnemyForward;
+    public float SpringForce;
 
     private Collider thisCollider;
     private float posY;
 
     // Use this for initialization
     void Start () {
+        if (item == Item.None) UnityEngine.Debug.LogError("Item is None.");
         thisCollider = GetComponent<Collider>();
         posY = transform.position.y - 1.0f;
+
+        if (SpringForce == 0) SpringForce = 300;
     }
 	
 	// Update is called once per frame
@@ -31,11 +37,38 @@ public class BlockSecret : MonoBehaviour {
 
         GetComponent<Renderer>().material = World.materialBlockSecret;
 
-        if (Magnet)        Instantiate(World.Magnet, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
-        else if (Aqua)     Instantiate(World.Aqua, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
-        else if (PlusJump) Instantiate(World.PlusJump, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
-        else if (BigPoint) Instantiate(World.BigPoint, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
-        else if (Point)    Instantiate(World.Point, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+        GameObject Temp;
+
+        switch (item)
+        {
+            case Item.Magnet:
+                Instantiate(World.Magnet, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+                break;
+            case Item.Aqua:
+                Instantiate(World.Aqua, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+                break;
+            case Item.PlusJump:
+                Instantiate(World.PlusJump, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+                break;
+            case Item.BigPoint:
+                Instantiate(World.BigPoint, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+                break;
+            case Item.Point:
+                Instantiate(World.Point, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+                break;
+            case Item.SpringBlock:
+                Temp = (GameObject)Instantiate(World.SpringBlock, transform.position + new Vector3(0, 1.77f, 0), transform.rotation);
+                Temp.GetComponent<SpringManager>().force = SpringForce;
+                break;
+            case Item.EnemyMove:
+                Temp = (GameObject)Instantiate(World.EnemyMove, transform.position + new Vector3(0, 1.3f, 0), transform.rotation);
+                Temp.GetComponent<EnemyManager>().isForward = isEnemyForward;
+                break;
+            case Item.EnemyStaticMove:
+                Temp = (GameObject)Instantiate(World.EnemyStaticMove, transform.position + new Vector3(0, 1.3f, 0), transform.rotation);
+                Temp.GetComponent<EnemyManager>().isForward = isEnemyForward;
+                break;
+        }
 
         if (!isItemBlock)
         {
