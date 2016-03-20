@@ -65,7 +65,7 @@ public class CubeManager : MonoBehaviour {
             cntJump++;
             World.sumJump++;
             GameDataManager.AddDataValue(GameDataManager.Data.Jump);
-            stopCube();
+            StopCube();
             cubeBody.AddForce(0, 260f, 0);
         }
         GameUIManager.isJump = false;
@@ -102,7 +102,7 @@ public class CubeManager : MonoBehaviour {
         return false;
     }
 
-    void stopCube(bool isForce = false)
+    public static void StopCube(bool isForce = false)
     {
         if (!isNotStop || isForce) cubeBody.velocity = Vector3.ClampMagnitude(cubeBody.velocity, 0f);
         isNotStop = false;
@@ -114,7 +114,7 @@ public class CubeManager : MonoBehaviour {
         World.sumDead++;
         Vibration.Vibrate(600);
         GameDataManager.AddDataValue(GameDataManager.Data.Dead);
-        stopCube(true);
+        StopCube(true);
         isMotionDead = true;
         isOnEnemy = false;
     }
