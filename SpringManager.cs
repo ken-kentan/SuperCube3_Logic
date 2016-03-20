@@ -19,6 +19,11 @@ public class SpringManager : MonoBehaviour {
 	void Update () {
         if (World.isPause) return;
 
+        if (isOverWorld())
+        {
+            Destroy(gameObject);
+        }
+
         if (isOnCube && Vector3.Distance(CubeManager.pos, Spring.transform.position + new Vector3(0, 0.5f, 0)) < 0.4f)
         {
             if(!isDeny) isSpring = true;
@@ -45,5 +50,11 @@ public class SpringManager : MonoBehaviour {
         {
             isOnCube = isDeny = false;
         }
+    }
+
+    bool isOverWorld()
+    {
+        if (transform.localPosition.y < -10.0f) return true;
+        return false;
     }
 }
