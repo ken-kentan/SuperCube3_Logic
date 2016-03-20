@@ -62,7 +62,8 @@ public class BlockSecret : MonoBehaviour {
                 break;
             case Item.EnemyMove:
                 Temp = (GameObject)Instantiate(World.EnemyMove, transform.position + new Vector3(0, 1.3f, 0), transform.rotation);
-                Temp.GetComponent<EnemyManager>().isForward = isEnemyForward;
+                GameObject Sensor = Temp.transform.FindChild("Sensor").gameObject;
+                Sensor.GetComponent<EnemyManager>().isForward = isEnemyForward;
                 break;
             case Item.EnemyStaticMove:
                 Temp = (GameObject)Instantiate(World.EnemyStaticMove, transform.position + new Vector3(0, 1.3f, 0), transform.rotation);

@@ -23,7 +23,7 @@ public class WarpManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        if (Target == null) UnityEngine.Debug.LogWarning("Warp target is NULL.");
+        if (Target == null && type == SpawnObject.None) UnityEngine.Debug.LogError("Warp target is null, SpawnObject is None.");
 
         pos = transform.position;
 
