@@ -3,12 +3,15 @@ using System.Collections;
 
 public class WarpManager : MonoBehaviour {
 
+    public enum SpawnObject { None, EnemyMove, EnemyStaticMove, SpringBlock}
+
     public WarpManager Target;
-    public EnemyManager.Enemy type;
+    public SpawnObject type;
     public float distanceSpawn, distanceResetSpawn, dragEnemy;
     public bool isEnemyForward;
+    public float SpringForce;
 
-    private GameObject Enemy;
+    private GameObject objectSpawned;
 
     private Vector3 pos, posSpawn, motion;
     private enum Mode { None, Import, Spawn};
@@ -25,6 +28,7 @@ public class WarpManager : MonoBehaviour {
         pos = transform.position;
 
         if (dragEnemy == 0) dragEnemy = 1;
+        if (SpringForce == 0) SpringForce = 300;
         mode = Mode.None;
 
         switch ((int)transform.eulerAngles.z)
@@ -51,7 +55,7 @@ public class WarpManager : MonoBehaviour {
                 angle = Angle.Left;
                 posSpawn = pos + new Vector3(0.5f, 0, 0);
                 pos -= new Vector3(1, 0, 0);
-                motion = new Vector3(0, 0, 0.01f);
+                motion = new Vector3(0.1f, 0, 0);
                 break;
         }
     }
@@ -60,30 +64,34 @@ public class WarpManager : MonoBehaviour {
 	void Update () {
         if (World.isPause) return;
 
-        if (type != EnemyManager.Enemy.None && Vector3.Distance(CubeManager.pos, transform.position) < distanceSpawn)
+        if (type != SpawnObject.None && Vector3.Distance(CubeManager.pos, transform.position) < distanceSpawn)
         {
             if (!isSpawned)
             {
                 isSpawned = true;
                 switch (type)
                 {
-                    case EnemyManager.Enemy.Move:
-                        Enemy = Instantiate(World.EnemyMove);
-                        GameObject Sensor = Enemy.transform.FindChild("Sensor").gameObject;
+                    case SpawnObject.EnemyMove:
+                        objectSpawned = Instantiate(World.EnemyMove);
+                        GameObject Sensor = objectSpawned.transform.FindChild("Sensor").gameObject;
                         Sensor.GetComponent<EnemyManager>().isForward = isEnemyForward;
                         break;
-                    case EnemyManager.Enemy.StaticMove:
-                        Enemy = Instantiate(World.EnemyStaticMove);
-                        Enemy.GetComponent<EnemyManager>().isForward = isEnemyForward;
+                    case SpawnObject.EnemyStaticMove:
+                        objectSpawned = Instantiate(World.EnemyStaticMove);
+                        objectSpawned.GetComponent<EnemyManager>().isForward = isEnemyForward;
+                        break;
+                    case SpawnObject.SpringBlock:
+                        objectSpawned = Instantiate(World.SpringBlock);
+                        objectSpawned.GetComponent<SpringManager>().force = SpringForce;
                         break;
                 }
 
-                Enemy.GetComponent<Rigidbody>().drag = dragEnemy;
-                Enemy.transform.position = posSpawn;
+                objectSpawned.GetComponent<Rigidbody>().drag = dragEnemy;
+                objectSpawned.transform.position = posSpawn;
             }
             else
             {
-                if (Enemy == null || (Enemy != null && distanceResetSpawn != 0 && Vector3.Distance(pos, Enemy.transform.position) > distanceResetSpawn)) isSpawned = false;
+                if (objectSpawned == null || (objectSpawned != null && distanceResetSpawn != 0 && Vector3.Distance(pos, objectSpawned.transform.position) > distanceResetSpawn)) isSpawned = false;
             }
         }
 
