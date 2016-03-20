@@ -5,7 +5,7 @@ using System.Collections;
 
 public class World : MonoBehaviour {
 
-    public static GameObject Cube, EnemyChieldren, EnemyPatricle, EnemyMove, EnemyStaticMove, Magnet, Aqua, PlusJump,  BigPoint, Point, Loading;
+    public static GameObject Cube, EnemyChieldren, EnemyPatricle, EnemyMove, EnemyStaticMove, Magnet, Aqua, PlusJump,  BigPoint, Point, Loading, SpringBlock;
     public static AudioSource audioSource;
     public static AudioClip killEnemySE, getAquaSE, getMagnetSE, pointSE, saveSE, jumpSE, contactSE, damageSE, getJumpSE, dropEnemySE, findItemSE;
     public static Color alpha = new Color(0, 0, 0, 0.01f);
@@ -33,15 +33,16 @@ public class World : MonoBehaviour {
         Loading = GameObject.Find("Loading");
         audioSource = Cube.GetComponent<AudioSource>();
 
-        EnemyChieldren = Resources.Load("Objects/EnemyChieldren") as GameObject;
-        EnemyPatricle  = Resources.Load("Objects/EnemyParticle")  as GameObject;
-        Magnet         = Resources.Load("Objects/Magnet")         as GameObject;
-        Aqua           = Resources.Load("Objects/Aqua")           as GameObject;
-        PlusJump       = Resources.Load("Objects/PlusJump")       as GameObject;
-        BigPoint       = Resources.Load("Objects/BigPoint")       as GameObject;
-        Point          = Resources.Load("Objects/Point")          as GameObject;
-        EnemyMove      = Resources.Load("Objects/EnemyMove")      as GameObject;
+        EnemyChieldren  = Resources.Load("Objects/EnemyChieldren")  as GameObject;
+        EnemyPatricle   = Resources.Load("Objects/EnemyParticle")   as GameObject;
+        Magnet          = Resources.Load("Objects/Magnet")          as GameObject;
+        Aqua            = Resources.Load("Objects/Aqua")            as GameObject;
+        PlusJump        = Resources.Load("Objects/PlusJump")        as GameObject;
+        BigPoint        = Resources.Load("Objects/BigPoint")        as GameObject;
+        Point           = Resources.Load("Objects/Point")           as GameObject;
+        EnemyMove       = Resources.Load("Objects/EnemyMove")       as GameObject;
         EnemyStaticMove = Resources.Load("Objects/EnemyStaticMove") as GameObject;
+        SpringBlock     = Resources.Load("Objects/SpringBlock")     as GameObject;
 
         killEnemySE = Resources.Load("SEs/kill_enemy") as AudioClip;
         getAquaSE   = Resources.Load("SEs/aqua_get")   as AudioClip;
