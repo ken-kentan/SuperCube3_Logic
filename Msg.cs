@@ -8,7 +8,7 @@ public class Msg : MonoBehaviour {
 
     public static string sample;
     public const string appName   = "SuperCube_World",
-                        appVer    = "0.14.20beta",
+                        appVer    = "0.18.22beta",
                         appURL    = "http://ken.kentan.jp/SuperCube_World",
                         appURLenc = "http%3a%2f%2fken%2ekentan%2ejp%2fSuperCube_World";
     public static string[] Twitter = new string[2],
@@ -49,8 +49,8 @@ public class Msg : MonoBehaviour {
         Info[ja, 3] = "セーブポイントを発見!\nGreenCubeに触れるとリスポーン地点をセーブできるよ。";
         Info[ja, 4] = "Goal Flag に触れるとレベルクリア!\nクリア画面の「Leaderboards」でランキング、\n「Achievements」で実績が確認できるよ。";
         Info[ja, 5] = "Pink Cube!\nこいつは踏んでも無力化できない。避けて進もう。";
-        Info[ja, 6] = "Item Blockを見つけた!\nアイテムブロックを下から押すのアイテムが出現するよ！";
-        Info[ja, 7] = "Spring Blockを見つけた!\n上から踏むことで跳ねることが可能だ。\n横から押せば動かせるよ。";
+        Info[ja, 6] = "Item Blockを見つけた!\nアイテムブロックを下から押すとアイテムが出現するよ！";
+        Info[ja, 7] = "Spring Blockを見つけた!\n上から踏むと跳ねることができる。\n横から押せば動かせるよ。";
 
         Info[en, 0] = "Welcome to the SuperCube World!\nMove by tilting the device to the left and right.";
         Info[en, 1] = "Jump by tapping the screen!\nYou can jump be continuously twice.";

@@ -198,7 +198,7 @@ public class EnemyManager : MonoBehaviour {
 
     bool isOnFloor()
     {
-        return Physics.Raycast(enemyCube.transform.position, new Vector3(0, -0.5f, 0), colliderEnemyCube.radius);
+        return Physics.Raycast(enemyCube.transform.position, new Vector3(0, -0.5f, 0), 1);
     }
 
     bool isTouchLeft()
