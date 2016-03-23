@@ -13,11 +13,12 @@ public class WarpManager : MonoBehaviour {
 
     private GameObject objectSpawned;
 
-    private Vector3 pos, posSpawn, motion;
+    private Vector3 pos, posSpawn, posCube, motion;
     private enum Mode { None, Import, Spawn};
     private enum Angle { Top, Bottom, Left, Right};
     private Mode mode;
     private Angle angle;
+    private bool isStayCube;
     private bool isEndSpawnMotion, isSpawned;
     private bool isTop, isBottom, isLeft, isRight;
 
@@ -37,25 +38,25 @@ public class WarpManager : MonoBehaviour {
                 angle = Angle.Top;
                 posSpawn = pos + new Vector3(0, 0.5f, 0);
                 pos -= new Vector3(0, 1, 0);
-                motion = new Vector3(0, 0.01f, 0);
+                motion = new Vector3(0, 0.015f, 0);
                 break;
-            case 90:
+            case 270:
                 angle = Angle.Right;
                 posSpawn = pos + new Vector3(-0.5f, 0, 0);
                 pos -= new Vector3(-1, 0, 0);
-                motion = new Vector3(-0.01f, 0, 0);
+                motion = new Vector3(-0.015f, 0, 0);
                 break;
             case 180:
                 angle = Angle.Bottom;
                 posSpawn = pos + new Vector3(0, -0.5f, 0);
                 pos -= new Vector3(0, -1, 0);
-                motion = new Vector3(0, -0.01f, 0);
+                motion = new Vector3(0, -0.015f, 0);
                 break;
-            case 270:
+            case 90:
                 angle = Angle.Left;
                 posSpawn = pos + new Vector3(0.5f, 0, 0);
                 pos -= new Vector3(1, 0, 0);
-                motion = new Vector3(0.1f, 0, 0);
+                motion = new Vector3(0.015f, 0, 0);
                 break;
         }
     }
@@ -64,9 +65,9 @@ public class WarpManager : MonoBehaviour {
 	void Update () {
         if (World.isPause) return;
 
-        if (type != SpawnObject.None && Vector3.Distance(CubeManager.pos, transform.position) < distanceSpawn)
+        if (type != SpawnObject.None && mode == Mode.None && Vector3.Distance(CubeManager.pos, transform.position) < distanceSpawn)
         {
-            if (!isSpawned)
+            if (!isSpawned && !isStayCube)
             {
                 isSpawned = true;
                 switch (type)
@@ -106,48 +107,60 @@ public class WarpManager : MonoBehaviour {
         }
 	}
 
-    void OnTriggerEnter(Collider collider)
+    void OnCollisionEnter(Collision collision)
     {
         if (CubeManager.isMotionDead || Target == null) return;
 
-        if (collider.gameObject.tag == "Cube" && mode == 0)
+        if (collision.gameObject.tag == "Cube" && mode == 0)
         {
             CubeManager.isWarpLock = true;
+            isStayCube = true;
 
             mode = Mode.Import;
-            World.Cube.transform.position = posSpawn;
-            CubeManager.UpdatePos();
+            World.Cube.transform.position = posCube = posSpawn;
         }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        isStayCube = false;
     }
 
     void MotionImport()
     {
-        World.Cube.transform.position = CubeManager.pos - motion;
+        posCube -= motion;
 
-        if (Vector3.Distance(CubeManager.pos, pos) < 0.001f)
+        World.Cube.transform.position = posCube;
+
+        if (Vector3.Distance(posCube, pos) < 0.002f)
         {
-            World.Cube.transform.position = Target.pos;
-            mode = 0;
+            World.Cube.transform.position = Target.posCube = Target.pos;
 
+            mode = Mode.None;
             Target.mode = Mode.Spawn;
-            CubeManager.UpdatePos();
         }
     }
 
     void MotionSpawn()
     {
-        if (!isEndSpawnMotion) World.Cube.transform.position = CubeManager.pos + motion;
+        if (!isEndSpawnMotion)
+        {
+            posCube += motion;
+            World.Cube.transform.position = posCube;
+        }
 
-        if (Vector3.Distance(CubeManager.pos, posSpawn) < 0.001f)
+        if (Vector3.Distance(posCube, posSpawn) < 0.002f)
         {
             isEndSpawnMotion = true;
             CubeManager.isWarpLock = false;
         }
 
-        if (Vector3.Distance(posSpawn, CubeManager.pos) > 2)
+        CubeManager.UpdatePos();
+
+        if (Vector3.Distance(posSpawn, CubeManager.pos) > 2.0f)
         {
             isEndSpawnMotion = false;
-            mode = 0;
+            mode = Mode.None;
         }
     }
 }
