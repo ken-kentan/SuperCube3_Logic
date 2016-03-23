@@ -144,7 +144,11 @@ public class CubeManager : MonoBehaviour {
             Camera.transform.parent = World.Cube.transform;
             Camera.transform.localPosition = new Vector3(0, 6, -15);
 
-            if (life < 0) World.isGameOver = true;
+            if (life < 0)
+            {
+                World.audioVolume(0.0f);
+                World.isGameOver = true;
+            }
         }
     }
 

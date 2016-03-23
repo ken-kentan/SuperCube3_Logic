@@ -3,8 +3,7 @@ using System.Collections;
 
 public class Climb : MonoBehaviour
 {
-
-    public bool isCube;
+    private bool isCube;
 
     // Use this for initialization
     void Start()

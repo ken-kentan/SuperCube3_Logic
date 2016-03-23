@@ -117,10 +117,7 @@ public class GameUIManager : MonoBehaviour {
             GameOver.SetActive(true);
             if (Hint != null)
             {
-                World.audioVolume(0.0f);
-
                 Hint.text = Msg.Hint[Msg.typeLang, generateRand(0, 7)];
-
                 Hint = null;
             }
         }
