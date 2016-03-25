@@ -128,6 +128,8 @@ public class CubeManager : MonoBehaviour {
             cubeBody.AddForce(0, 200f, 0);
 
             Camera.transform.parent = null;
+
+            ServerBridge.ken_kentan_jp.GameEvent("Dead");
         }
 
         if(++cntMotionDead > 130)

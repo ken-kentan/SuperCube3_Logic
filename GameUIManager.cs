@@ -76,9 +76,12 @@ public class GameUIManager : MonoBehaviour {
                 World.audioVolume(0.0f);
                 World.calcScore();
                 GameDataManager.AddDataValue(GameDataManager.Data.Score, World.sumScore);
+
                 if (GameDataManager.SetHighScore(World.nameScene, World.sumScore)) New.SetActive(true);
+
                 GameDataManager.SetMaxClearedLevel(int.Parse(World.nameScene));
                 GameDataManager.AddDataValue(GameDataManager.Data.Clear);
+
                 if (GPGS.isLogin)
                 {
                     GPGS.Leaderboards(World.nameScene, World.sumScore);
@@ -86,6 +89,8 @@ public class GameUIManager : MonoBehaviour {
 
                     if (GameDataManager.Get(GameDataManager.Data.Clear) >= 5) GPGS.Achievements(GPGSids.achievement_5_clear);
                 }
+
+                ServerBridge.ken_kentan_jp.GameEvent("Clear");
             }
             Score.text = World.sumScore.ToString();
         }

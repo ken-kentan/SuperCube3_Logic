@@ -8,7 +8,7 @@ public class GameDataManager : MonoBehaviour {
     private static int Point, Aqua, Magnet, PlusJump;
     private static int Kill, Dead;
     private static int SecretBlock, SecretRoute;
-    public static string UUID, UUIDinfo;
+    public static string UUID;
 
     public enum Data {All=-1, Score, Jump, Clear, Save, Point, Aqua, Magnet, PlusJump, Kill, Dead, SecretBlock, SecretRoute };
     private Data type;
@@ -237,14 +237,17 @@ public class GameDataManager : MonoBehaviour {
     {
         if (PlayerPrefs.GetString("UUID", "None.") == "None.")//Generate
         {
-            PlayerPrefs.SetString("UUID_info", SystemInfo.operatingSystem + "," + SystemInfo.deviceModel + "," + DateTime.Now + "," + Msg.appVer);
-            PlayerPrefs.SetString("UUID", Guid.NewGuid().ToString("D"));
+            string uuid = Guid.NewGuid().ToString("D");
+
+            PlayerPrefs.SetString("UUID", uuid);
             PlayerPrefs.Save();
+
+            UUID = uuid;
+
+            ServerBridge.ken_kentan_jp.UUID();
         }
-
-        UUIDinfo = PlayerPrefs.GetString("UUID_info");
-        UUID = PlayerPrefs.GetString("UUID");
-
-        ServerBridge.ken_kentan_jp.SendUUIDinfo();
+        else {
+            UUID = PlayerPrefs.GetString("UUID");
+        }
     }
 }
