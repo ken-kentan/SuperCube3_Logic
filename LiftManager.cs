@@ -6,10 +6,10 @@ public class LiftManager : MonoBehaviour {
     public GameObject Lift;
     public int modeLift;//1:X 2:Y
     public bool isWakeUp;
-    public float distance;
+    public float distance, speed;
     
     private Rigidbody LiftBody;
-    private const float speedX = 300, speedY = 180;
+    private float speedX = 300, speedY = 180;
     private float posStart, posEnd, pos, posPrev;
     private bool mode, isOnCube, isPositive;
     private int cntStopTime;
@@ -23,10 +23,12 @@ public class LiftManager : MonoBehaviour {
         switch (modeLift)
         {
             case 1:
-                pos = posStart = Lift.transform.localPosition.x;
+                pos = posStart = Lift.transform.position.x;
+                if (speed != 0) speedX = speed;
                 break;
             case 2:
-                pos = posStart = Lift.transform.localPosition.y;
+                pos = posStart = Lift.transform.position.y;
+                if (speed != 0) speedY = speed;
                 break;
         }
 
@@ -43,9 +45,9 @@ public class LiftManager : MonoBehaviour {
         switch (modeLift)
         {
             case 1://X
-                if (!isWakeUp && CubeManager.isResetCube) Lift.transform.localPosition = new Vector3(posStart, Lift.transform.localPosition.y, 0);
+                if (!isWakeUp && CubeManager.isResetCube) Lift.transform.position = new Vector3(posStart, Lift.transform.position.y, 0);
 
-                pos = Lift.transform.localPosition.x;
+                pos = Lift.transform.position.x;
 
                 checkError();
 
@@ -64,9 +66,9 @@ public class LiftManager : MonoBehaviour {
                 else      LiftBody.AddForce(-speedX, 0, 0);
                 break;
             case 2://Y
-                if (!isWakeUp && CubeManager.isResetCube) Lift.transform.localPosition = new Vector3(Lift.transform.localPosition.x, posStart, 0) ;
+                if (!isWakeUp && CubeManager.isResetCube) Lift.transform.position = new Vector3(Lift.transform.position.x, posStart, 0) ;
 
-                pos = Lift.transform.localPosition.y;
+                pos = Lift.transform.position.y;
 
                 checkError();
 
@@ -100,7 +102,7 @@ public class LiftManager : MonoBehaviour {
 
     void checkError()
     {
-        if(Mathf.Abs(posPrev - pos) < 0.015f && cntStopTime++ > 50)
+        if(Mathf.Abs(posPrev - pos) < 0.01f && cntStopTime++ > 50)
         {
             mode = !mode;
             cntStopTime = 0;
