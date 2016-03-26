@@ -15,25 +15,25 @@ public class Climb : MonoBehaviour
     void Update()
     {
         if (World.isPause) return;
-
-        if (isCube)
-        {
-            CubeManager.cubeBody.drag = 5;
-            CubeManager.ResetJump();
-        }
-        else
-        {
-            CubeManager.cubeBody.drag = 0.5f;
-        }
+        
+        if (isCube) CubeManager.ResetJump();
     }
 
-    void OnTriggerEnter(Collider collider)
+    void OnTriggerStay(Collider collider)
     {
-        if (collider.tag == "Cube") isCube = true;
+        if (collider.tag == "Cube")
+        {
+            isCube = true;
+            CubeManager.cubeBody.drag = 5;
+        }
     }
 
     void OnTriggerExit(Collider collider)
     {
-        if (collider.tag == "Cube") isCube = false;
+        if (collider.tag == "Cube")
+        {
+            isCube = false;
+            CubeManager.cubeBody.drag = 0.5f;
+        }
     }
 }
