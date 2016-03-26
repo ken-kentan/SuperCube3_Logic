@@ -3,25 +3,42 @@ using System.Collections;
 
 public class EnemyChildren : MonoBehaviour {
 
-    public GameObject EnemyChieldren;
+    public enum Type { Shot, Rotate};
+    
+    public Type type;
     private Rigidbody EnemyBody;
 
 	// Use this for initialization
 	void Start () {
-        EnemyBody = GetComponent<Rigidbody>();
+        switch (type)
+        {
+            case Type.Shot:
+                EnemyBody = GetComponent<Rigidbody>();
 
-        Vector3 forceDirection = World.Cube.transform.localPosition - transform.localPosition;
-        float sum = (Mathf.Abs(forceDirection.x) + Mathf.Abs(forceDirection.y));
+                Vector3 forceDirection = World.Cube.transform.localPosition - transform.localPosition;
+                float sum = (Mathf.Abs(forceDirection.x) + Mathf.Abs(forceDirection.y));
 
-        float rate = 500.0f / sum;
+                float rate = 500.0f / sum;
 
-        EnemyBody.AddForce(forceDirection * rate);
+                EnemyBody.AddForce(forceDirection * rate);
+                break;
+            case Type.Rotate:
+                break;
+        }
     }
 	
 	// Update is called once per frame
 	void Update () {
         if (World.isPause) return;
 
-        if (Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance || CubeManager.isResetCube) Destroy(EnemyChieldren);
+        if (type == Type.Shot &&( Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance || CubeManager.isResetCube)) Destroy(gameObject);
 	}
+
+    void OnTriggerEnter(Collider collider)
+    {
+        if (collider.tag == "Cube")
+        {
+            CubeManager.Kill();
+        }
+    }
 }

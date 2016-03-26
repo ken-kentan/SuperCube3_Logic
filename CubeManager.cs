@@ -180,6 +180,15 @@ public class CubeManager : MonoBehaviour {
         if (isOnLift ) isOnLift  = false;
     }
 
+    public static void Kill()
+    {
+        if (!isMotionDead && !isOnEnemy)
+        {
+            --life;
+            isOnEnemy = true;
+        }
+    }
+
     public static void UpdatePos()
     {
         pos = World.Cube.transform.position;
