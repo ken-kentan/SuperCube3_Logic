@@ -202,6 +202,16 @@ public class GameDataManager : MonoBehaviour {
                 else if (PlusJump >= 50) GPGS.Achievements(GPGSids.achievement_jump_geek);
                 else if (PlusJump >= 10) GPGS.Achievements(GPGSids.achievement_jump_love_3);
                 break;
+            case Data.Dead:
+                if (Dead >= 500) GPGS.Achievements(GPGSids.achievement_zombie);
+                else if (Dead >= 100) GPGS.Achievements(GPGSids.achievement_grim_reaper);
+                else if (Dead >= 50) GPGS.Achievements(GPGSids.achievement_death);
+                break;
+            case Data.Kill:
+                if (Kill >= 100) GPGS.Achievements(GPGSids.achievement_overkill);
+                else if (Kill >= 50) GPGS.Achievements(GPGSids.achievement_resistance);
+                else if (Kill >= 10) GPGS.Achievements(GPGSids.achievement_killer);
+                break;
             case Data.All://All
                 if (Jump >= 10000) GPGS.Achievements(GPGSids.achievement_aircraft);
                 if (Jump >= 1000) GPGS.Achievements(GPGSids.achievement_bird);
@@ -226,6 +236,14 @@ public class GameDataManager : MonoBehaviour {
                 if (PlusJump >= 100) GPGS.Achievements(GPGSids.achievement_jump_collector);
                 if (PlusJump >= 50) GPGS.Achievements(GPGSids.achievement_jump_geek);
                 if (PlusJump >= 10) GPGS.Achievements(GPGSids.achievement_jump_love_3);
+
+                if (Dead >= 500) GPGS.Achievements(GPGSids.achievement_zombie);
+                if (Dead >= 100) GPGS.Achievements(GPGSids.achievement_grim_reaper);
+                if (Dead >= 50) GPGS.Achievements(GPGSids.achievement_death);
+
+                if (Kill >= 100) GPGS.Achievements(GPGSids.achievement_overkill);
+                if (Kill >= 50) GPGS.Achievements(GPGSids.achievement_resistance);
+                if (Kill >= 10) GPGS.Achievements(GPGSids.achievement_killer);
                 break;
             default:
                 UnityEngine.Debug.Log("Data:" + typeData + " is not Achi data.");
@@ -249,5 +267,16 @@ public class GameDataManager : MonoBehaviour {
         else {
             UUID = PlayerPrefs.GetString("UUID");
         }
+    }
+
+    public static int GetRetryTimes(string level)
+    {
+        return PlayerPrefs.GetInt("RetryLevel" + level, 0);
+    }
+
+    public static void CntRetry(string level)
+    {
+        PlayerPrefs.SetInt("RetryLevel" + level, 1 + GetRetryTimes(level));
+        PlayerPrefs.Save();
     }
 }
