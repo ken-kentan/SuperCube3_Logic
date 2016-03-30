@@ -5,7 +5,7 @@ using System.Collections;
 
 public class World : MonoBehaviour {
 
-    public static GameObject Cube, EnemyChieldren, EnemyPatricle, EnemyMove, EnemyStaticMove, Magnet, Aqua, PlusJump,  BigPoint, Point, Loading, SpringBlock;
+    public static GameObject Cube, EnemyChieldren, EnemyPatricle, EnemyTracking, EnemyMove, EnemyStaticMove, Magnet, Aqua, PlusJump,  BigPoint, Point, Loading, SpringBlock;
     public static AudioSource audioSource;
     public static AudioClip killEnemySE, getAquaSE, getMagnetSE, pointSE, saveSE, jumpSE, contactSE, damageSE, getJumpSE, dropEnemySE, findItemSE;
     public static Color alpha = new Color(0, 0, 0, 0.01f);
@@ -40,6 +40,7 @@ public class World : MonoBehaviour {
         PlusJump        = Resources.Load("Objects/PlusJump")        as GameObject;
         BigPoint        = Resources.Load("Objects/BigPoint")        as GameObject;
         Point           = Resources.Load("Objects/Point")           as GameObject;
+        EnemyTracking   = Resources.Load("Objects/EnemyTracking")   as GameObject;
         EnemyMove       = Resources.Load("Objects/EnemyMove")       as GameObject;
         EnemyStaticMove = Resources.Load("Objects/EnemyStaticMove") as GameObject;
         SpringBlock     = Resources.Load("Objects/SpringBlock")     as GameObject;

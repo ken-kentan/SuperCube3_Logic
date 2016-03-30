@@ -26,20 +26,19 @@ public class PointManager : MonoBehaviour {
             return;
         }
 
-        if (CubeManager.effectMagnet > 0 && distanceCube < 11.0f) isMagnet = true;
+        if (CubeEffects.isMagnet && distanceCube < 11.0f) isMagnet = true;
 
         renderPoint.enabled = true;
         transform.Rotate(1, 1, 1);
 
         if (isMagnet)
         {
-            float posX = transform.position.x,
-                  posY = transform.position.y;
+            Vector3 thisPos = transform.position,
+                    direction = CubeManager.pos - thisPos;
 
-            posX += (CubeManager.pos.x - transform.position.x) / 6.0f;
-            posY += (CubeManager.pos.y - transform.position.y) / 6.0f;
+            direction.Normalize();
 
-            transform.localPosition = new Vector3(posX, posY, 0);
+            transform.position = thisPos + direction * 20.0f * Time.deltaTime;
         }
     }
 

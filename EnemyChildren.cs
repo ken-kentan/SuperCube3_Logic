@@ -3,13 +3,15 @@ using System.Collections;
 
 public class EnemyChildren : MonoBehaviour {
 
-    public enum Type { Shot, Rotate};
-    
+    public enum Type { Shot, Rotate , ShotTracking };
+
     public Type type;
+    public float speedTracking;
+    private GameObject parentObject;
     private Rigidbody EnemyBody;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         switch (type)
         {
             case Type.Shot:
@@ -24,21 +26,62 @@ public class EnemyChildren : MonoBehaviour {
                 break;
             case Type.Rotate:
                 break;
+            case Type.ShotTracking:
+                parentObject = gameObject.transform.parent.gameObject;
+                if (speedTracking == 0) speedTracking = 3.5f;
+                break;
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update() {
         if (World.isPause) return;
 
-        if (type == Type.Shot &&( Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance || CubeManager.isResetCube)) Destroy(gameObject);
-	}
+        switch (type)
+        {
+            case Type.Shot:
+                if ((Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance || CubeManager.isResetCube)) Destroy(gameObject);
+                break;
+            case Type.ShotTracking:
+                if ((Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance || CubeManager.isResetCube)) Destroy(parentObject);
+
+                Vector3 parentPos = parentObject.transform.position,
+                        direction = CubeManager.pos - parentPos;
+
+                direction.Normalize();
+
+                parentObject.transform.position = parentPos + direction * speedTracking * Time.deltaTime;
+                break;
+        }
+    }
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.tag == "Cube")
+        if (collider.tag != "Cube" || CubeManager.isMotionDead) return;
+
+        switch (type)
         {
-            CubeManager.Kill();
+            case Type.Rotate:
+                CubeManager.Kill();
+                break;
+            case Type.ShotTracking:
+                KillEnemy();
+                break;
         }
+    }
+
+    void KillEnemy()
+    {
+        World.audioSource.PlayOneShot(World.killEnemySE);
+        World.sumKill++;
+        GameDataManager.AddDataValue(GameDataManager.Data.Kill);
+        parentObject.tag = "Untagged";
+        CubeManager.ResetJump();
+        CubeManager.cubeBody.velocity = Vector3.ClampMagnitude(CubeManager.cubeBody.velocity, 0f);
+        CubeManager.cubeBody.AddForce(0, 200, 0);
+        parentObject.GetComponent<Animator>().enabled = true;
+        Destroy(parentObject.GetComponent<Collider>());
+        Destroy(parentObject, 1.0f);
+        Destroy(gameObject);
     }
 }

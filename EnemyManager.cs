@@ -3,13 +3,13 @@ using System.Collections;
 
 public class EnemyManager : MonoBehaviour {
 
-    public enum Enemy { None, Move, StaticMove, Rotate, Shot, Drop };
+    public enum Enemy { None, Move, StaticMove, Rotate, Shot, Drop, ShotTracking };
 
     public GameObject enemyCube;
     public Enemy type;
     public bool isForward, isAllowFly;
     public int cycleShot, timeStandbyDrop;
-    public float distanceDrop;
+    public float distanceDrop, speedTracking;
 
     private Animator animator;
     private Rigidbody enemyBody;
@@ -52,6 +52,7 @@ public class EnemyManager : MonoBehaviour {
                 if (!isForward) animator.SetFloat("Speed", -1);
                 break;
             case Enemy.Shot:
+            case Enemy.ShotTracking:
                 cntCyclShot = timeStandbyDrop = 0;
                 if (cycleShot == 0) cycleShot = 300;
                 break;
@@ -135,6 +136,15 @@ public class EnemyManager : MonoBehaviour {
                 break;
             case Enemy.Shot:
                 if (cntCyclShot++ % cycleShot == 0) Instantiate(World.EnemyChieldren, transform.position, transform.rotation);
+                break;
+            case Enemy.ShotTracking:
+                if (cntCyclShot++ % cycleShot == 0)
+                {
+                    GameObject objectShot = Instantiate(World.EnemyTracking);
+                    GameObject Sensor = objectShot.transform.FindChild("Sensor").gameObject;
+                    objectShot.transform.position = transform.position;
+                    Sensor.GetComponent<EnemyChildren>().speedTracking = speedTracking;
+                }
                 break;
             case Enemy.Drop:
                 if (CubeManager.isResetCube) enemyBody.transform.localPosition = posDropHome;
