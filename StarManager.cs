@@ -92,7 +92,7 @@ public class StarManager : MonoBehaviour {
         {
             World.audioSource.PlayOneShot(World.getMagnetSE);
             CubeEffects.Run.KillAllEffects();
-            CubeManager.effectMagnet = 1;
+            CubeEffects.Run.Enable(CubeEffects.Effect.Magnet);
             gameObject.SetActive(false);
             Destroy(gameObject);
         }

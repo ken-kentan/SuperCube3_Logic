@@ -34,7 +34,7 @@ public class PlusJumpManager : MonoBehaviour {
             CubeEffects.Run.KillAllEffects();
             GameDataManager.AddDataValue(GameDataManager.Data.PlusJump);
             CubeManager.maxJump = 3;
-            CubeManager.effectPlusJump = 1;
+            CubeEffects.Run.Enable(CubeEffects.Effect.PlusJump);
             gameObject.SetActive(false);
             Destroy(gameObject);
         }

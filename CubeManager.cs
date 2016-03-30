@@ -9,7 +9,6 @@ public class CubeManager : MonoBehaviour {
     public static Vector3 pos;
     public static float speedX, speedY, KaccGyro;
     public static int maxJump, life;
-    public static int effectAqua, effectMagnet, effectPlusJump;
     public static bool isResetCube, isMotionDead, isNotStop, isWarpLock;
 
     private static readonly float maxSpeed = 8.0f;
@@ -24,8 +23,6 @@ public class CubeManager : MonoBehaviour {
 
         speedX = cubeBody.velocity.x;
         speedY = cubeBody.velocity.y;
-
-        effectAqua = effectMagnet = effectPlusJump = 0;
 
         KaccGyro = PlayerPrefs.GetFloat("KaccGyro", 25.0f);
 
@@ -128,7 +125,7 @@ public class CubeManager : MonoBehaviour {
             cubeBody.AddForce(0, 200f, 0);
 
             Camera.transform.parent = null;
-
+            
             ServerBridge.ken_kentan_jp.GameEvent("Dead");
         }
 

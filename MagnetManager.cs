@@ -30,7 +30,7 @@ public class MagnetManager : MonoBehaviour {
         {
             World.audioSource.PlayOneShot(World.getMagnetSE);
             CubeEffects.Run.KillAllEffects();
-            CubeManager.effectMagnet = 1;
+            CubeEffects.Run.Enable(CubeEffects.Effect.Magnet);
             World.sumMagnet++;
             GameDataManager.AddDataValue(GameDataManager.Data.Magnet);
             gameObject.SetActive(false);
