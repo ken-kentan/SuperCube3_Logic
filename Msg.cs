@@ -8,7 +8,7 @@ public class Msg : MonoBehaviour {
 
     public static string sample;
     public const string appName   = "SuperCube_World",
-                        appVer    = "0.18.27beta",
+                        appVer    = "1.0.0",
                         appURL    = "http://ken.kentan.jp/SuperCube_World",
                         appURLenc = "http%3a%2f%2fken%2ekentan%2ejp%2fSuperCube_World";
     public static string[] Twitter = new string[2],
@@ -43,7 +43,7 @@ public class Msg : MonoBehaviour {
         errRevival  = "Sorry, Not Available X(";
         failRevival = "Sorry, V4VC failed X(";
 
-        Info[ja, 0] = "Welcome to the SuperCube World!\nスマホを左右に傾けて移動！\nちなみに、操作方法はSettingから変更できるよ。";
+        Info[ja, 0] = "Welcome to the SuperCube World!\nスマホを左右に傾けて移動！\nまた、操作方法はSettingから変更できるよ。";
         Info[ja, 1] = "画面をタップするとジャンプ！\nジャンプは2回連続できるよ。";
         Info[ja, 2] = "初めての敵だ!\nRedCubeは上から踏むと無力化できるよ。";
         Info[ja, 3] = "セーブポイントを発見!\nGreenCubeに触れるとリスポーン地点をセーブできるよ。";
@@ -57,9 +57,9 @@ public class Msg : MonoBehaviour {
         Info[en, 2] = "Enemy!!\nYou can incapacitate the RedCube by touch from top.";
         Info[en, 3] = "Found the Save points!\nSpwan points will save when touch the block of Green.";
         Info[en, 4] = "Goal Flag!";
-        Info[en, 5] = "Pink Cube!\nこいつは踏んでも無力化できない。避けて進もう。";
-        Info[en, 6] = "Item Blockを見つけた!\nアイテムブロックを下から押すとアイテムが出現するよ！";
-        Info[en, 7] = "Spring Blockを見つけた!\n上から踏むことで跳ねることが可能だ。\n横から押すことで動かすこともできるよ。";
+        Info[en, 5] = "Pink Cube!\nIt's invincible... So, avoid the Pink Cube.";
+        Info[en, 6] = "Found the Item Block!\nItem appear when push under this block.";
+        Info[en, 7] = "Found the Spring Block!\nYou can jump when pushthis block.\nAnd, It's will move when pressing from the side.";
 
         Hint[ja, 0] = "HomeのSettingからジャイロ感度の変更が行えます。";
         Hint[ja, 1] = "HomeのSettingでバイブレーションやパフォーマンスの変更が行えます。";
