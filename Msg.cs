@@ -53,12 +53,12 @@ public class Msg : MonoBehaviour {
         Info[ja, 7] = "Spring Blockを見つけた!\n上から踏むと跳ねることができる。\n横から押せば動かせるよ。";
 
         Info[en, 0] = "Welcome to the SuperCube World!\nMove by tilting the device to the left and right.";
-        Info[en, 1] = "Jump by tapping the screen!\nYou can jump be continuously twice.";
-        Info[en, 2] = "Enemy!!\nYou can incapacitate the RedCube by touch from top.";
-        Info[en, 3] = "Found the Save points!\nSpwan points will save when touch the block of Green.";
+        Info[en, 1] = "Jump by tapping the screen!\nYou can press twice to double jump.";
+        Info[en, 2] = "Enemy!!\nYou can incapacitate the Red Cube by jumping on top of it.";
+        Info[en, 3] = "Found a Spawn point!\n The Green Blocks will save your progress when you touch them.";
         Info[en, 4] = "Goal Flag!";
         Info[en, 5] = "Pink Cube!\nIt's invincible... So, avoid the Pink Cube.";
-        Info[en, 6] = "Found the Item Block!\nItem appear when push under this block.";
+        Info[en, 6] = "Found the Item Block!\nItems appear when you push under this block.";
         Info[en, 7] = "Found the Spring Block!\nYou can jump when pushthis block.\nAnd, It's will move when pressing from the side.";
 
         Hint[ja, 0] = "HomeのSettingからジャイロ感度の変更が行えます。";
@@ -69,13 +69,13 @@ public class Msg : MonoBehaviour {
         Hint[ja, 5] = "PinkCubeは上から踏んでも無力化できません。";
         Hint[ja, 6] = "HomeのSettingから操作方法(ジャイロ、コントローラー)の変更が行えます。";
 
-        Hint[en, 0] = "You can change the gyro sensitivity in the Setting of Home.";
-        Hint[en, 1] = "You can change the vibration and performance in the Setting of Home.";
-        Hint[en, 2] = "Spwan points will save when touch the block of Green.";
-        Hint[en, 3] = "Jump can be twice in a row.";
-        Hint[en, 4] = "You can incapacitate the RedCube by touch from top.";
+        Hint[en, 0] = "You can change the gyro sensitivity in the Home Setting.";
+        Hint[en, 1] = "You can change the vibration and performance in the Home Setting.";
+        Hint[en, 2] = "Spawn points will be saved when you touch the Green Blocks.";
+        Hint[en, 3] = "You can double jump by tapping twice.";
+        Hint[en, 4] = "You can incapacitate the Red Cube by jumping on top of it.";
         Hint[en, 5] = "You cannot incapacitate the RedCube";
-        Hint[en, 6] = "You can change the control mode in the Setting of Home.";
+        Hint[en, 6] = "You can change the control mode in the Home Setting.";
 
         Setting[ja, 0] = "本体の傾きとタップで操作";
         Setting[ja, 1] = "画面のボタンで操作";
@@ -90,7 +90,7 @@ public class Msg : MonoBehaviour {
 
         GPGSneedLogin[en]    = "Online function need login.";
         GPGSsendingScore[en] = "Sending your score...";
-        GPGSsendScore[en]    = "Success to send your score!";
+        GPGSsendScore[en]    = "Successfully sent your score!";
         GPGSfaildScore[en]   = "Failed to send your score X(";
 
     }
