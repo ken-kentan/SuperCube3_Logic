@@ -6,19 +6,23 @@ public class BlockSecret : MonoBehaviour {
     public enum Item { None, Magnet, Aqua, PlusJump, BigPoint, Point, SpringBlock, EnemyMove, EnemyStaticMove };
     
     public Item item;
-    public bool isItemBlock, isEnemyForward;
+    public bool isItemBlock, isEnemyForward, isItemRespawn;
     public float SpringForce;
 
+    private GameObject ItemObject;
     private Collider thisCollider;
+    private bool isItemSpawned;
     private float posY;
 
     // Use this for initialization
     void Start () {
         if (item == Item.None) UnityEngine.Debug.LogError("Item is None.");
         thisCollider = GetComponent<Collider>();
-        posY = transform.position.y - 1.0f;
+        posY = transform.position.y - 0.95f;
 
         if (SpringForce == 0) SpringForce = 300;
+
+        ItemObject = null;
     }
 	
 	// Update is called once per frame
@@ -26,57 +30,52 @@ public class BlockSecret : MonoBehaviour {
         if (isItemBlock) return;
 
 	    if(IsTouchCube()) thisCollider.isTrigger = false;
-        else                        thisCollider.isTrigger = true;
+        else              thisCollider.isTrigger = true;
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag != "Cube" || (isItemBlock && !IsTouchCube())) return;
+        if (collision.gameObject.tag != "Cube" || (isItemBlock && !IsTouchCube()) || ItemObject != null) return;
 
         World.audioSource.PlayOneShot(World.findItemSE);
 
         GetComponent<Renderer>().material = World.materialBlockSecret;
 
-        GameObject Temp;
-
         switch (item)
         {
             case Item.Magnet:
-                Instantiate(World.Magnet, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+                ItemObject = (GameObject)Instantiate(World.Magnet, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
                 break;
             case Item.Aqua:
-                Instantiate(World.Aqua, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+                ItemObject = (GameObject)Instantiate(World.Aqua, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
                 break;
             case Item.PlusJump:
-                Instantiate(World.PlusJump, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+                ItemObject = (GameObject)Instantiate(World.PlusJump, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
                 break;
             case Item.BigPoint:
-                Instantiate(World.BigPoint, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+                ItemObject = (GameObject)Instantiate(World.BigPoint, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
                 break;
             case Item.Point:
-                Instantiate(World.Point, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
+                ItemObject = (GameObject)Instantiate(World.Point, transform.position + new Vector3(0, 1.27f, 0), transform.rotation);
                 break;
             case Item.SpringBlock:
-                Temp = (GameObject)Instantiate(World.SpringBlock, transform.position + new Vector3(0, 1.77f, 0), transform.rotation);
-                Temp.GetComponent<SpringManager>().force = SpringForce;
+                ItemObject = (GameObject)Instantiate(World.SpringBlock, transform.position + new Vector3(0, 1.77f, 0), transform.rotation);
+                ItemObject.GetComponent<SpringManager>().force = SpringForce;
                 break;
             case Item.EnemyMove:
-                Temp = (GameObject)Instantiate(World.EnemyMove, transform.position + new Vector3(0, 1.3f, 0), transform.rotation);
-                GameObject Sensor = Temp.transform.FindChild("Sensor").gameObject;
+                ItemObject = (GameObject)Instantiate(World.EnemyMove, transform.position + new Vector3(0, 1.3f, 0), transform.rotation);
+                GameObject Sensor = ItemObject.transform.FindChild("Sensor").gameObject;
                 Sensor.GetComponent<EnemyManager>().isForward = isEnemyForward;
                 break;
             case Item.EnemyStaticMove:
-                Temp = (GameObject)Instantiate(World.EnemyStaticMove, transform.position + new Vector3(0, 1.3f, 0), transform.rotation);
-                Temp.GetComponent<EnemyManager>().isForward = isEnemyForward;
+                ItemObject = (GameObject)Instantiate(World.EnemyStaticMove, transform.position + new Vector3(0, 1.3f, 0), transform.rotation);
+                ItemObject.GetComponent<EnemyManager>().isForward = isEnemyForward;
                 break;
         }
 
-        if (!isItemBlock)
-        {
-            GameDataManager.AddDataValue(GameDataManager.Data.SecretBlock);
-        }
+        if (!isItemBlock) GameDataManager.AddDataValue(GameDataManager.Data.SecretBlock);
 
-        Destroy(this);
+        if(!isItemRespawn) Destroy(this);
     }
 
     bool IsTouchCube()
