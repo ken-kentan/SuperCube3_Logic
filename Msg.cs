@@ -8,7 +8,7 @@ public class Msg : MonoBehaviour {
 
     public static string sample;
     public const string appName   = "SuperCube_World",
-                        appVer    = "1.0.0",
+                        appVer    = "1.0.1",//1.0.2 アイテムを最スポーン可能に
                         appURL    = "http://ken.kentan.jp/SuperCube_World",
                         appURLenc = "http%3a%2f%2fken%2ekentan%2ejp%2fSuperCube_World";
     public static string[] Twitter = new string[2],
@@ -59,7 +59,7 @@ public class Msg : MonoBehaviour {
         Info[en, 4] = "Goal Flag!";
         Info[en, 5] = "Pink Cube!\nIt's invincible... So, avoid the Pink Cube.";
         Info[en, 6] = "Found the Item Block!\nItems appear when you push under this block.";
-        Info[en, 7] = "Found the Spring Block!\nYou can jump when pushthis block.\nAnd, It's will move when pressing from the side.";
+        Info[en, 7] = "Found the Spring Block!\nJump on this block to bounce.\nYou can also move it by pushing from the side.";
 
         Hint[ja, 0] = "HomeのSettingからジャイロ感度の変更が行えます。";
         Hint[ja, 1] = "HomeのSettingでバイブレーションやパフォーマンスの変更が行えます。";

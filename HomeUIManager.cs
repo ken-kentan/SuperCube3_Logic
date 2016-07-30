@@ -130,7 +130,7 @@ public class HomeUIManager : MonoBehaviour {
                 SceneManager.LoadScene("Setting");
                 break;
             case "Feedback":
-                Application.OpenURL("https://twitter.com/intent/tweet?screen_name=ken_kentan");
+                Application.OpenURL("https://play.google.com/store/apps/details?id=jp.kentan.supercubeworld");
                 break;
             case "Exit":
                 Application.Quit();
@@ -181,7 +181,6 @@ public class HomeUIManager : MonoBehaviour {
                     bgPlay.SetActive(true);
                     thisAnimator.SetFloat("Speed", 0);
                     LevelSelect.SetActive(false);
-                    UnityEngine.Debug.Log("LS Start.");
                 }
                 break;
             case "GameData":
@@ -191,7 +190,6 @@ public class HomeUIManager : MonoBehaviour {
                     bgData.SetActive(true);
                     thisAnimator.SetFloat("Speed", 0);
                     Data.SetActive(false);
-                    UnityEngine.Debug.Log("GD Start.");
                 }
                 break;
             case "OnlineService":
@@ -201,10 +199,9 @@ public class HomeUIManager : MonoBehaviour {
                     bgOnline.SetActive(true);
                     thisAnimator.SetFloat("Speed", 0);
                     Online.SetActive(false);
-                    UnityEngine.Debug.Log("OS Start.");
                 }
                 break;
         }
-        UnityEngine.Debug.Log("Start.");
+        UnityEngine.Debug.Log(modeAnim +" Start.");
     }
 }

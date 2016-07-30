@@ -118,9 +118,14 @@ public class GameUIManager : MonoBehaviour {
         {
             World.isPause = true;
             enablePause();
-            if (cntRevival >= 2 || (!AdColonyAndroid.checkV4VC() && Hint != null)) disableRevival();
+            if (cntRevival >= 2 || (!AdColonyAndroid.checkV4VC(AdColonyAndroid.Zone.Revival) && Hint != null))
+            {
+                disableRevival();
+                //if (GameDataManager.GetRetryTimes(World.nameScene) > 3 && GameDataManager.GetMaxClearedLevel() < int.Parse(World.nameScene) && AdColonyAndroid.checkV4VC(AdColonyAndroid.Zone.Skip)) EnableSkip();
+                //else disableRevival();
+            }
             GameOver.SetActive(true);
-            if (Hint != null)
+            if (Hint != null) //call at once
             {
                 Hint.text = Msg.Hint[Msg.typeLang, generateRand(0, 7)];
                 Hint = null;
@@ -197,6 +202,11 @@ public class GameUIManager : MonoBehaviour {
         btnHome.transform.localPosition  = new Vector3( 288, -8, 0);
     }
 
+    void EnableSkip()
+    {
+        //GameObject text = gameObject.transform.FindChild("Text").btnRevival;
+    }
+
     void updateFPS()
     {
         ++frameCount;
@@ -246,14 +256,15 @@ public class GameUIManager : MonoBehaviour {
                 disablePause();
                 break;
             case "Retry":
+                GameDataManager.CntRetry(World.nameScene);
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                 break;
             case "Revival":
-                if(!AdColonyAndroid.PlayV4VCAd()) infoRevival.text = Msg.errRevival;
+                if(!AdColonyAndroid.PlayV4VCAd(AdColonyAndroid.Zone.Revival)) infoRevival.text = Msg.errRevival;
                 break;
             case "Next":
                 int nextScene = int.Parse(World.nameScene) + 1;
-                if (nextScene <= 8)
+                if (nextScene <= 9)
                 {
                     World.Loading.SetActive(true);
                     Loading.RestartLoad();
@@ -313,7 +324,7 @@ public class GameUIManager : MonoBehaviour {
 
     int generateRand(int rangeX = 0, int rangeY = 0)
     {
-        Random.seed = System.DateTime.Now.Second;
+        Random.InitState(System.DateTime.Now.Second);
         return Random.Range(rangeX, rangeY);
     }
 }

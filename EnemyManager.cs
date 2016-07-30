@@ -80,7 +80,7 @@ public class EnemyManager : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (isOverWorld()) Destroy(enemyCube);
 
         //return when over distance

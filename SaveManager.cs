@@ -12,7 +12,7 @@ public class SaveManager : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    void FixedUpdate() {
         if (cntTimer == 0 || cntColorChange > 2) return;
 
         if (cntTimer++ % 10 == 0)

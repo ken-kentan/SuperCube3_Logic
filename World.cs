@@ -22,13 +22,15 @@ public class World : MonoBehaviour {
     public static int sumPoint, sumJump, sumDead, sumKill, sumScore, sumAqua, sumMagnet;
 
     //Setting data
-    public static bool isController, isVibration, isBlur, isDisplayFPS, isDebug;
+    public static bool isController, isVibration, isBlur, isDisplayFPS;
 
     private static bool isChangeVolume;
     private static float volume, targetVolume;
 
     // Use this for initialization
     void Awake () {
+        Application.targetFrameRate = 60;
+
         Cube    = GameObject.Find("Cube");
         Loading = GameObject.Find("Loading");
         audioSource = Cube.GetComponent<AudioSource>();
@@ -69,7 +71,6 @@ public class World : MonoBehaviour {
         isVibration  = (PlayerPrefs.GetInt("isVibration" , 1) != 0);
         isBlur       = (PlayerPrefs.GetInt("isBlur"      , 1) != 0);
         isDisplayFPS = (PlayerPrefs.GetInt("isDisplayFPS", 0) != 0);
-        isDebug      = (PlayerPrefs.GetInt("isDebug"     , 0) != 0);
 
         drawDistance = 20.0f;
 
