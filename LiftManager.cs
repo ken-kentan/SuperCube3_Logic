@@ -16,6 +16,8 @@ public class LiftManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        World.liftManagerList.Add(this);
+
         LiftBody = GetComponent<Rigidbody>();
 
         mode = true;
@@ -40,13 +42,11 @@ public class LiftManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (World.isPause || (!isWakeUp && !isOnCube && !CubeManager.isResetCube)) return;
+        if (World.isPause || (!isWakeUp && !isOnCube)) return;
 
         switch (modeLift)
         {
             case 1://X
-                if (!isWakeUp && CubeManager.isResetCube) Lift.transform.position = new Vector3(posStart, Lift.transform.position.y, 0);
-
                 pos = Lift.transform.position.x;
 
                 checkError();
@@ -66,8 +66,6 @@ public class LiftManager : MonoBehaviour {
                 else      LiftBody.AddForce(-speedX, 0, 0);
                 break;
             case 2://Y
-                if (!isWakeUp && CubeManager.isResetCube) Lift.transform.position = new Vector3(Lift.transform.position.x, posStart, 0) ;
-
                 pos = Lift.transform.position.y;
 
                 checkError();
@@ -108,5 +106,18 @@ public class LiftManager : MonoBehaviour {
             cntStopTime = 0;
         }
         posPrev = pos;
+    }
+
+    public void Reset()
+    {
+        if (isWakeUp) return;
+
+        if(modeLift == 1)
+        {
+            Lift.transform.position = new Vector3(posStart, Lift.transform.position.y, 0);
+        }else
+        {
+            Lift.transform.position = new Vector3(Lift.transform.position.x, posStart, 0);
+        }
     }
 }

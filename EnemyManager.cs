@@ -24,6 +24,8 @@ public class EnemyManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        World.enemyManagerList.Add(this);
+
         colliderEnemyCube = enemyCube.GetComponent<SphereCollider>();
         animator = enemyCube.GetComponent<Animator>();
 
@@ -147,8 +149,6 @@ public class EnemyManager : MonoBehaviour {
                 }
                 break;
             case Enemy.Drop:
-                if (CubeManager.isResetCube) enemyBody.transform.localPosition = posDropHome;
-
                 if (Mathf.Abs(posDropHome.x - CubeManager.pos.x) <= distanceDrop && CubeManager.pos.y < posDropHome.y && isLockDrop && cntStayTime++ > timeStandbyDrop) {
                     cntStayTime = 0;
                     isLockDrop = false;
@@ -225,5 +225,10 @@ public class EnemyManager : MonoBehaviour {
     {
         if (enemyCube.transform.localPosition.y < -10.0f) return true;
         return false;
+    }
+
+    public void Reset()
+    {
+        if(type == Enemy.Drop) enemyBody.transform.localPosition = posDropHome;
     }
 }

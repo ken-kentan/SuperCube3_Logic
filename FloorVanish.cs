@@ -5,10 +5,12 @@ public class FloorVanish : MonoBehaviour {
 
     private BoxCollider colliderFloor;
     private bool isStartVanish;
-    public int alpha;
+    private int alpha;
 
 	// Use this for initialization
 	void Start () {
+        World.floorVanishList.Add(this);
+
         colliderFloor = GetComponent<BoxCollider>();
         isStartVanish = false;
 
@@ -16,10 +18,8 @@ public class FloorVanish : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (World.isPause || !isStartVanish) return;
-
-        if (CubeManager.isResetCube) reset();
 
         if (alpha-- <= 0) colliderFloor.enabled = false;
 
@@ -31,7 +31,7 @@ public class FloorVanish : MonoBehaviour {
         if (collision.gameObject.tag == "Cube" && collision.transform.position.y > transform.position.y) isStartVanish = true;
     }
 
-    void reset()
+    public void Reset()
     {
         alpha = 150;
 

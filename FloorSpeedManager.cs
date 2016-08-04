@@ -56,7 +56,7 @@ public class FloorSpeedManager : MonoBehaviour {
 
     void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.tag == "Cube" && CubeManager.pos.y >= posY && ((!isBack && CubeManager.speedX < targetSpeed) || (isBack && CubeManager.speedX > targetSpeed)))
+        if (collision.gameObject.tag == "Cube" && CubeManager.pos.y >= posY && ((!isBack && CubeManager.speed.x < targetSpeed) || (isBack && CubeManager.speed.x > targetSpeed)))
         {
             CubeManager.cubeBody.AddForce(forceSpeed, 0, 0);
         }

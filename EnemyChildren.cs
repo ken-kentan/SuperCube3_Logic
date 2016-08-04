@@ -12,6 +12,8 @@ public class EnemyChildren : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        World.enemyChildrenList.Add(this);
+
         switch (type)
         {
             case Type.Shot:
@@ -40,10 +42,10 @@ public class EnemyChildren : MonoBehaviour {
         switch (type)
         {
             case Type.Shot:
-                if ((Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance || CubeManager.isResetCube)) Destroy(gameObject);
+                if ((Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance)) Destroy(gameObject);
                 break;
             case Type.ShotTracking:
-                if ((Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance || CubeManager.isResetCube)) Destroy(parentObject);
+                if ((Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance)) Destroy(parentObject);
 
                 Vector3 parentPos = parentObject.transform.position,
                         direction = CubeManager.pos - parentPos;
@@ -62,7 +64,7 @@ public class EnemyChildren : MonoBehaviour {
         switch (type)
         {
             case Type.Rotate:
-                CubeManager.Kill();
+                World.cubeManager.KillCube();
                 break;
             case Type.ShotTracking:
                 KillEnemy();
@@ -83,5 +85,11 @@ public class EnemyChildren : MonoBehaviour {
         Destroy(parentObject.GetComponent<Collider>());
         Destroy(parentObject, 1.0f);
         Destroy(gameObject);
+    }
+
+    public void Reset()
+    {
+        if(type == Type.Shot)               Destroy(gameObject);
+        else if (type == Type.ShotTracking) Destroy(parentObject);
     }
 }

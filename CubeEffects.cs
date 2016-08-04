@@ -9,20 +9,17 @@ public class CubeEffects : MonoBehaviour
     public Light lightCube;
     public ParticleSystem particleDead;
     public Effect effect;
-
-    public static CubeEffects Run;
+    
     public static bool isAqua, isMagnet, isPlusJump;
     public static int cntTimerAqua, cntTimerMagnet;
     public static int cntFlashAqua, cntFlashManget;
 
-    void Awake()
-    {
-        Run = this;
-    }
 
     // Use this for initialization
     void Start()
     {
+        World.effect = this;
+
         cntTimerAqua = cntTimerMagnet = 0;
         cntFlashAqua = cntFlashManget = 0;
         isAqua = isMagnet = isPlusJump = false;
@@ -39,7 +36,7 @@ public class CubeEffects : MonoBehaviour
             if(++cntTimerMagnet > 1100)
             {
                 isMagnet = false;
-                ResetEffect();
+                Reset();
             }
             else
             {
@@ -56,7 +53,7 @@ public class CubeEffects : MonoBehaviour
                     lightCube.color = World.colorMagnet;
                 }
                 else {
-                    ResetEffect();
+                    Reset();
                 }
             }
         }
@@ -66,13 +63,6 @@ public class CubeEffects : MonoBehaviour
         {
             rendererCube.material = World.materialPlusJump;
             lightCube.color = Color.green;
-
-            if (CubeManager.isResetCube)
-            {
-                isPlusJump = false;
-                CubeManager.maxJump = 2;
-                ResetEffect();
-            }
         }
 
         //Aqua
@@ -92,7 +82,7 @@ public class CubeEffects : MonoBehaviour
                 return;
             }
             else {
-                if(!isMagnet && !isPlusJump) ResetEffect();
+                if(!isMagnet && !isPlusJump) Reset();
             }
 
             if (cntFlashAqua > 2) isAqua = false;
@@ -117,8 +107,10 @@ public class CubeEffects : MonoBehaviour
         }
     }
 
-    public void ResetEffect()
+    public void Reset()
     {
+        isPlusJump = false;
+        CubeManager.maxJump = 2;
         rendererCube.material = World.materialCube;
         lightCube.color = Color.white;
     }
@@ -133,7 +125,7 @@ public class CubeEffects : MonoBehaviour
         isAqua = isMagnet = isPlusJump = false;
         CubeManager.maxJump = 2;
         ResetAllTimers();
-        ResetEffect();
+        Reset();
     }
 
     public void Dead()

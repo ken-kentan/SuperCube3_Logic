@@ -32,7 +32,7 @@ public class AquaManager : MonoBehaviour {
             CubeManager.life++;
             World.sumAqua++;
             GameDataManager.AddDataValue(GameDataManager.Data.Aqua);
-            CubeEffects.Run.Enable(CubeEffects.Effect.Aqua);
+            World.effect.Enable(CubeEffects.Effect.Aqua);
             gameObject.SetActive(false);
             Destroy(gameObject);
         }

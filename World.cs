@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class World : MonoBehaviour {
 
@@ -18,6 +19,13 @@ public class World : MonoBehaviour {
     public static Vector3 posReborn;
     public static string nameScene;
 
+    public static CubeManager cubeManager;
+    public static CubeEffects effect;
+    public static List<LiftManager> liftManagerList = new List<LiftManager>();
+    public static List<FloorVanish> floorVanishList = new List<FloorVanish>();
+    public static List<EnemyManager> enemyManagerList = new List<EnemyManager>();
+    public static List<EnemyChildren> enemyChildrenList = new List<EnemyChildren>();
+
     //Game data
     public static int sumPoint, sumJump, sumDead, sumKill, sumScore, sumAqua, sumMagnet;
 
@@ -30,6 +38,14 @@ public class World : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         Application.targetFrameRate = 60;
+
+        cubeManager = null;
+        effect = null;
+
+        liftManagerList.Clear();
+        floorVanishList.Clear();
+        enemyManagerList.Clear();
+        enemyChildrenList.Clear();
 
         Cube    = GameObject.Find("Cube");
         Loading = GameObject.Find("Loading");

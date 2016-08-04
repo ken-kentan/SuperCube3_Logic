@@ -6,26 +6,27 @@ public class CubeManager : MonoBehaviour {
 
     public GameObject Camera;
     public static Rigidbody cubeBody;
-    public static Vector3 pos;
-    public static float speedX, speedY, KaccGyro;
+    public static Vector3 pos, speed;
+    public static float KaccGyro;
     public static int maxJump, life;
-    public static bool isResetCube, isMotionDead, isNotStop, isWarpLock;
+    public static bool isMotionDead, isNotStop, isWarpLock;
 
     private static readonly float maxSpeed = 8.0f;
     private static int cntJump, cntMotionDead;
-    private static bool isOnFloor, isOnBlock, isOnEnemy, isOnLift;
-    private bool isLeft, isRight;
+    private static bool isOnFloor, isOnBlock, isOnLift;
+    private bool isMoveLeft, isMoveRight;
 
     private float x, y, z;
 
     // Use this for initialization
     void Start() {
+        World.cubeManager = this;
+
         cubeBody = GetComponent<Rigidbody>();
 
         pos = transform.position;
 
-        speedX = cubeBody.velocity.x;
-        speedY = cubeBody.velocity.y;
+        speed = cubeBody.velocity;
 
         KaccGyro = PlayerPrefs.GetFloat("KaccGyro", 25.0f);
 
@@ -34,25 +35,14 @@ public class CubeManager : MonoBehaviour {
 
         life = 3;
 
-        isResetCube = isWarpLock = false;
+        isWarpLock = false;
 
-        isOnFloor = isOnBlock = isOnEnemy = isOnLift = isMotionDead = false;
+        isOnFloor = isOnBlock = isOnLift = isMotionDead = false;
     }
 
     // Update is called once per frame
     void Update() {
-        if (World.isPause) return;
-
-        if (isOnEnemy || isOverWorld()) resetCube();
-        else isResetCube = false;
-
-        if (isMotionDead)
-        {
-            motionDead();
-            return;
-        }
-
-        if (isWarpLock) return;
+        if (World.isPause || isMotionDead || isWarpLock) return;
 
         //jump
         if (((Input.GetMouseButtonDown(0) && !World.isController) || GameUIManager.isJump) && (isOnFloor || isOnBlock || isOnLift || cntJump < maxJump))
@@ -62,48 +52,45 @@ public class CubeManager : MonoBehaviour {
             World.sumJump++;
             GameDataManager.AddDataValue(GameDataManager.Data.Jump);
             StopCube();
-            y = 260f;
+            y = 280f;
         }
         GameUIManager.isJump = false;
 
-        //X move
-        if (Input.GetKey("left") || GameUIManager.isLeft)
-        {
-            isLeft = true;
-        }else
-        {
-            isLeft = false;
-        }
+        //move
+        if (Input.GetKey("left") || GameUIManager.isLeft) isMoveLeft = true;
+        else                                              isMoveLeft = false;
 
-        if (Input.GetKey("right") || GameUIManager.isRight)
-        {
-            isRight = true;
-        }else
-        {
-            isRight = false;
-        }
+        if (Input.GetKey("right") || GameUIManager.isRight) isMoveRight = true;
+        else                                                isMoveRight = false;
     }
 
     void FixedUpdate()
     {
         pos = transform.position;
-        speedX = cubeBody.velocity.x;
-        speedY = cubeBody.velocity.y;
+        speed = cubeBody.velocity;
 
-        if (World.isPause || isMotionDead || isWarpLock) return;
+        if (World.isPause || isWarpLock) return;
+
+        if (isOverWorld()) KillCube();
+
+        if (isMotionDead)
+        {
+            MotionDead();
+            return;
+        }
 
         //Gyro ctrl
         if (!World.isController)
         {
             float accGyro = Input.acceleration.x * KaccGyro;
 
-            if (Mathf.Abs(speedX) < maxSpeed) cubeBody.AddForce( accGyro, 0f, 0f);
+            if (Mathf.Abs(speed.x) < maxSpeed) cubeBody.AddForce( accGyro, 0f, 0f);
             else cubeBody.AddForce( -accGyro, 0f, 0f);
         }
 
-        if (isLeft)
+        if (isMoveLeft)
         {
-            if (speedX > -maxSpeed)
+            if (speed.x > -maxSpeed)
             {
                 cubeBody.AddForce(-9f, 0f, 0f);
             }
@@ -111,9 +98,9 @@ public class CubeManager : MonoBehaviour {
             {
                 cubeBody.AddForce(9f, 0f, 0f);
             }
-        }else if (isRight)
+        }else if (isMoveRight)
         {
-            if (speedX < maxSpeed)
+            if (speed.x < maxSpeed)
             {
                 cubeBody.AddForce(9f, 0f, 0f);
             }
@@ -128,11 +115,10 @@ public class CubeManager : MonoBehaviour {
         y = 0f;
     }
 
-        bool isOverWorld()
+    bool isOverWorld()
     {
         if (pos.y < -2.0f && !isMotionDead)
         {
-            --life;
             return true;
         }
         return false;
@@ -144,7 +130,7 @@ public class CubeManager : MonoBehaviour {
         isNotStop = false;
     }
 
-    void resetCube()
+    public void KillCube()
     {
         World.audioSource.PlayOneShot(World.damageSE);
         World.sumDead++;
@@ -152,15 +138,15 @@ public class CubeManager : MonoBehaviour {
         GameDataManager.AddDataValue(GameDataManager.Data.Dead);
         StopCube(true);
         isMotionDead = true;
-        isOnEnemy = false;
     }
 
-    void motionDead()
+    void MotionDead()
     {
         World.Cube.GetComponent<Collider>().isTrigger = true;
+
         if (cntMotionDead == 0)
         {
-            CubeEffects.Run.Dead();
+            World.effect.Dead();
             cubeBody.AddForce(0, 200f, 0);
 
             Camera.transform.parent = null;
@@ -174,10 +160,32 @@ public class CubeManager : MonoBehaviour {
             isMotionDead = false;
             GameUIManager.isJump = false;
             World.Cube.GetComponent<Collider>().isTrigger = false;
-            transform.position = World.posReborn;
-            isResetCube = true;
 
-            CubeEffects.Run.ResetEffect();
+            foreach(LiftManager liftManager in World.liftManagerList)
+            {
+                liftManager.Reset();
+            }
+
+            foreach(FloorVanish floorVanish in World.floorVanishList)
+            {
+                floorVanish.Reset();
+            }
+
+            foreach(EnemyManager enemyManager in World.enemyManagerList)
+            {
+                enemyManager.Reset();
+            }
+
+            foreach(EnemyChildren enemyChildren in World.enemyChildrenList)
+            {
+                enemyChildren.Reset();
+            }
+
+            --life;
+
+            World.effect.Reset();
+
+            transform.position = World.posReborn;
 
             Camera.transform.parent = World.Cube.transform;
             Camera.transform.localPosition = new Vector3(0, 6, -15);
@@ -198,8 +206,7 @@ public class CubeManager : MonoBehaviour {
         
         if (collision.gameObject.tag == "Enemy" && !isWarpLock)
         {
-            --life;
-            isOnEnemy = true;
+            KillCube();
             return;
         }
 
@@ -214,15 +221,6 @@ public class CubeManager : MonoBehaviour {
         if (isOnFloor) isOnFloor = false;
         if (isOnBlock) isOnBlock = false;
         if (isOnLift ) isOnLift  = false;
-    }
-
-    public static void Kill()
-    {
-        if (!isMotionDead && !isOnEnemy)
-        {
-            --life;
-            isOnEnemy = true;
-        }
     }
 
     public static void UpdatePos()

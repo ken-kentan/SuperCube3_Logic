@@ -80,7 +80,7 @@ public class BlockSecret : MonoBehaviour {
 
     bool IsTouchCube()
     {
-        if (CubeManager.pos.y <= posY && CubeManager.speedY >= 0) return true;
+        if (CubeManager.pos.y <= posY && CubeManager.speed.y >= 0) return true;
 
         return false;
     }

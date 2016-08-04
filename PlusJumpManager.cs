@@ -31,10 +31,10 @@ public class PlusJumpManager : MonoBehaviour {
         if (collider.gameObject.tag == "Cube")
         {
             World.audioSource.PlayOneShot(World.getJumpSE);
-            CubeEffects.Run.KillAllEffects();
+            World.effect.KillAllEffects();
             GameDataManager.AddDataValue(GameDataManager.Data.PlusJump);
             CubeManager.maxJump = 3;
-            CubeEffects.Run.Enable(CubeEffects.Effect.PlusJump);
+            World.effect.Enable(CubeEffects.Effect.PlusJump);
             gameObject.SetActive(false);
             Destroy(gameObject);
         }

@@ -3,29 +3,35 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class HomeUIManager : MonoBehaviour {
+public class HomeUIManager : MonoBehaviour
+{
 
-    public GameObject parentLoading, btnPlay, bgPlay, btnData, bgData, btnOnline, bgOnline;
+    public enum AnimationMode { Play, Data, Online }
+
+    public GameObject parentLoading, btnPlay, bgPlay, btnData, bgData, btnOnline, bgOnline, objSplash;
     public GameObject LevelSelect, Data, Online;
     public Text textOnlineStatus;
     public Text textScore, textJump, textClear, textSave, textPoint, textPlusOne, textMagnet, textPlusJump, textDead, textKill, textSBlock, textSRoute;
-    public Text textUserName;
+    public Text textUserName, textSplash;
     public Text[] textHighScore;
     public Button[] btn;
     public Image[] imgBtn;
-    public Animator thisAnimator;
+    public Image imgSplash;
+    public Animator homeAnimator;
+    public AudioSource audioSource;
 
-    private bool isFirst;
+    private bool wasPlayBGM, isReverseAnimation, fixEventBug;
     private int cntTimer;
 
+    private static int cntSplashTimer;
+    private static bool wasLaunced;
+
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
         Time.timeScale = 1;
-
-        isFirst = true;
+       
         cntTimer = 0;
-
-        thisAnimator.SetFloat("Speed", 0);
 
         textOnlineStatus.color = GPGS.Green;
 
@@ -34,7 +40,7 @@ public class HomeUIManager : MonoBehaviour {
         for (int i = 0; i < btnLength; i++) if (GameDataManager.GetHighScore(i.ToString()) != -1) textHighScore[i].text = GameDataManager.GetHighScore(i.ToString()).ToString();
 
         GPGS.Login();
-        
+
         setGameData();
 
         //Button color Init(Level Select)
@@ -42,6 +48,11 @@ public class HomeUIManager : MonoBehaviour {
         {
             btn[i].enabled = false;
             imgBtn[i].color = new Color(0.5f, 0.5f, 0.5f, 1);
+        }
+
+        if (wasLaunced)
+        {
+            audioSource.Play();
         }
     }
 
@@ -52,7 +63,7 @@ public class HomeUIManager : MonoBehaviour {
         {
             textOnlineStatus.text = "●";
             if (GPGS.isLogin) textOnlineStatus.color = GPGS.Green;
-            else              textOnlineStatus.color = new Color(214.0f / 255.0f, 0, 2.0f / 255.0f, 1);
+            else textOnlineStatus.color = new Color(214.0f / 255.0f, 0, 2.0f / 255.0f, 1);
         }
 
         if (GPGS.isConnecting)
@@ -63,23 +74,64 @@ public class HomeUIManager : MonoBehaviour {
             {
                 textOnlineStatus.text = "●";
             }
-            else {
+            else
+            {
                 textOnlineStatus.text = "";
                 if (cntTimer > 20) cntTimer = 0;
             }
         }
     }
 
+    void FixedUpdate()
+    {
+        if (wasLaunced) return;
+
+        if (cntSplashTimer < 300 || GPGS.isConnecting || ServerBridge.isConnecting)
+        {
+            objSplash.SetActive(true);
+
+            ++cntSplashTimer;
+
+            var color = imgSplash.color;
+            color.a = cntSplashTimer / 50.0f;
+            imgSplash.color = color;
+
+            if (GPGS.isConnecting)
+            {
+                textSplash.text = "Connecting to Google Play Game Services.";
+            }
+            else if (ServerBridge.isConnecting)
+            {
+                textSplash.text = "Connecting to kentan.jp.";
+            }
+            else
+            {
+                if (GPGS.isLogin) textSplash.text = "Login success!";
+                else textSplash.text = "Login failed...";
+            }
+        }
+        else
+        {
+            if (!wasPlayBGM)
+            {
+                audioSource.Play();
+                wasPlayBGM = wasLaunced = true;
+            }
+
+            objSplash.SetActive(false);
+        }
+    }
+
     void setGameData()
     {
         textScore.text = GameDataManager.Get(GameDataManager.Data.Score).ToString();
-        textJump.text  = GameDataManager.Get(GameDataManager.Data.Jump).ToString();
+        textJump.text = GameDataManager.Get(GameDataManager.Data.Jump).ToString();
         textClear.text = GameDataManager.Get(GameDataManager.Data.Clear).ToString();
-        textSave.text  = GameDataManager.Get(GameDataManager.Data.Save).ToString();
+        textSave.text = GameDataManager.Get(GameDataManager.Data.Save).ToString();
 
-        textPoint.text    = GameDataManager.Get(GameDataManager.Data.Point).ToString();
-        textPlusOne.text  = GameDataManager.Get(GameDataManager.Data.Aqua).ToString();
-        textMagnet.text   = GameDataManager.Get(GameDataManager.Data.Magnet).ToString();
+        textPoint.text = GameDataManager.Get(GameDataManager.Data.Point).ToString();
+        textPlusOne.text = GameDataManager.Get(GameDataManager.Data.Aqua).ToString();
+        textMagnet.text = GameDataManager.Get(GameDataManager.Data.Magnet).ToString();
         textPlusJump.text = GameDataManager.Get(GameDataManager.Data.PlusJump).ToString();
 
         textDead.text = GameDataManager.Get(GameDataManager.Data.Dead).ToString();
@@ -94,23 +146,22 @@ public class HomeUIManager : MonoBehaviour {
         switch (button)
         {
             case "Play":
-                isFirst = true;
-                LevelSelect.SetActive(true);
                 btnPlay.SetActive(false);
                 bgPlay.SetActive(false);
-                thisAnimator.Play("openLevelSelect");
-                thisAnimator.SetFloat("Speed", 1);
+                LevelSelect.SetActive(true);
+                homeAnimator.SetFloat("Speed", 1);
+                homeAnimator.SetInteger("AnimationMode", 1);
                 break;
             case "Back":
-                thisAnimator.SetFloat("Speed", -1);
+                isReverseAnimation = fixEventBug = true;
+                homeAnimator.SetFloat("Speed", -1);
                 break;
             case "Data":
-                isFirst = true;
                 Data.SetActive(true);
                 btnData.SetActive(false);
                 bgData.SetActive(false);
-                thisAnimator.Play("openGameData");
-                thisAnimator.SetFloat("Speed", 1);
+                homeAnimator.SetFloat("Speed", 1);
+                homeAnimator.SetInteger("AnimationMode", 2);
                 break;
             case "Online":
                 if (!GPGS.isLogin)
@@ -118,12 +169,11 @@ public class HomeUIManager : MonoBehaviour {
                     GPGS.Login();
                     return;
                 }
-                isFirst = true;
                 Online.SetActive(true);
                 btnOnline.SetActive(false);
                 bgOnline.SetActive(false);
-                thisAnimator.Play("openOnlineService");
-                thisAnimator.SetFloat("Speed", 1);
+                homeAnimator.SetFloat("Speed", 1);
+                homeAnimator.SetInteger("AnimationMode", 3);
                 textUserName.text = GPGS.userName;
                 break;
             case "Setting":
@@ -154,6 +204,8 @@ public class HomeUIManager : MonoBehaviour {
                 Application.OpenURL("http://maoudamashii.jokersounds.com/");
                 break;
         }
+
+        Debug.Log(button + " Click.");
     }
 
     public void OnClickLevel(string level)
@@ -162,46 +214,45 @@ public class HomeUIManager : MonoBehaviour {
         SceneManager.LoadSceneAsync(level);
     }
 
-    public void endAnim() {
-        thisAnimator.SetFloat("Speed", 0);
-        UnityEngine.Debug.Log("End.");
-        isFirst = false;
+    public void StopAnimation()
+    {
+        homeAnimator.SetFloat("Speed", 0);
+        homeAnimator.SetTime(1.0D);
+        Debug.Log("Animation stop.");
     }
 
-    public void startAnim(string modeAnim)
+    public void PlayAnimation(AnimationMode mode)
     {
-        if (isFirst) return;
-
-        switch (modeAnim)
+        if (fixEventBug || !isReverseAnimation)
         {
-            case "LevelSelect":
-                if (!btnPlay.activeInHierarchy)
-                {
-                    btnPlay.SetActive(true);
-                    bgPlay.SetActive(true);
-                    thisAnimator.SetFloat("Speed", 0);
-                    LevelSelect.SetActive(false);
-                }
+            fixEventBug = false;
+            return;
+        }
+
+        switch (mode)
+        {
+            case AnimationMode.Play:
+                btnPlay.SetActive(true);
+                bgPlay.SetActive(true);
+                LevelSelect.SetActive(false);
                 break;
-            case "GameData":
-                if (!btnData.activeInHierarchy)
-                {
-                    btnData.SetActive(true);
-                    bgData.SetActive(true);
-                    thisAnimator.SetFloat("Speed", 0);
-                    Data.SetActive(false);
-                }
+            case AnimationMode.Data:
+                btnData.SetActive(true);
+                bgData.SetActive(true);
+                Data.SetActive(false);
                 break;
-            case "OnlineService":
-                if (!btnOnline.activeInHierarchy)
-                {
-                    btnOnline.SetActive(true);
-                    bgOnline.SetActive(true);
-                    thisAnimator.SetFloat("Speed", 0);
-                    Online.SetActive(false);
-                }
+            case AnimationMode.Online:
+                btnOnline.SetActive(true);
+                bgOnline.SetActive(true);
+                Online.SetActive(false);
                 break;
         }
-        UnityEngine.Debug.Log(modeAnim +" Start.");
+
+        homeAnimator.SetFloat("Speed", 0);
+        homeAnimator.SetTime(0.0D);
+        homeAnimator.SetInteger("AnimationMode", 0);
+        isReverseAnimation = false;
+
+        Debug.Log(mode + " Start.");
     }
 }
