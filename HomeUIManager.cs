@@ -146,35 +146,44 @@ public class HomeUIManager : MonoBehaviour
         switch (button)
         {
             case "Play":
-                btnPlay.SetActive(false);
-                bgPlay.SetActive(false);
-                LevelSelect.SetActive(true);
-                homeAnimator.SetFloat("Speed", 1);
-                homeAnimator.SetInteger("AnimationMode", 1);
+                if (homeAnimator.GetInteger("AnimationMode") == 0)
+                {
+                    btnPlay.SetActive(false);
+                    bgPlay.SetActive(false);
+                    LevelSelect.SetActive(true);
+                    homeAnimator.SetFloat("Speed", 1);
+                    homeAnimator.SetInteger("AnimationMode", 1);
+                }
                 break;
             case "Back":
                 isReverseAnimation = fixEventBug = true;
                 homeAnimator.SetFloat("Speed", -1);
                 break;
             case "Data":
-                Data.SetActive(true);
-                btnData.SetActive(false);
-                bgData.SetActive(false);
-                homeAnimator.SetFloat("Speed", 1);
-                homeAnimator.SetInteger("AnimationMode", 2);
+                if (homeAnimator.GetInteger("AnimationMode") == 0)
+                {
+                    Data.SetActive(true);
+                    btnData.SetActive(false);
+                    bgData.SetActive(false);
+                    homeAnimator.SetFloat("Speed", 1);
+                    homeAnimator.SetInteger("AnimationMode", 2);
+                }
                 break;
             case "Online":
-                if (!GPGS.isLogin)
+                if (homeAnimator.GetInteger("AnimationMode") == 0)
                 {
-                    GPGS.Login();
-                    return;
+                    if (!GPGS.isLogin)
+                    {
+                        GPGS.Login();
+                        return;
+                    }
+                    Online.SetActive(true);
+                    btnOnline.SetActive(false);
+                    bgOnline.SetActive(false);
+                    homeAnimator.SetFloat("Speed", 1);
+                    homeAnimator.SetInteger("AnimationMode", 3);
+                    textUserName.text = GPGS.userName;
                 }
-                Online.SetActive(true);
-                btnOnline.SetActive(false);
-                bgOnline.SetActive(false);
-                homeAnimator.SetFloat("Speed", 1);
-                homeAnimator.SetInteger("AnimationMode", 3);
-                textUserName.text = GPGS.userName;
                 break;
             case "Setting":
                 SceneManager.LoadScene("Setting");

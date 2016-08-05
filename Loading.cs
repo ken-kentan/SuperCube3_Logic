@@ -40,7 +40,14 @@ public class Loading : MonoBehaviour {
             return;
         }
 
-        if (fps >= 60.0f || frameSum > 300) finishLoad();
+        if (fps >= 60.0f)
+        {
+            finishLoad();
+        }else if(frameSum > 300)
+        {
+            QualitySettings.SetQualityLevel(0, true);
+            finishLoad();
+        }
 
         ++frameCount;
         ++frameSum;

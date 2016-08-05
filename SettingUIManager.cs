@@ -5,7 +5,7 @@ using System.Collections;
 
 public class SettingUIManager : MonoBehaviour {
     
-    public Toggle toggleGyro, toggleVib, toggleBlur, toggleFPS;
+    public Toggle toggleGyro, toggleVib, toggleBlur, toggleFPS, toggleHQ;
     public Slider sliderGyro;
     public Text infoGyro, infoCtrl;
 
@@ -15,10 +15,11 @@ public class SettingUIManager : MonoBehaviour {
 	void Start () {
         Time.timeScale = 1;
 
-        if (PlayerPrefs.GetInt("isController", 0) == 0) toggleGyro.isOn  = true;
-        if (PlayerPrefs.GetInt("isVibration",  1) == 1) toggleVib.isOn   = true;
-        if (PlayerPrefs.GetInt("isBlur",       1) == 1) toggleBlur.isOn  = true;
-        if (PlayerPrefs.GetInt("isDisplayFPS", 0) == 1) toggleFPS.isOn   = true;
+        if (PlayerPrefs.GetInt("isController",  0) == 0) toggleGyro.isOn  = true;
+        if (PlayerPrefs.GetInt("isVibration",   1) == 1) toggleVib.isOn   = true;
+        if (PlayerPrefs.GetInt("isBlur",        1) == 1) toggleBlur.isOn  = true;
+        if (PlayerPrefs.GetInt("isDisplayFPS",  0) == 1) toggleFPS.isOn   = true;
+        if (PlayerPrefs.GetInt("isHighQuality", 1) == 1) toggleHQ.isOn    = true;
 
         sliderGyro.value = PlayerPrefs.GetFloat("KaccGyro", 25.0f) / 25.0f;
 
@@ -27,12 +28,8 @@ public class SettingUIManager : MonoBehaviour {
 
         World.isPause = false;
     }
-	
-	// Update is called once per frame
-	void Update () {
-    }
 
-    public void isToggleGyro()
+    public void IsToggleGyro()
     {
         if(!toggleGyro.isOn) isController = true;
         else                 isController = false;
@@ -41,9 +38,17 @@ public class SettingUIManager : MonoBehaviour {
         PlayerPrefs.SetInt("isController", System.Convert.ToInt32(isController));
     }
 
-    public void onValueChanged(string toggle)
+    public void IsToggleHQ()
     {
-        switch (toggle)
+        if(toggleHQ.isOn) QualitySettings.SetQualityLevel(3, true);
+        else              QualitySettings.SetQualityLevel(0, true);
+
+        PlayerPrefs.SetInt("isHighQuality", System.Convert.ToInt32(toggleHQ.isOn));
+    }
+
+    public void OnValueChanged(string type)
+    {
+        switch (type)
         {
             case "Vibration":
                 PlayerPrefs.SetInt("isVibration", System.Convert.ToInt32(toggleVib.isOn));
@@ -57,7 +62,7 @@ public class SettingUIManager : MonoBehaviour {
         }
     }
 
-    public void onValueChangedGyro()
+    public void OnValueChangedGyro()
     {
         CubeManager.KaccGyro = sliderGyro.value * 25.0f;
     }
@@ -68,6 +73,7 @@ public class SettingUIManager : MonoBehaviour {
         toggleGyro.isOn  = true;
         toggleVib.isOn   = true;
         toggleBlur.isOn  = true;
+        toggleHQ.isOn    = true;
 
         toggleFPS.isOn  = false;
     }

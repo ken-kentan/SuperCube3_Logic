@@ -88,7 +88,15 @@ public class World : MonoBehaviour {
         isBlur       = (PlayerPrefs.GetInt("isBlur"      , 1) != 0);
         isDisplayFPS = (PlayerPrefs.GetInt("isDisplayFPS", 0) != 0);
 
-        drawDistance = 20.0f;
+        if (PlayerPrefs.GetInt("isHighQuality", 1) == 1)
+        {
+            QualitySettings.SetQualityLevel(3, true);
+        }else
+        {
+            QualitySettings.SetQualityLevel(0, true);
+        }
+
+            drawDistance = 20.0f;
 
         //sum Init
         sumPoint = sumJump = sumDead = sumKill = sumAqua = sumMagnet = 0;
