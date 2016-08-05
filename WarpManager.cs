@@ -15,9 +15,7 @@ public class WarpManager : MonoBehaviour {
 
     private Vector3 pos, posSpawn, posCube, motion;
     private enum Mode { None, Import, Spawn};
-    private enum Angle { Top, Bottom, Left, Right};
     private Mode mode;
-    private Angle angle;
     private bool isStayCube;
     private bool isEndSpawnMotion, isSpawned;
     private bool isTop, isBottom, isLeft, isRight;
@@ -35,25 +33,21 @@ public class WarpManager : MonoBehaviour {
         switch ((int)transform.eulerAngles.z)
         {
             case 0:
-                angle = Angle.Top;
                 posSpawn = pos + new Vector3(0, 0.5f, 0);
                 pos -= new Vector3(0, 1, 0);
                 motion = new Vector3(0, 0.015f, 0);
                 break;
             case 270:
-                angle = Angle.Right;
                 posSpawn = pos + new Vector3(-0.5f, 0, 0);
                 pos -= new Vector3(-1, 0, 0);
                 motion = new Vector3(-0.015f, 0, 0);
                 break;
             case 180:
-                angle = Angle.Bottom;
                 posSpawn = pos + new Vector3(0, -0.5f, 0);
                 pos -= new Vector3(0, -1, 0);
                 motion = new Vector3(0, -0.015f, 0);
                 break;
             case 90:
-                angle = Angle.Left;
                 posSpawn = pos + new Vector3(0.5f, 0, 0);
                 pos -= new Vector3(1, 0, 0);
                 motion = new Vector3(0.015f, 0, 0);

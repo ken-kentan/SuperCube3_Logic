@@ -10,13 +10,12 @@ public class HomeUIManager : MonoBehaviour
 
     public GameObject parentLoading, btnPlay, bgPlay, btnData, bgData, btnOnline, bgOnline, objSplash;
     public GameObject LevelSelect, Data, Online;
-    public Text textOnlineStatus;
     public Text textScore, textJump, textClear, textSave, textPoint, textPlusOne, textMagnet, textPlusJump, textDead, textKill, textSBlock, textSRoute;
     public Text textUserName, textSplash;
     public Text[] textHighScore;
     public Button[] btn;
     public Image[] imgBtn;
-    public Image imgSplash;
+    public Image imgSplash, imgOnlineStatus;
     public Animator homeAnimator;
     public AudioSource audioSource;
 
@@ -33,7 +32,7 @@ public class HomeUIManager : MonoBehaviour
        
         cntTimer = 0;
 
-        textOnlineStatus.color = GPGS.Green;
+        imgOnlineStatus.color = GPGS.Green;
 
         int btnLength = btn.Length;
 
@@ -61,22 +60,19 @@ public class HomeUIManager : MonoBehaviour
     {
         if (!GPGS.isConnecting)
         {
-            textOnlineStatus.text = "●";
-            if (GPGS.isLogin) textOnlineStatus.color = GPGS.Green;
-            else textOnlineStatus.color = new Color(214.0f / 255.0f, 0, 2.0f / 255.0f, 1);
+            if (GPGS.isLogin) imgOnlineStatus.color = GPGS.Green;
+            else imgOnlineStatus.color = new Color(214.0f / 255.0f, 0, 2.0f / 255.0f, 1);
         }
 
         if (GPGS.isConnecting)
         {
-            textOnlineStatus.color = World.colorWhite;
-
             if (cntTimer++ < 10)
             {
-                textOnlineStatus.text = "●";
+                imgOnlineStatus.color = World.colorWhite;
             }
             else
             {
-                textOnlineStatus.text = "";
+                imgOnlineStatus.color = World.colorAplha;
                 if (cntTimer > 20) cntTimer = 0;
             }
         }
@@ -106,7 +102,7 @@ public class HomeUIManager : MonoBehaviour
             }
             else
             {
-                if (GPGS.isLogin) textSplash.text = "Login success!";
+                if (GPGS.isLogin) textSplash.text = "Login success.";
                 else textSplash.text = "Login failed...";
             }
         }

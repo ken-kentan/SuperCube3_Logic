@@ -231,4 +231,10 @@ public class EnemyManager : MonoBehaviour {
     {
         if(type == Enemy.Drop) enemyBody.transform.localPosition = posDropHome;
     }
+
+    void OnDestroy()
+    {
+        World.enemyManagerList.Remove(this);
+        Debug.Log("EnemyManager removed!");
+    }
 }

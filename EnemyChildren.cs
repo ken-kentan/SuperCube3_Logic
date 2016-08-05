@@ -92,4 +92,10 @@ public class EnemyChildren : MonoBehaviour {
         if(type == Type.Shot)               Destroy(gameObject);
         else if (type == Type.ShotTracking) Destroy(parentObject);
     }
+
+    void OnDestroy()
+    {
+        World.enemyChildrenList.Remove(this);
+        Debug.Log("EnemyChildren removed!");
+    }
 }

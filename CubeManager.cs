@@ -173,12 +173,12 @@ public class CubeManager : MonoBehaviour {
 
             foreach(EnemyManager enemyManager in World.enemyManagerList)
             {
-                enemyManager.Reset();
+                if (enemyManager != null) enemyManager.Reset();
             }
 
             foreach(EnemyChildren enemyChildren in World.enemyChildrenList)
             {
-                enemyChildren.Reset();
+                if (enemyChildren != null) enemyChildren.Reset();
             }
 
             --life;
