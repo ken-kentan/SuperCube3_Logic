@@ -18,7 +18,7 @@ public class StarManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (World.isPause) return;
 
         if (Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance)

@@ -91,7 +91,7 @@ public class World : MonoBehaviour {
 
         if (PlayerPrefs.GetInt("isHighQuality", 1) == 1)
         {
-            QualitySettings.SetQualityLevel(3, true);
+            QualitySettings.SetQualityLevel(2, true);
         }else
         {
             QualitySettings.SetQualityLevel(0, true);

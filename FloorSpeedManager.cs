@@ -32,7 +32,7 @@ public class FloorSpeedManager : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (World.isPause || Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance) return;
 
         for(int i=0; i < 5; i++)

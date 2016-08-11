@@ -83,7 +83,7 @@ public class EnemyManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        if (isOverWorld()) Destroy(enemyCube);
+        if (IsOverWorld()) Destroy(enemyCube);
 
         //return when over distance
         if (World.isPause || type == Enemy.None || (isFirst && Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance - 3)) return;
@@ -92,7 +92,7 @@ public class EnemyManager : MonoBehaviour {
         {
             case Enemy.Move:
             case Enemy.StaticMove:
-                if (!isOnFloor() && !isAllowFly)
+                if (!IsOnFloor() && !isAllowFly)
                 {
                     isFly = true;
                     break;
@@ -124,7 +124,7 @@ public class EnemyManager : MonoBehaviour {
                 }
 
                 //Change move direction
-                if ((isTouchLeft() || isTouchRight()) && !isFly)
+                if ((IsTouchLeft() || IsTouchRight()) && !isFly)
                 {
                     isForward = !isForward;
                     enemyBody.velocity = Vector3.ClampMagnitude(enemyBody.velocity, 0f);
@@ -206,22 +206,22 @@ public class EnemyManager : MonoBehaviour {
         }
     }
 
-    bool isOnFloor()
+    bool IsOnFloor()
     {
         return Physics.Raycast(enemyCube.transform.position, new Vector3(0, -0.5f, 0), 1);
     }
 
-    bool isTouchLeft()
+    bool IsTouchLeft()
     {
         return Physics.Raycast(enemyCube.transform.position, new Vector3(-0.5f, 0, 0), colliderEnemyCube.radius);
     }
 
-    bool isTouchRight()
+    bool IsTouchRight()
     {
         return Physics.Raycast(enemyCube.transform.position, new Vector3( 0.5f, 0, 0), colliderEnemyCube.radius);
     }
 
-    bool isOverWorld()
+    bool IsOverWorld()
     {
         if (enemyCube.transform.localPosition.y < -10.0f) return true;
         return false;

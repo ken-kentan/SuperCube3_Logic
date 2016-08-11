@@ -19,7 +19,7 @@ public class Goal : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (World.isPause) return;
 
         Flag.GetComponent<Renderer>().material.color = new Color(R, G, B);

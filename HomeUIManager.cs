@@ -8,14 +8,14 @@ public class HomeUIManager : MonoBehaviour
 
     public enum AnimationMode { Play, Data, Online }
 
-    public GameObject parentLoading, btnPlay, bgPlay, btnData, bgData, btnOnline, bgOnline, objSplash;
+    public GameObject parentLoading, btnPlay, bgPlay, btnData, bgData, btnOnline, bgOnline;
     public GameObject LevelSelect, Data, Online;
     public Text textScore, textJump, textClear, textSave, textPoint, textPlusOne, textMagnet, textPlusJump, textDead, textKill, textSBlock, textSRoute;
-    public Text textUserName, textSplash;
+    public Text textUserName;
     public Text[] textHighScore;
     public Button[] btn;
     public Image[] imgBtn;
-    public Image imgSplash, imgOnlineStatus;
+    public Image imgOnlineStatus;
     public Animator homeAnimator;
     public AudioSource audioSource;
 
@@ -49,7 +49,7 @@ public class HomeUIManager : MonoBehaviour
             imgBtn[i].color = new Color(0.5f, 0.5f, 0.5f, 1);
         }
 
-        if (wasLaunced)
+        if (SplashScreen.WasLanched())
         {
             audioSource.Play();
         }
@@ -75,46 +75,6 @@ public class HomeUIManager : MonoBehaviour
                 imgOnlineStatus.color = World.colorAplha;
                 if (cntTimer > 20) cntTimer = 0;
             }
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (wasLaunced) return;
-
-        if (cntSplashTimer < 300 || GPGS.isConnecting || ServerBridge.isConnecting)
-        {
-            objSplash.SetActive(true);
-
-            ++cntSplashTimer;
-
-            var color = imgSplash.color;
-            color.a = cntSplashTimer / 50.0f;
-            imgSplash.color = color;
-
-            if (GPGS.isConnecting)
-            {
-                textSplash.text = "Connecting to Google Play Game Services.";
-            }
-            else if (ServerBridge.isConnecting)
-            {
-                textSplash.text = "Connecting to kentan.jp.";
-            }
-            else
-            {
-                if (GPGS.isLogin) textSplash.text = "Login success.";
-                else textSplash.text = "Login failed...";
-            }
-        }
-        else
-        {
-            if (!wasPlayBGM)
-            {
-                audioSource.Play();
-                wasPlayBGM = wasLaunced = true;
-            }
-
-            objSplash.SetActive(false);
         }
     }
 

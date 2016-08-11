@@ -41,7 +41,7 @@ public class LiftManager : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (World.isPause || (!isWakeUp && !isOnCube)) return;
 
         switch (modeLift)
@@ -49,7 +49,7 @@ public class LiftManager : MonoBehaviour {
             case 1://X
                 pos = Lift.transform.position.x;
 
-                checkError();
+                DetectLiftStop();
 
                 if (isPositive)
                 {
@@ -68,7 +68,7 @@ public class LiftManager : MonoBehaviour {
             case 2://Y
                 pos = Lift.transform.position.y;
 
-                checkError();
+                DetectLiftStop();
 
                 if (isPositive)
                 {
@@ -98,7 +98,7 @@ public class LiftManager : MonoBehaviour {
         if (isOnCube && collision.gameObject.tag == "Cube") isOnCube = false;
     }
 
-    void checkError()
+    void DetectLiftStop()
     {
         if(Mathf.Abs(posPrev - pos) < 0.01f && cntStopTime++ > 50)
         {

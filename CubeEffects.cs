@@ -26,7 +26,7 @@ public class CubeEffects : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (World.isPause || CubeManager.isMotionDead) return;
 

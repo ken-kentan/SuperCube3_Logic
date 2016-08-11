@@ -36,7 +36,7 @@ public class EnemyChildren : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    void FixedUpdate() {
         if (World.isPause) return;
 
         switch (type)

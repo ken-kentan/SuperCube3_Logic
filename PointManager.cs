@@ -15,7 +15,7 @@ public class PointManager : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (World.isPause) return;
 
         distanceCube = Vector3.Distance(World.Cube.transform.position, transform.position);
@@ -44,7 +44,7 @@ public class PointManager : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.tag == "Cube")
+        if (collider.gameObject.tag == "Cube" && !CubeManager.isMotionDead)
         {
             if (isBig)
             {

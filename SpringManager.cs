@@ -12,11 +12,11 @@ public class SpringManager : MonoBehaviour {
     void Start () {
 	    Spring = transform.FindChild("Spring").gameObject;
 
-        if (force == 0) force = 300.0f;
+        if (force == 0) force = 350.0f;
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (World.isPause) return;
 
         if (isOverWorld()) Destroy(gameObject);

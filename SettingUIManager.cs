@@ -40,7 +40,7 @@ public class SettingUIManager : MonoBehaviour {
 
     public void IsToggleHQ()
     {
-        if(toggleHQ.isOn) QualitySettings.SetQualityLevel(3, true);
+        if(toggleHQ.isOn) QualitySettings.SetQualityLevel(2, true);
         else              QualitySettings.SetQualityLevel(0, true);
 
         PlayerPrefs.SetInt("isHighQuality", System.Convert.ToInt32(toggleHQ.isOn));
