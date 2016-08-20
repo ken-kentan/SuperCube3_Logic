@@ -11,12 +11,12 @@ public class CubeManager : MonoBehaviour {
     public static int maxJump, life;
     public static bool isMotionDead, isNotStop, isWarpLock;
 
-    private static readonly float maxSpeed = 8.0f;
+    private static readonly float MAX_SPEED = 7.0f;
     private static int cntJump, cntMotionDead;
     private static bool isOnFloor, isOnBlock, isOnLift;
-    private bool isMoveLeft, isMoveRight;
 
-    private float x, y, z;
+    private enum MOVE { NONE, LEFT, RIGHT};
+    private MOVE moveMode;
 
     // Use this for initialization
     void Start() {
@@ -47,21 +47,14 @@ public class CubeManager : MonoBehaviour {
         //jump
         if (((Input.GetMouseButtonDown(0) && !World.isController) || GameUIManager.isJump) && (isOnFloor || isOnBlock || isOnLift || cntJump < maxJump))
         {
-            World.audioSource.PlayOneShot(World.jumpSE);
-            cntJump++;
-            World.sumJump++;
-            GameDataManager.AddDataValue(GameDataManager.Data.Jump);
-            StopCube();
-            y = 280f;
+            Jump();
         }
         GameUIManager.isJump = false;
 
         //move
-        if (Input.GetKey("left") || GameUIManager.isLeft) isMoveLeft = true;
-        else                                              isMoveLeft = false;
-
-        if (Input.GetKey("right") || GameUIManager.isRight) isMoveRight = true;
-        else                                                isMoveRight = false;
+        if (Input.GetKey("left") || GameUIManager.isLeft)        moveMode = MOVE.LEFT;
+        else if (Input.GetKey("right") || GameUIManager.isRight) moveMode = MOVE.RIGHT;
+        else                                                     moveMode = MOVE.NONE;
     }
 
     void FixedUpdate()
@@ -84,35 +77,31 @@ public class CubeManager : MonoBehaviour {
         {
             float accGyro = Input.acceleration.x * KaccGyro;
 
-            if (Mathf.Abs(speed.x) < maxSpeed) cubeBody.AddForce( accGyro, 0f, 0f);
-            else cubeBody.AddForce( -accGyro, 0f, 0f);
+            if (Mathf.Abs(speed.x) < MAX_SPEED) cubeBody.AddForce(accGyro, 0f, 0f);
+            else                                cubeBody.AddForce(-accGyro, 0f, 0f);
+
+            return;
         }
 
-        if (isMoveLeft)
+        switch (moveMode)
         {
-            if (speed.x > -maxSpeed)
-            {
-                cubeBody.AddForce(-9f, 0f, 0f);
-            }
-            else
-            {
-                cubeBody.AddForce(9f, 0f, 0f);
-            }
-        }else if (isMoveRight)
-        {
-            if (speed.x < maxSpeed)
-            {
-                cubeBody.AddForce(9f, 0f, 0f);
-            }
-            else
-            {
-                cubeBody.AddForce(-9f, 0f, 0f);
-            }
+            case MOVE.LEFT:
+                if (speed.x > -MAX_SPEED) cubeBody.AddForce(-9f, 0f, 0f);
+                break;
+            case MOVE.RIGHT:
+                if (speed.x <  MAX_SPEED) cubeBody.AddForce(9f, 0f, 0f);
+                break;
         }
+    }
 
-        cubeBody.AddForce(0f, y, 0f);
-
-        y = 0f;
+    void Jump()
+    {
+        World.audioSource.PlayOneShot(World.jumpSE);
+        cntJump++;
+        World.sumJump++;
+        GameDataManager.AddDataValue(GameDataManager.Data.Jump);
+        StopCube();
+        cubeBody.AddForce(0f, 355.0f, 0f);
     }
 
     bool isOverWorld()
