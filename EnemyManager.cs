@@ -131,7 +131,7 @@ public class EnemyManager : MonoBehaviour {
                 }
 
                 if (isForward) enemyBody.AddForce(10, 0, 0);
-                else            enemyBody.AddForce(-10, 0, 0);
+                else           enemyBody.AddForce(-10, 0, 0);
                 break;
             case Enemy.Rotate:
                 animator.enabled = true;
@@ -198,7 +198,7 @@ public class EnemyManager : MonoBehaviour {
             enemyCube.tag = "Untagged";
             CubeManager.ResetJump();
             CubeManager.cubeBody.velocity = Vector3.ClampMagnitude(CubeManager.cubeBody.velocity, 0f);
-            CubeManager.cubeBody.AddForce(0, 200, 0);
+            CubeManager.cubeBody.AddForce(0, 200f, 0);
             animator.enabled = true;
             Destroy(enemyCube.GetComponent<Collider>());
             Destroy(enemyCube, 1.0f);

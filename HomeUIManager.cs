@@ -19,11 +19,8 @@ public class HomeUIManager : MonoBehaviour
     public Animator homeAnimator;
     public AudioSource audioSource;
 
-    private bool wasPlayBGM, isReverseAnimation, fixEventBug;
+    private bool isReverseAnimation, fixEventBug;
     private int cntTimer;
-
-    private static int cntSplashTimer;
-    private static bool wasLaunced;
 
     // Use this for initialization
     void Start()

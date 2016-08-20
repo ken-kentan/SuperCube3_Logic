@@ -26,7 +26,7 @@ public class SplashScreen : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-        if(cntSplashTimer >= SPLASH_TIME)
+        if(cntSplashTimer > SPLASH_TIME)
         {
             if (!wasLanched)
             {
@@ -34,6 +34,8 @@ public class SplashScreen : MonoBehaviour {
                 wasLanched = true;
             }
             objSplash.SetActive(false);
+
+            return;
         }
 
         EffectFadein();
