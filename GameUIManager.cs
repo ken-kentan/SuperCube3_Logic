@@ -7,7 +7,7 @@ public class GameUIManager : MonoBehaviour {
 
     public static GameUIManager thisGameUI;
 
-    public Text Hint, Score, infoRevival, infoGPGS, cubeUnits, points, textFPS, textInfo;
+    public Text Hint, Score, infoRevival, infoGPGS, cubeUnits, points, textInfo;
     public GameObject Paused, GameOver, Clear, Controller, FPS, Info, New;
     public GameObject btnRetry, btnRevival, btnHome;
     public UnityStandardAssets.ImageEffects.BlurOptimized Blur;
@@ -19,10 +19,6 @@ public class GameUIManager : MonoBehaviour {
     private float animationBlur;
     private int modeAnimBlur; //0:none 1:Enable 2:Disable
     private static bool isLock;
-
-    //fps
-    private int frameCount;
-    private float prevTime;
 
     void Awake()
     {
@@ -46,10 +42,6 @@ public class GameUIManager : MonoBehaviour {
 
         New.SetActive(false);
 
-        //Init fps
-        frameCount = 0;
-        prevTime = 0.0f;
-
         isLock = false;
 
         infoGPGS.text = Msg.GPGSneedLogin[Msg.typeLang];
@@ -58,7 +50,6 @@ public class GameUIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (World.isDisplayFPS) updateFPS();
         if (World.isLoading || isInfo) return;
 
         //Main UI
@@ -205,20 +196,6 @@ public class GameUIManager : MonoBehaviour {
     void EnableSkip()
     {
         //GameObject text = gameObject.transform.FindChild("Text").btnRevival;
-    }
-
-    void updateFPS()
-    {
-        ++frameCount;
-        float time = Time.realtimeSinceStartup - prevTime;
-
-        if (time >= 0.5f)
-        {
-            textFPS.text = ((int)(frameCount / time)).ToString();
-
-            frameCount = 0;
-            prevTime = Time.realtimeSinceStartup;
-        }
     }
 
     public void runRevival(int life = 0)
