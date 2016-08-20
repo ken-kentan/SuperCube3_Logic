@@ -7,6 +7,7 @@ public class EnemyChildren : MonoBehaviour {
 
     public Type type;
     public float speedTracking;
+    public int lifeTime;
     private GameObject parentObject;
     private Rigidbody EnemyBody;
 
@@ -17,6 +18,8 @@ public class EnemyChildren : MonoBehaviour {
         switch (type)
         {
             case Type.Shot:
+                lifeTime = 600;
+
                 EnemyBody = GetComponent<Rigidbody>();
 
                 Vector3 forceDirection = World.Cube.transform.localPosition - transform.localPosition;
@@ -29,6 +32,8 @@ public class EnemyChildren : MonoBehaviour {
             case Type.Rotate:
                 break;
             case Type.ShotTracking:
+                lifeTime = 300;
+
                 parentObject = gameObject.transform.parent.gameObject;
                 if (speedTracking == 0) speedTracking = 3.5f;
                 break;
@@ -41,8 +46,19 @@ public class EnemyChildren : MonoBehaviour {
 
         switch (type)
         {
+            case Type.Rotate:
+                return;
             case Type.Shot:
                 if ((Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance)) Destroy(gameObject);
+
+                if (lifeTime-- <= 100.0)
+                {
+                    Color color = GetComponent<Renderer>().material.color;
+                    color.a = lifeTime / 100.0f;
+                    GetComponent<Renderer>().material.color = color;
+
+                    if (lifeTime <= 0) Destroy(gameObject);
+                }
                 break;
             case Type.ShotTracking:
                 if ((Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance)) Destroy(parentObject);
@@ -53,6 +69,15 @@ public class EnemyChildren : MonoBehaviour {
                 direction.Normalize();
 
                 parentObject.transform.position = parentPos + direction * speedTracking * Time.deltaTime;
+
+                if (lifeTime-- <= 100.0)
+                {
+                    Color color = parentObject.GetComponent<Renderer>().material.color;
+                    color.a = lifeTime / 100.0f;
+                    parentObject.GetComponent<Renderer>().material.color = color;
+
+                    if (lifeTime <= 0) Destroy(parentObject);
+                }
                 break;
         }
     }
