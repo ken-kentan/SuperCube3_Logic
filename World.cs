@@ -84,7 +84,7 @@ public class World : MonoBehaviour {
         materialCube        = Resources.Load("Materials/m_cube")        as Material;
 
         //Setting data
-        isController = (PlayerPrefs.GetInt("isController", 0) != 0);
+        isController = (PlayerPrefs.GetInt("isController", 1) != 0);
         isVibration  = (PlayerPrefs.GetInt("isVibration" , 1) != 0);
         isBlur       = (PlayerPrefs.GetInt("isBlur"      , 1) != 0);
         isDisplayFPS = (PlayerPrefs.GetInt("isDisplayFPS", 0) != 0);

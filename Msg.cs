@@ -43,8 +43,8 @@ public class Msg : MonoBehaviour {
         errRevival  = "Sorry, Not Available X(";
         failRevival = "Sorry, V4VC failed X(";
 
-        Info[ja, 0] = "Welcome to the SuperCube World!\nスマホを左右に傾けて移動！\nまた、操作方法はSettingから変更できるよ。";
-        Info[ja, 1] = "画面をタップするとジャンプ！\nジャンプは2回連続できるよ。";
+        Info[ja, 0] = "Welcome to the SuperCube World!\nボタンで左右に移動！\nまた、操作方法はSettingから変更できるよ。";
+        Info[ja, 1] = "▲をタップするとジャンプ！\nジャンプは2回連続できるよ。";
         Info[ja, 2] = "初めての敵だ!\nRedCubeは上から踏むと無力化できるよ。";
         Info[ja, 3] = "セーブポイントを発見!\nGreenCubeに触れるとリスポーン地点をセーブできるよ。";
         Info[ja, 4] = "Goal Flag に触れるとレベルクリア!\nクリア画面の「Leaderboards」でランキング、\n「Achievements」で実績が確認できるよ。";
@@ -52,8 +52,8 @@ public class Msg : MonoBehaviour {
         Info[ja, 6] = "Item Blockを見つけた!\nアイテムブロックを下から押すとアイテムが出現するよ！";
         Info[ja, 7] = "Spring Blockを見つけた!\n上から踏むと跳ねることができる。\n横から押せば動かせるよ。";
 
-        Info[en, 0] = "Welcome to the SuperCube World!\nMove by tilting the device to the left and right.";
-        Info[en, 1] = "Jump by tapping the screen!\nYou can press twice to double jump.";
+        Info[en, 0] = "Welcome to the SuperCube World!\nMove by push the button to the left and right.";
+        Info[en, 1] = "Jump by tapping the ▲!\nYou can press twice to double jump.";
         Info[en, 2] = "Enemy!!\nYou can incapacitate the Red Cube by jumping on top of it.";
         Info[en, 3] = "Found a Spawn point!\n The Green Blocks will save your progress when you touch them.";
         Info[en, 4] = "Goal Flag!";
