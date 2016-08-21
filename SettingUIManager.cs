@@ -58,6 +58,7 @@ public class SettingUIManager : MonoBehaviour {
         {
             case "Vibration":
                 PlayerPrefs.SetInt("isVibration", System.Convert.ToInt32(toggleVib.isOn));
+                World.isVibration = toggleVib.isOn;
                 break;
             case "Blur":
                 PlayerPrefs.SetInt("isBlur", System.Convert.ToInt32(toggleBlur.isOn));
