@@ -5,39 +5,35 @@ using System.Collections;
 public class CubeManager : MonoBehaviour {
 
     public GameObject Camera;
-    public static Rigidbody cubeBody;
-    public static Vector3 pos, speed;
-    public static float KaccGyro;
-    public static int maxJump, life;
-    public static bool isMotionDead, isNotStop, isWarpLock;
+    public Rigidbody cubeBody;
+    public Vector3 pos, speed;
+    public float KaccGyro;
+    public int maxJump, life;
+    public bool isMotionDead, isNotStop, isWarpLock;
 
-    private static readonly float MAX_SPEED = 7.0f;
-    private static int cntJump, cntMotionDead;
-    private static bool isOnFloor, isOnBlock, isOnLift;
+    private readonly float MAX_SPEED = 7.0f;
+    private int cntJump, cntMotionDead;
+    private bool isOnFloor, isOnBlock, isOnLift;
 
     private enum MOVE { NONE, LEFT, RIGHT};
     private MOVE moveMode;
 
+    void Awake()
+    {
+        World.cubeManager = this;
+    }
+
     // Use this for initialization
     void Start() {
-        World.cubeManager = this;
-
         cubeBody = GetComponent<Rigidbody>();
-
-        pos = transform.position;
-
-        speed = cubeBody.velocity;
 
         KaccGyro = PlayerPrefs.GetFloat("KaccGyro", 25.0f);
 
+        pos = transform.position;
+        speed = cubeBody.velocity;
+
         maxJump = 2;
-        cntJump = cntMotionDead = 0;
-
         life = 3;
-
-        isWarpLock = false;
-
-        isOnFloor = isOnBlock = isOnLift = isMotionDead = false;
     }
 
     // Update is called once per frame
@@ -101,7 +97,7 @@ public class CubeManager : MonoBehaviour {
         World.sumJump++;
         GameDataManager.AddDataValue(GameDataManager.Data.Jump);
         StopCube();
-        cubeBody.AddForce(0f, 355.0f, 0f);
+        cubeBody.AddForce(0f, 350.0f, 0f);
     }
 
     bool isOverWorld()
@@ -113,7 +109,7 @@ public class CubeManager : MonoBehaviour {
         return false;
     }
 
-    public static void StopCube(bool isForce = false)
+    public void StopCube(bool isForce = false)
     {
         if (!isNotStop || isForce) cubeBody.velocity = Vector3.ClampMagnitude(cubeBody.velocity, 0f);
         isNotStop = false;
@@ -212,12 +208,12 @@ public class CubeManager : MonoBehaviour {
         if (isOnLift ) isOnLift  = false;
     }
 
-    public static void UpdatePos()
+    public void UpdatePos()
     {
         pos = World.Cube.transform.position;
     }
 
-    public static void ResetJump(int cnt = 0)
+    public void ResetJump(int cnt = 0)
     {
         cntJump = cnt;
     }

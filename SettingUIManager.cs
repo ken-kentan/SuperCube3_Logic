@@ -72,12 +72,12 @@ public class SettingUIManager : MonoBehaviour {
 
     public void OnValueChangedGyro()
     {
-        CubeManager.KaccGyro = sliderGyro.value * 25.0f;
+        World.cubeManager.KaccGyro = sliderGyro.value * 25.0f;
     }
 
     public void OnPressJump(bool isPress)
     {
-        if (Loading.isLoading || CubeManager.isWarpLock) return;
+        if (Loading.isLoading || World.cubeManager.isWarpLock) return;
 
         if (isLock)
         {

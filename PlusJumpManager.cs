@@ -33,7 +33,7 @@ public class PlusJumpManager : MonoBehaviour {
             World.audioSource.PlayOneShot(World.getJumpSE);
             World.effect.KillAllEffects();
             GameDataManager.AddDataValue(GameDataManager.Data.PlusJump);
-            CubeManager.maxJump = 3;
+            World.cubeManager.maxJump = 3;
             World.effect.Enable(CubeEffects.Effect.PlusJump);
             gameObject.SetActive(false);
             Destroy(gameObject);

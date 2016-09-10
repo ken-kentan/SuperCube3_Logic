@@ -59,7 +59,7 @@ public class WarpManager : MonoBehaviour {
 	void Update () {
         if (World.isPause) return;
 
-        if (type != SpawnObject.None && mode == Mode.None && Vector3.Distance(CubeManager.pos, transform.position) < distanceSpawn)
+        if (type != SpawnObject.None && mode == Mode.None && Vector3.Distance(World.cubeManager.pos, transform.position) < distanceSpawn)
         {
             if (!isSpawned && !isStayCube)
             {
@@ -103,11 +103,11 @@ public class WarpManager : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        if (CubeManager.isMotionDead || Target == null) return;
+        if (World.cubeManager.isMotionDead || Target == null) return;
 
         if (collision.gameObject.tag == "Cube" && mode == 0)
         {
-            CubeManager.isWarpLock = true;
+            World.cubeManager.isWarpLock = true;
             isStayCube = true;
 
             mode = Mode.Import;
@@ -146,12 +146,12 @@ public class WarpManager : MonoBehaviour {
         if (Vector3.Distance(posCube, posSpawn) < 0.002f)
         {
             isEndSpawnMotion = true;
-            CubeManager.isWarpLock = false;
+            World.cubeManager.isWarpLock = false;
         }
 
-        CubeManager.UpdatePos();
+        World.cubeManager.UpdatePos();
 
-        if (Vector3.Distance(posSpawn, CubeManager.pos) > 2.0f)
+        if (Vector3.Distance(posSpawn, World.cubeManager.pos) > 2.0f)
         {
             isEndSpawnMotion = false;
             mode = Mode.None;

@@ -64,7 +64,7 @@ public class EnemyChildren : MonoBehaviour {
                 if ((Vector3.Distance(World.Cube.transform.position, transform.position) > World.drawDistance)) Destroy(parentObject);
 
                 Vector3 parentPos = parentObject.transform.position,
-                        direction = CubeManager.pos - parentPos;
+                        direction = World.cubeManager.pos - parentPos;
 
                 direction.Normalize();
 
@@ -84,7 +84,7 @@ public class EnemyChildren : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.tag != "Cube" || CubeManager.isMotionDead) return;
+        if (collider.tag != "Cube" || World.cubeManager.isMotionDead) return;
 
         switch (type)
         {
@@ -103,9 +103,9 @@ public class EnemyChildren : MonoBehaviour {
         World.sumKill++;
         GameDataManager.AddDataValue(GameDataManager.Data.Kill);
         parentObject.tag = "Untagged";
-        CubeManager.ResetJump();
-        CubeManager.cubeBody.velocity = Vector3.ClampMagnitude(CubeManager.cubeBody.velocity, 0f);
-        CubeManager.cubeBody.AddForce(0, 200, 0);
+        World.cubeManager.ResetJump();
+        World.cubeManager.cubeBody.velocity = Vector3.ClampMagnitude(World.cubeManager.cubeBody.velocity, 0f);
+        World.cubeManager.cubeBody.AddForce(0, 200, 0);
         parentObject.GetComponent<Animator>().enabled = true;
         Destroy(parentObject.GetComponent<Collider>());
         Destroy(parentObject, 1.0f);

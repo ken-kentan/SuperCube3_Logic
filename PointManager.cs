@@ -34,7 +34,7 @@ public class PointManager : MonoBehaviour {
         if (isMagnet)
         {
             Vector3 thisPos = transform.position,
-                    direction = CubeManager.pos - thisPos;
+                    direction = World.cubeManager.pos - thisPos;
 
             direction.Normalize();
 
@@ -44,7 +44,7 @@ public class PointManager : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.tag == "Cube" && !CubeManager.isMotionDead)
+        if (collider.gameObject.tag == "Cube" && !World.cubeManager.isMotionDead)
         {
             if (isBig)
             {

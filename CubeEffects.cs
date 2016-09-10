@@ -28,7 +28,7 @@ public class CubeEffects : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (World.isPause || CubeManager.isMotionDead) return;
+        if (World.isPause || World.cubeManager.isMotionDead) return;
 
         //Magnet
         if(isMagnet)
@@ -110,7 +110,7 @@ public class CubeEffects : MonoBehaviour
     public void Reset()
     {
         isPlusJump = false;
-        CubeManager.maxJump = 2;
+        World.cubeManager.maxJump = 2;
         rendererCube.material = World.materialCube;
         lightCube.color = Color.white;
     }
@@ -123,7 +123,7 @@ public class CubeEffects : MonoBehaviour
     public void KillAllEffects()
     {
         isAqua = isMagnet = isPlusJump = false;
-        CubeManager.maxJump = 2;
+        World.cubeManager.maxJump = 2;
         ResetAllTimers();
         Reset();
     }

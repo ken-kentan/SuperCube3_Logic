@@ -149,7 +149,7 @@ public class EnemyManager : MonoBehaviour {
                 }
                 break;
             case Enemy.Drop:
-                if (Mathf.Abs(posDropHome.x - CubeManager.pos.x) <= distanceDrop && CubeManager.pos.y < posDropHome.y && isLockDrop && cntStayTime++ > timeStandbyDrop) {
+                if (Mathf.Abs(posDropHome.x - World.cubeManager.pos.x) <= distanceDrop && World.cubeManager.pos.y < posDropHome.y && isLockDrop && cntStayTime++ > timeStandbyDrop) {
                     cntStayTime = 0;
                     isLockDrop = false;
                     enemyBody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
@@ -188,17 +188,17 @@ public class EnemyManager : MonoBehaviour {
 
     void OnTriggerEnter(Collider collider)
     {
-        if (type == Enemy.StaticMove || type == Enemy.Rotate || CubeManager.isMotionDead) return;
+        if (type == Enemy.StaticMove || type == Enemy.Rotate || World.cubeManager.isMotionDead) return;
 
-        if (collider.gameObject.tag == "Cube" && CubeManager.pos.y - enemyCube.transform.localPosition.y > 0.8f)
+        if (collider.gameObject.tag == "Cube" && World.cubeManager.pos.y - enemyCube.transform.localPosition.y > 0.8f)
         {
             World.audioSource.PlayOneShot(World.killEnemySE);
             World.sumKill++;
             GameDataManager.AddDataValue(GameDataManager.Data.Kill);
             enemyCube.tag = "Untagged";
-            CubeManager.ResetJump();
-            CubeManager.cubeBody.velocity = Vector3.ClampMagnitude(CubeManager.cubeBody.velocity, 0f);
-            CubeManager.cubeBody.AddForce(0, 200f, 0);
+            World.cubeManager.ResetJump();
+            World.cubeManager.cubeBody.velocity = Vector3.ClampMagnitude(World.cubeManager.cubeBody.velocity, 0f);
+            World.cubeManager.cubeBody.AddForce(0, 200f, 0);
             animator.enabled = true;
             Destroy(enemyCube.GetComponent<Collider>());
             Destroy(enemyCube, 1.0f);
@@ -213,12 +213,12 @@ public class EnemyManager : MonoBehaviour {
 
     bool IsTouchLeft()
     {
-        return Physics.Raycast(enemyCube.transform.position, new Vector3(-0.5f, 0, 0), colliderEnemyCube.radius);
+        return Physics.Raycast(enemyCube.transform.position, new Vector3(-0.5f, 0, 0), colliderEnemyCube.radius, 9, QueryTriggerInteraction.Ignore);
     }
 
     bool IsTouchRight()
     {
-        return Physics.Raycast(enemyCube.transform.position, new Vector3( 0.5f, 0, 0), colliderEnemyCube.radius);
+        return Physics.Raycast(enemyCube.transform.position, new Vector3( 0.5f, 0, 0), colliderEnemyCube.radius, 9, QueryTriggerInteraction.Ignore);
     }
 
     bool IsOverWorld()

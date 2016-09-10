@@ -21,7 +21,7 @@ public class SpringManager : MonoBehaviour {
 
         if (isOverWorld()) Destroy(gameObject);
 
-        if (isOnCube && Vector3.Distance(CubeManager.pos, Spring.transform.position + new Vector3(0, 0.5f, 0)) < 0.4f)
+        if (isOnCube && Vector3.Distance(World.cubeManager.pos, Spring.transform.position + new Vector3(0, 0.5f, 0)) < 0.4f)
         {
             if(!isDeny) isSpring = true;
 //            UnityEngine.Debug.Log(Vector3.Distance(CubeManager.pos, Spring.transform.position + new Vector3(0, 0.5f, 0)));
@@ -31,8 +31,8 @@ public class SpringManager : MonoBehaviour {
         {
             isSpring = false;
             isDeny = true;
-            CubeManager.StopCube();
-            CubeManager.cubeBody.AddForce(0, force, 0);
+            World.cubeManager.StopCube();
+            World.cubeManager.cubeBody.AddForce(0, force, 0);
         }
 	}
 

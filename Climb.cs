@@ -16,7 +16,7 @@ public class Climb : MonoBehaviour
     {
         if (World.isPause) return;
         
-        if (isCube) CubeManager.ResetJump();
+        if (isCube) World.cubeManager.ResetJump();
     }
 
     void OnTriggerStay(Collider collider)
@@ -24,7 +24,7 @@ public class Climb : MonoBehaviour
         if (collider.tag == "Cube")
         {
             isCube = true;
-            CubeManager.cubeBody.drag = 5;
+            World.cubeManager.cubeBody.drag = 5;
         }
     }
 
@@ -33,7 +33,7 @@ public class Climb : MonoBehaviour
         if (collider.tag == "Cube")
         {
             isCube = false;
-            CubeManager.cubeBody.drag = 0.5f;
+            World.cubeManager.cubeBody.drag = 0.5f;
         }
     }
 }

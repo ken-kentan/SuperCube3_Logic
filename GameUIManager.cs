@@ -53,7 +53,7 @@ public class GameUIManager : MonoBehaviour {
         if (World.isLoading || isInfo) return;
 
         //Main UI
-        if(CubeManager.life >= 0) cubeUnits.text = CubeManager.life.ToString();
+        if(World.cubeManager.life >= 0) cubeUnits.text = World.cubeManager.life.ToString();
         points.text = World.sumPoint.ToString();
 
         //Clear
@@ -201,7 +201,7 @@ public class GameUIManager : MonoBehaviour {
     public void runRevival(int life = 0)
     {
         cntRevival++;
-        CubeManager.life = life;
+        World.cubeManager.life = life;
         World.isGameOver = false;
         World.isPause = false;
         World.audioVolume(1.0f);
@@ -286,7 +286,7 @@ public class GameUIManager : MonoBehaviour {
 
     public void OnPressJump(bool isPress)
     {
-        if (Loading.isLoading || CubeManager.isWarpLock) return;
+        if (Loading.isLoading || World.cubeManager.isWarpLock) return;
 
         if (isLock)
         {

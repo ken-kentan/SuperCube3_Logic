@@ -29,7 +29,7 @@ public class AquaManager : MonoBehaviour {
         if (collider.gameObject.tag == "Cube")
         {
             World.audioSource.PlayOneShot(World.getAquaSE);
-            CubeManager.life++;
+            World.cubeManager.life++;
             World.sumAqua++;
             GameDataManager.AddDataValue(GameDataManager.Data.Aqua);
             World.effect.Enable(CubeEffects.Effect.Aqua);

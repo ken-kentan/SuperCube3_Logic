@@ -119,7 +119,7 @@ public class World : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (isChangeVolume) changeVolume();
     }
 
@@ -144,6 +144,6 @@ public class World : MonoBehaviour {
 
     public static void calcScore()
     {
-        sumScore = sumPoint*10 + CubeManager.life*100 + sumJump + sumKill*5 + sumAqua*5 + sumMagnet*5 - sumDead;
+        sumScore = sumPoint*10 + World.cubeManager.life*100 + sumJump + sumKill*5 + sumAqua*5 + sumMagnet*5 - sumDead;
     }
 }

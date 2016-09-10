@@ -8,7 +8,7 @@ public class Msg : MonoBehaviour {
 
     public static string sample;
     public const string appName   = "SuperCube_World",
-                        appVer    = "1.0.1",//1.0.2 アイテムを最スポーン可能に
+                        appVer    = "1.1.6",
                         appURL    = "http://ken.kentan.jp/SuperCube_World",
                         appURLenc = "http%3a%2f%2fken%2ekentan%2ejp%2fSuperCube_World";
     public static string[] Twitter = new string[2],
