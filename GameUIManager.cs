@@ -64,7 +64,7 @@ public class GameUIManager : MonoBehaviour {
             Clear.SetActive(true);
             if (World.sumScore == -1) //called at once
             {
-                World.audioVolume(0.0f);
+                World.SetAudioVolume(0.0f);
                 World.calcScore();
                 GameDataManager.AddDataValue(GameDataManager.Data.Score, World.sumScore);
 
@@ -82,6 +82,8 @@ public class GameUIManager : MonoBehaviour {
                 }
 
                 ServerBridge.ken_kentan_jp.GameEvent("Clear");
+
+                if (int.Parse(World.nameScene) >= 2 && PlayerPrefs.GetInt("Feedback", 0) == 0) showReviewDialog();
             }
             Score.text = World.sumScore.ToString();
         }
@@ -94,12 +96,12 @@ public class GameUIManager : MonoBehaviour {
 
             if (Time.timeScale != 0)
             {
-                World.audioVolume(0.2f);
+                World.SetAudioVolume(0.2f);
                 enablePause();
                 Paused.SetActive(true);
             }
             else {
-                World.audioVolume(1.0f);
+                World.SetAudioVolume(1.0f);
                 disablePause();
             }
         }
@@ -204,7 +206,7 @@ public class GameUIManager : MonoBehaviour {
         World.cubeManager.life = life;
         World.isGameOver = false;
         World.isPause = false;
-        World.audioVolume(1.0f);
+        World.SetAudioVolume(1.0f);
         disablePause();
         GameOver.SetActive(false);
     }
@@ -214,6 +216,22 @@ public class GameUIManager : MonoBehaviour {
         isInfo = true;
         textInfo.text = str;
         Info.SetActive(true);
+    }
+
+    void showReviewDialog()
+    {
+        int fontSize = 50;
+
+        if (Msg.typeLang == Msg.EN) fontSize = 30;
+
+        GameObject objDialog = Instantiate(World.Dialog);
+        Dialog dialog = objDialog.GetComponent<Dialog>();
+        dialog.Init("Feedback", Msg.Review[Msg.typeLang, 0], Dialog.Action.OpenURL, Dialog.Action.None, Dialog.Action.None);
+        dialog.SetButton(Msg.Review[Msg.typeLang, 1], Msg.Review[Msg.typeLang, 2], Msg.Review[Msg.typeLang, 3], fontSize);
+        dialog.SetURL("https://play.google.com/store/apps/details?id=jp.kentan.supercubeworld");
+        dialog.SetSaveData(Dialog.ButtonType.OK, "Feedback", 1);
+        dialog.SetSaveData(Dialog.ButtonType.Other, "Feedback", 0);
+        dialog.SetSaveData(Dialog.ButtonType.Cancel, "Feedback", 2);
     }
 
     public void OnClick(string button)
@@ -229,7 +247,7 @@ public class GameUIManager : MonoBehaviour {
             case "Resum":
                 World.isPause = false;
                 cntDelay = 1;
-                World.audioVolume(1.0f);
+                World.SetAudioVolume(1.0f);
                 disablePause();
                 break;
             case "Retry":

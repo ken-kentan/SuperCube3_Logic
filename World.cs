@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class World : MonoBehaviour {
 
-    public static GameObject Cube, EnemyChieldren, EnemyPatricle, EnemyTracking, EnemyMove, EnemyStaticMove, Magnet, Aqua, PlusJump,  BigPoint, Point, Loading, SpringBlock;
+    public static GameObject Cube, EnemyChieldren, EnemyPatricle, EnemyTracking, EnemyMove, EnemyStaticMove, Magnet, Aqua, PlusJump,  BigPoint, Point, Loading, SpringBlock, Dialog;
     public static AudioSource audioSource;
     public static AudioClip killEnemySE, getAquaSE, getMagnetSE, pointSE, saveSE, jumpSE, contactSE, damageSE, getJumpSE, dropEnemySE, findItemSE;
     public static Color alpha = new Color(0, 0, 0, 0.01f);
@@ -64,6 +64,8 @@ public class World : MonoBehaviour {
         EnemyStaticMove = Resources.Load("Objects/EnemyStaticMove") as GameObject;
         SpringBlock     = Resources.Load("Objects/SpringBlock")     as GameObject;
 
+        Dialog = Resources.Load("Objects/Dialog") as GameObject;
+
         killEnemySE = Resources.Load("SEs/kill_enemy") as AudioClip;
         getAquaSE   = Resources.Load("SEs/aqua_get")   as AudioClip;
         getMagnetSE = Resources.Load("SEs/magnet_get") as AudioClip;
@@ -119,17 +121,17 @@ public class World : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void FixedUpdate () {
-        if (isChangeVolume) changeVolume();
+	void Update () {
+        if (isChangeVolume) ChangeVolume();
     }
 
-    public static void audioVolume(float _volume)
+    public static void SetAudioVolume(float volume)
     {
+        targetVolume = volume;
         isChangeVolume = true;
-        targetVolume = _volume;
     }
 
-    static void changeVolume()
+    static void ChangeVolume()
     {
         float diff = Mathf.Abs(volume - targetVolume);
         if (-0.01f < diff && diff < 0.01f)
@@ -144,6 +146,6 @@ public class World : MonoBehaviour {
 
     public static void calcScore()
     {
-        sumScore = sumPoint*10 + World.cubeManager.life*100 + sumJump + sumKill*5 + sumAqua*5 + sumMagnet*5 - sumDead;
+        sumScore = sumPoint*10 + cubeManager.life*100 + sumJump + sumKill*5 + sumAqua*5 + sumMagnet*5 - sumDead;
     }
 }
