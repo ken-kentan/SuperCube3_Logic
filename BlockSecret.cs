@@ -11,14 +11,13 @@ public class BlockSecret : MonoBehaviour {
 
     private GameObject ItemObject;
     private Collider thisCollider;
-    private bool isItemSpawned;
-    private float posY;
+    private Vector2 pos;
 
     // Use this for initialization
     void Start () {
         if (item == Item.None) UnityEngine.Debug.LogError("Item is None.");
         thisCollider = GetComponent<Collider>();
-        posY = transform.position.y - 0.95f;
+        pos = transform.position;
 
         if (SpringForce == 0) SpringForce = 300;
 
@@ -27,7 +26,7 @@ public class BlockSecret : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (isItemBlock) return;
+        if (isItemBlock || Vector3.Distance(World.cubeManager.pos, transform.position) > World.drawDistance) return;
 
 	    if(IsTouchCube()) thisCollider.isTrigger = false;
         else              thisCollider.isTrigger = true;
@@ -80,8 +79,10 @@ public class BlockSecret : MonoBehaviour {
 
     bool IsTouchCube()
     {
-        if (World.cubeManager.pos.y <= posY && World.cubeManager.speed.y >= 0) return true;
+        Vector2 cubePos = World.Cube.transform.position;
 
+        if(Mathf.Abs(cubePos.x - pos.x) < 1.1f && cubePos.y >= pos.y - 1.1f && cubePos.y <= pos.y - 0.8f) return true;
+        
         return false;
     }
 }
