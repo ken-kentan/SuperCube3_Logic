@@ -3,10 +3,10 @@ using System.Collections;
 
 public class EnemyChildren : MonoBehaviour {
 
-    public enum Type { Shot, Rotate , ShotTracking };
+    public enum Type { Shot, Rotate, ShotTracking };
 
     public Type type;
-    public float speedTracking;
+    public float speedTracking, rateDeceleration;
     public int lifeTime;
     private GameObject parentObject;
     private Rigidbody EnemyBody;
@@ -36,6 +36,7 @@ public class EnemyChildren : MonoBehaviour {
 
                 parentObject = gameObject.transform.parent.gameObject;
                 if (speedTracking == 0) speedTracking = 3.5f;
+                if (rateDeceleration == 0) rateDeceleration = 0.01f;
                 break;
         }
     }
@@ -69,6 +70,8 @@ public class EnemyChildren : MonoBehaviour {
                 direction.Normalize();
 
                 parentObject.transform.position = parentPos + direction * speedTracking * Time.deltaTime;
+
+                speedTracking -= rateDeceleration;
 
                 if (lifeTime-- <= 100.0)
                 {

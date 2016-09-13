@@ -9,7 +9,7 @@ public class EnemyManager : MonoBehaviour {
     public Enemy type;
     public bool isForward, isAllowFly;
     public int cycleShot, timeStandbyDrop;
-    public float distanceDrop, speedTracking;
+    public float distanceDrop, speedTracking, rateDeceleration;
 
     private Animator animator;
     private Rigidbody enemyBody;
@@ -146,6 +146,7 @@ public class EnemyManager : MonoBehaviour {
                     GameObject Sensor = objectShot.transform.FindChild("Sensor").gameObject;
                     objectShot.transform.position = transform.position;
                     Sensor.GetComponent<EnemyChildren>().speedTracking = speedTracking;
+                    Sensor.GetComponent<EnemyChildren>().rateDeceleration = rateDeceleration;
                 }
                 break;
             case Enemy.Drop:
