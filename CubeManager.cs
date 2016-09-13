@@ -177,7 +177,7 @@ public class CubeManager : MonoBehaviour {
 
             if (life < 0)
             {
-                World.audioVolume(0.0f);
+                World.SetAudioVolume(0.0f);
                 World.isGameOver = true;
             }
         }
@@ -196,6 +196,8 @@ public class CubeManager : MonoBehaviour {
         }
 
         if (isOnBlock || isOnFloor || isOnLift) cntJump = 0;
+
+        if (isWarpLock) return;
 
         World.audioSource.PlayOneShot(World.contactSE);
         Vibration.Vibrate(35);

@@ -18,11 +18,10 @@ public class WarpManager : MonoBehaviour {
     private Mode mode;
     private bool isStayCube;
     private bool isEndSpawnMotion, isSpawned;
-    private bool isTop, isBottom, isLeft, isRight;
 
 	// Use this for initialization
 	void Start () {
-        if (Target == null && type == SpawnObject.None) UnityEngine.Debug.LogError("Warp target is null, SpawnObject is None.");
+        if (Target == null && type == SpawnObject.None) Debug.LogError("Warp target is null, SpawnObject is None.");
 
         pos = transform.position;
 
