@@ -5,12 +5,11 @@ using System.Collections;
 
 public class SettingUIManager : MonoBehaviour {
     
-    public Toggle toggleGyro, toggleVib, toggleBlur, toggleFPS, toggleHQ;
+    public Toggle toggleGyro, toggleCtrl, toggleVib, toggleBlur, toggleFPS, toggleHQ;
     public Slider sliderGyro;
     public Text infoGyro, infoCtrl;
     public GameObject objFPS, Controller;
-
-    private bool isController;
+    
     private bool isLock;
 
     // Use this for initialization
@@ -24,6 +23,7 @@ public class SettingUIManager : MonoBehaviour {
         if (PlayerPrefs.GetInt("isHighQuality", 1) == 1) toggleHQ.isOn    = true;
 
         if (World.isController) Controller.SetActive(true);
+        if (toggleFPS.isOn) objFPS.SetActive(true);
 
         sliderGyro.value = PlayerPrefs.GetFloat("KaccGyro", 25.0f) / 25.0f;
 
@@ -33,11 +33,8 @@ public class SettingUIManager : MonoBehaviour {
         World.isPause = false;
     }
 
-    public void IsToggleGyro()
+    public void IsToggleGyro(bool isController)
     {
-        if(!toggleGyro.isOn) isController = true;
-        else                 isController = false;
-
         World.isController = isController;
         PlayerPrefs.SetInt("isController", System.Convert.ToInt32(isController));
 
@@ -93,11 +90,11 @@ public class SettingUIManager : MonoBehaviour {
     public void onClickReset()
     {
         sliderGyro.value = 1.0f;
-        toggleGyro.isOn  = true;
+        toggleCtrl.isOn  = true;
         toggleVib.isOn   = true;
         toggleBlur.isOn  = true;
         toggleHQ.isOn    = true;
-
+        
         toggleFPS.isOn  = false;
     }
 
