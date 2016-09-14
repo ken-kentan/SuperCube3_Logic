@@ -74,7 +74,7 @@ public class SettingUIManager : MonoBehaviour {
 
     public void OnPressJump(bool isPress)
     {
-        if (Loading.isLoading || World.cubeManager.isWarpLock) return;
+        if (World.cubeManager.isWarpLock) return;
 
         if (isLock)
         {
