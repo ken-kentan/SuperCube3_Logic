@@ -60,7 +60,7 @@ public class Dialog : MonoBehaviour {
 
         if (saveKey[0] != default(string)) SaveData(ButtonType.OK);
 
-        Destroy(gameObject, 1.0f);
+        Destroy(gameObject);
     }
 
     public void OnClickOther()
