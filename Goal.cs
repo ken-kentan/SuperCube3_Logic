@@ -7,16 +7,13 @@ public class Goal : MonoBehaviour {
     public Light lightGoal;
     public static bool isEnterCube;
 
-    private static float R, G, B;
-    private static int mode;
+    private float R = 1.0f, G = 0.0f, B = 0.0f;
+    private int mode = 0;
 
-	// Use this for initialization
-	void Start () {
+    void Awake()
+    {
         isEnterCube = false;
-
-        R = 1;
-        G = B = 0;
-	}
+    }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
