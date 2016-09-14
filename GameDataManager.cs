@@ -8,9 +8,10 @@ public class GameDataManager : MonoBehaviour {
     private static int Point, Aqua, Magnet, PlusJump;
     private static int Kill, Dead;
     private static int SecretBlock, SecretRoute;
+    private static int balanceScore, expenseScore;
     public static string UUID;
 
-    public enum Data {All=-1, Score, Jump, Clear, Save, Point, Aqua, Magnet, PlusJump, Kill, Dead, SecretBlock, SecretRoute };
+    public enum Data {All=-1, Score, Expense, Jump, Clear, Save, Point, Aqua, Magnet, PlusJump, Kill, Dead, SecretBlock, SecretRoute };
     private Data type;
 
     // Use this for initialization
@@ -34,11 +35,23 @@ public class GameDataManager : MonoBehaviour {
         //Secret
         SecretBlock = PlayerPrefs.GetInt("secretBlock", 0);
         SecretRoute = PlayerPrefs.GetInt("secretRoute", 0);
+
+        //Store
+        balanceScore = PlayerPrefs.GetInt("balanceScore", -1);
+        expenseScore = PlayerPrefs.GetInt("expenseScore", 0);
+
+        if (balanceScore == -1) InitWalletScore();
     }
 
-    // Update is called once per frame
-    void Update() {
-	}
+    void InitWalletScore()
+    {
+        balanceScore = Score;
+
+        PlayerPrefs.SetInt("balanceScore", balanceScore);
+        PlayerPrefs.Save();
+
+        Debug.Log("Init WalletScore: " + balanceScore);
+    }
 
     void OnDestroy()
     {
@@ -69,6 +82,8 @@ public class GameDataManager : MonoBehaviour {
         {
             case Data.Score:
                 return Score;
+            case Data.Expense:
+                return expenseScore;
             case Data.Jump:
                 return Jump;
             case Data.Clear:
@@ -123,6 +138,7 @@ public class GameDataManager : MonoBehaviour {
         {
             case Data.Score:
                 Score += value;
+                PlayerPrefs.SetInt("balanceScore", balanceScore + value);
                 break;
             case Data.Jump:
                 Jump += value;
@@ -278,5 +294,47 @@ public class GameDataManager : MonoBehaviour {
     {
         PlayerPrefs.SetInt("RetryLevel" + level, 1 + GetRetryTimes(level));
         PlayerPrefs.Save();
+    }
+
+    public static int GetCudeLife()
+    {
+        return PlayerPrefs.GetInt("CubeLife", 3);
+    }
+
+    public static void SaveCudeLife(int value)
+    {
+        PlayerPrefs.SetInt("CubeLife", value);
+        PlayerPrefs.Save();
+    }
+
+    public static int GetCudeJump()
+    {
+        return PlayerPrefs.GetInt("CubeJump", 1);
+    }
+
+    public static void SaveCudeJump(int value)
+    {
+        PlayerPrefs.SetInt("CubeJump", value);
+        PlayerPrefs.Save();
+    }
+
+    public static int GetBalanceScore()
+    {
+        balanceScore = PlayerPrefs.GetInt("balanceScore", -1);
+        return balanceScore;
+    }
+
+    public static bool WithdrawScore(int score)
+    {
+        balanceScore = PlayerPrefs.GetInt("balanceScore", -1);
+        expenseScore = PlayerPrefs.GetInt("expenseScore", 0);
+
+        if (balanceScore < score) return false;
+
+        PlayerPrefs.SetInt("balanceScore", balanceScore - score);
+        PlayerPrefs.SetInt("expenseScore", expenseScore + score);
+        PlayerPrefs.Save();
+
+        return true;
     }
 }

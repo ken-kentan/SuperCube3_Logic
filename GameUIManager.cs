@@ -34,7 +34,7 @@ public class GameUIManager : MonoBehaviour {
         isLeft = isRight = isJump = false;
 
         //UI Init
-        cubeUnits.text = "3";
+        cubeUnits.text = GameDataManager.GetCudeLife().ToString();
         points.text = World.sumPoint.ToString();
 
         if (World.isController) Controller.SetActive(true);

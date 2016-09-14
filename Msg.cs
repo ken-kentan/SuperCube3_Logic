@@ -7,10 +7,9 @@ public class Msg : MonoBehaviour {
     public static readonly int JA = 0, EN = 1;
     
     public static int typeLang;
-
-    public static string sample;
+    
     public const string appName   = "SuperCube_World",
-                        appVer    = "1.1.13",
+                        appVer    = "1.2.16",
                         appURL    = "http://ken.kentan.jp/SuperCube_World",
                         appURLenc = "http%3a%2f%2fken%2ekentan%2ejp%2fSuperCube_World";
     public static string[] Twitter = new string[2],
@@ -25,13 +24,12 @@ public class Msg : MonoBehaviour {
                            GPGSsendScore    = new string[2],
                            GPGSfaildScore   = new string[2];
     public static string[,] Review = new string[2, 4];
+    public static string[,] Store = new string[2, 2];
 
     // Use this for initialization
     void Start () {
         if (Application.systemLanguage == SystemLanguage.Japanese) typeLang = JA;
         else                                                       typeLang = EN;
-
-        sample = "Sample";
 
         Twitter[JA] = "https://twitter.com/intent/tweet?text=レベル{level}をスコア{score}でクリア！ %23" + appName + " " + appURL;
         Twitter[EN] = "https://twitter.com/intent/tweet?text=Level{level} Clear! Score{score}. %23" + appName + " " + appURL;
@@ -104,5 +102,10 @@ public class Msg : MonoBehaviour {
         Review[EN, 2] = "Remind Me Later";
         Review[EN, 3] = "No, Thanks";
 
+        Store[JA, 0] = "Cubeのライフを追加";
+        Store[JA, 1] = "Cubeのジャンプ力を強化";
+
+        Store[EN, 0] = "Upgrade the default life of Cube.";
+        Store[EN, 1] = "Upgrade the Jump power of Cube.";
     }
 }

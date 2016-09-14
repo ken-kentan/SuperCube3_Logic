@@ -7,7 +7,7 @@ public class CubeManager : MonoBehaviour {
     public GameObject Camera;
     public Rigidbody cubeBody;
     public Vector3 pos, speed;
-    public float KaccGyro;
+    public float KaccGyro, jumpPower;
     public int maxJump, life;
     public bool isMotionDead, isNotStop, isWarpLock;
 
@@ -29,11 +29,30 @@ public class CubeManager : MonoBehaviour {
 
         KaccGyro = PlayerPrefs.GetFloat("KaccGyro", 25.0f);
 
+        switch (GameDataManager.GetCudeJump())
+        {
+            case 1:
+                jumpPower = 300.0f;
+                break;
+            case 2:
+                jumpPower = 325.0f;
+                break;
+            case 3:
+                jumpPower = 350.0f;
+                break;
+            case 4:
+                jumpPower = 375.0f;
+                break;
+            case 5:
+                jumpPower = 400.0f;
+                break;
+        }
+
         pos = transform.position;
         speed = cubeBody.velocity;
 
         maxJump = 2;
-        life = 3;
+        life = GameDataManager.GetCudeLife();
     }
 
     // Update is called once per frame
@@ -97,7 +116,7 @@ public class CubeManager : MonoBehaviour {
         World.sumJump++;
         GameDataManager.AddDataValue(GameDataManager.Data.Jump);
         StopCube();
-        cubeBody.AddForce(0f, 350.0f, 0f);
+        cubeBody.AddForce(0f, jumpPower, 0f);
     }
 
     bool isOverWorld()

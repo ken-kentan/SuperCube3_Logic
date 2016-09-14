@@ -10,7 +10,7 @@ public class HomeUIManager : MonoBehaviour
 
     public GameObject parentLoading, btnPlay, bgPlay, btnData, bgData, btnOnline, bgOnline;
     public GameObject LevelSelect, Data, Online;
-    public Text textScore, textJump, textClear, textSave, textPoint, textPlusOne, textMagnet, textPlusJump, textDead, textKill, textSBlock, textSRoute;
+    public Text textScore, textExpense, textJump, textClear, textSave, textPoint, textPlusOne, textMagnet, textPlusJump, textDead, textKill, textSBlock, textSRoute;
     public Text textUserName;
     public Text[] textHighScore;
     public Button[] btn;
@@ -78,6 +78,7 @@ public class HomeUIManager : MonoBehaviour
     void setGameData()
     {
         textScore.text = GameDataManager.Get(GameDataManager.Data.Score).ToString();
+        textExpense.text = GameDataManager.Get(GameDataManager.Data.Expense).ToString();
         textJump.text = GameDataManager.Get(GameDataManager.Data.Jump).ToString();
         textClear.text = GameDataManager.Get(GameDataManager.Data.Clear).ToString();
         textSave.text = GameDataManager.Get(GameDataManager.Data.Save).ToString();
@@ -140,6 +141,9 @@ public class HomeUIManager : MonoBehaviour
                 break;
             case "Setting":
                 SceneManager.LoadScene("Setting");
+                break;
+            case "Store":
+                SceneManager.LoadScene("Store");
                 break;
             case "Feedback":
                 Application.OpenURL("https://play.google.com/store/apps/details?id=jp.kentan.supercubeworld");
