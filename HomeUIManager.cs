@@ -5,6 +5,7 @@ using System.Collections;
 
 public class HomeUIManager : MonoBehaviour
 {
+    private static HomeUIManager instance;
 
     public enum AnimationMode { Play, Data, Online }
 
@@ -22,9 +23,37 @@ public class HomeUIManager : MonoBehaviour
     private bool isReverseAnimation, fixEventBug;
     private int cntTimer;
 
+    public static void ReloadUI()
+    {
+        int btnLength = instance.btn.Length;
+
+        for (int i = 0; i < btnLength; i++)
+        {
+            if (GameDataManager.GetHighScore(i.ToString()) != -1) instance.textHighScore[i].text = GameDataManager.GetHighScore(i.ToString()).ToString();
+        }
+
+        instance.setGameData();
+
+        //Button color Init(Level Select)
+        int index = 0;
+        foreach(Button btn in instance.btn)
+        {
+            btn.enabled = true;
+            instance.imgBtn[index++].color = Color.white;
+        }
+
+        for (int i = GameDataManager.GetMaxClearedLevel() + 2; i < btnLength; i++)
+        {
+            instance.btn[i].enabled = false;
+            instance.imgBtn[i].color = new Color(0.5f, 0.5f, 0.5f, 1);
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
+        instance = this;
+
         Time.timeScale = 1;
        
         cntTimer = 0;
@@ -189,7 +218,7 @@ public class HomeUIManager : MonoBehaviour
 
     public void PlayAnimation(AnimationMode mode)
     {
-        if (fixEventBug || !isReverseAnimation)
+        if (!isReverseAnimation)
         {
             fixEventBug = false;
             return;

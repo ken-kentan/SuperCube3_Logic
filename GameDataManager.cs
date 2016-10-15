@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Text;
 
 public class GameDataManager : MonoBehaviour {
 
+    private static GameDataManager instance;
     private static int Score, Jump, Clear, Save;
     private static int Point, Aqua, Magnet, PlusJump;
     private static int Kill, Dead;
@@ -11,11 +13,17 @@ public class GameDataManager : MonoBehaviour {
     private static int balanceScore, expenseScore;
     public static string UUID;
 
-    public enum Data {All=-1, Score, Expense, Jump, Clear, Save, Point, Aqua, Magnet, PlusJump, Kill, Dead, SecretBlock, SecretRoute };
+    public enum Data {All=-1, Score, Jump, Clear, Save, Point, Aqua, Magnet, PlusJump, Kill, Dead, SecretBlock, SecretRoute, Balance, Expense };
     private Data type;
+
+    public static void Reload()
+    {
+        instance.Awake();
+    }
 
     // Use this for initialization
     void Awake() {
+        instance = this;
         //Total
         Score = PlayerPrefs.GetInt("totalScore", 0);
         Jump  = PlayerPrefs.GetInt("totalJump",  0);
@@ -76,14 +84,49 @@ public class GameDataManager : MonoBehaviour {
         UnityEngine.Debug.Log("Save success.");
     }
 
+    public static string ConvertToCloudData()
+    {
+        System.Text.StringBuilder strBuilder = new System.Text.StringBuilder();
+
+        foreach (Data data in Enum.GetValues(typeof(Data)))
+        {
+            if (data == Data.All) continue;
+            
+            strBuilder.Append(Get(data));
+            strBuilder.Append(",");
+        }
+
+        strBuilder.Append("|");
+
+        //最大クリアレベル
+        strBuilder.Append(PlayerPrefs.GetInt("clearedMaxLevel", -1));
+        strBuilder.Append(",");
+
+        for(int i=0; i<=9; ++i)
+        {
+            strBuilder.Append(PlayerPrefs.GetInt("scoreHigh_" + i, -1));
+            strBuilder.Append(",");
+        }
+
+        strBuilder.Append("|");
+
+        strBuilder.Append(GetCudeLife());
+        strBuilder.Append(",");
+        strBuilder.Append(GetCudeJump());
+        strBuilder.Append(",");
+        strBuilder.Append("|");
+
+        Debug.Log("Cloud Save data: " + strBuilder.ToString());
+
+        return strBuilder.ToString();
+    }
+
     public static int Get(Data typeData)
     {
         switch (typeData)
         {
             case Data.Score:
                 return Score;
-            case Data.Expense:
-                return expenseScore;
             case Data.Jump:
                 return Jump;
             case Data.Clear:
@@ -106,6 +149,10 @@ public class GameDataManager : MonoBehaviour {
                 return SecretBlock;
             case Data.SecretRoute:
                 return SecretRoute;
+            case Data.Expense:
+                return expenseScore;
+            case Data.Balance:
+                return balanceScore;
             default:
                 UnityEngine.Debug.LogError("Data:" + typeData + " is not exist.");
                 return -1;
@@ -331,8 +378,11 @@ public class GameDataManager : MonoBehaviour {
 
         if (balanceScore < score) return false;
 
-        PlayerPrefs.SetInt("balanceScore", balanceScore - score);
-        PlayerPrefs.SetInt("expenseScore", expenseScore + score);
+        balanceScore -= score;
+        expenseScore += score;
+
+        PlayerPrefs.SetInt("balanceScore", balanceScore);
+        PlayerPrefs.SetInt("expenseScore", expenseScore);
         PlayerPrefs.Save();
 
         return true;

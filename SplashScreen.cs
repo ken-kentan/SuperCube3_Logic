@@ -44,6 +44,12 @@ public class SplashScreen : MonoBehaviour {
         if (GPGS.isConnecting)
         {
             textSplash.text = "Connecting to Google Play Game Services.";
+            if (cntSplashTimer > 50) cntSplashTimer = 50;
+        }
+        else if (GPGS.isSyncCloudData)
+        {
+            textSplash.text = "Syncing the Cloud save data...";
+            if (cntSplashTimer > 50) cntSplashTimer = 50;
         }
         else if (ServerBridge.isConnecting)
         {

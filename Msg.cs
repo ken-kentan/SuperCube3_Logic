@@ -9,7 +9,7 @@ public class Msg : MonoBehaviour {
     public static int typeLang;
     
     public const string appName   = "SuperCube_World",
-                        appVer    = "1.2.16",
+                        appVer    = "1.3.18",
                         appURL    = "http://ken.kentan.jp/SuperCube_World",
                         appURLenc = "http%3a%2f%2fken%2ekentan%2ejp%2fSuperCube_World";
     public static string[] Twitter = new string[2],

@@ -78,7 +78,13 @@ public class GameUIManager : MonoBehaviour {
                     GPGS.Leaderboards(World.nameScene, World.sumScore);
                     GPGS.Achievements(GPGS.getAchievementsID(World.nameScene));
 
-                    if (GameDataManager.Get(GameDataManager.Data.Clear) >= 5) GPGS.Achievements(GPGSids.achievement_5_clear);
+                    GPGS.UploadLocalData();
+
+                    int sumClear = GameDataManager.Get(GameDataManager.Data.Clear);
+
+                    if (sumClear >= 5) GPGS.Achievements(GPGSids.achievement_5_clear);
+                    if (sumClear >= 10) GPGS.Achievements(GPGSids.achievement_10_clear);
+                    if (sumClear >= 20) GPGS.Achievements(GPGSids.achievement_20_clear);
                 }
 
                 ServerBridge.ken_kentan_jp.GameEvent("Clear");
