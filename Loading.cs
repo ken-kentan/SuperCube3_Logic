@@ -40,7 +40,7 @@ public class Loading : MonoBehaviour {
             return;
         }
 
-        if (fps >= 60.0f)
+        if (fps >= 50.0f)
         {
             finishLoad();
         }else if(frameSum > 300)
