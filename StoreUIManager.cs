@@ -6,7 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class StoreUIManager : MonoBehaviour {
 
-    public Text textBalanceScore;
+    public GameObject panel, objClose;
+
+    public Animator animator;
+
+    public Text textBalanceScore, textClose;
 
     public Text[] textInfo = new Text[2];
 
@@ -31,6 +35,8 @@ public class StoreUIManager : MonoBehaviour {
     private int[] cntTimerCost = new int[2];
     private bool[] isEnabledCost = new bool[2];
     private bool[] isMaxUpgrade = new bool[2];
+    private bool isHide;
+    private float posHideEffect;
 
     //Cost
     private static readonly int[] COST_UPGRADE_LIFE = { 1000, 10000 };
@@ -231,6 +237,15 @@ public class StoreUIManager : MonoBehaviour {
         textUpgrade[index].text = "Upgrade";
     }
 
+    public void OnPressLeft(bool isPress)
+    {
+        GameUIManager.isLeft = isPress;
+    }
+
+    public void OnPressRight(bool isPress)
+    {
+        GameUIManager.isRight = isPress;
+    }
 
     public void OnPressJump(bool isPress)
     {
@@ -245,5 +260,18 @@ public class StoreUIManager : MonoBehaviour {
         if (isPress) isLock = true;
 
         GameUIManager.isJump = true;
+    }
+
+    public void OnClickHide()
+    {
+        isHide = !isHide;
+
+        if (isHide) animator.SetInteger("AnimationMode", 1);
+        else animator.SetInteger("AnimationMode", 0);
+    }
+
+    public void SetCloseButtonText(string text)
+    {
+        textClose.text = text;
     }
 }
